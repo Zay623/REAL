@@ -1,702 +1,744 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zay Auto - 现车库存清单</title>
-    <link rel="icon" type="image/png" href="Z (3) - Copy.png">
-    <style>
-        /* ----------------------------------------------------
-           CSS 样式
-           ---------------------------------------------------- */
-body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            color: #343a40;
-        }
+    <title>Man Thong Auto Trading Stock List</title>
+<style>
+    /* ---------------------------------- */
+    /* Base Layout and Header */
+    /* ---------------------------------- */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+    }
 
-        .header {
-            background-color: #1F2937; /* 深色背景，匹配 Logo 颜色 */
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    .header {
+        background-color: #007bff;
+        color: white;
+        padding: 20px 10px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-        /* 新增：头部内容居中且保持左右空间 */
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center; /* 垂直居中 */
-            justify-content: center; /* 水平居中 */
-            gap: 15px; /* Logo 和标题之间的间距 */
-        }
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            flex-shrink: 0; /* 防止标题被 Logo 挤压 */
-        }
-        
-        /* 新增：Logo 样式 */
-        .logo {
-            height: 50px; /* 设置 Logo 高度 */
-            width: auto;
-        }
-        
-        /* 搜索和过滤容器 */
-        .controls {
-            padding: 20px;
-            text-align: center;
-            background-color: #ffffff;
-            border-bottom: 1px solid #e9ecef;
-        }
+    .logo {
+        height: 50px;
+        width: auto;
+        border-radius: 8px;
+    }
 
-        #search-input {
-            padding: 10px;
-            width: 80%;
-            max-width: 400px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            font-size: 1em;
-        }
+    .header h1 {
+        margin: 0;
+        font-size: 2em;
+    }
 
-        .main-content {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+    .controls {
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
 
-        /* 品牌分类标题样式 - 添加明显的分界线 */
-        .brand-category-title {
-            font-size: 2.2em;
-            font-weight: bold;
-            color: #1F2937;
-            margin: 50px auto 30px auto; 
-            padding-bottom: 10px;
-            border-bottom: 5px solid #007bff;
-            border-top: 1px solid #ccc;
-            width: 100%;
-            text-align: left;
-            box-sizing: border-box;
-            padding-left: 0;
-        }
+    #search-input {
+        width: 90%;
+        max-width: 500px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
 
-        /* 状态标题（在售/已售） */
-        .category-title {
-            font-size: 1.6em;
-            color: #1F2937;
-            margin: 30px 0 15px 0;
-            text-align: left;
-            padding-left: 20px;
-            border-left: 5px solid #007bff;
-        }
+    .main-content {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 15px;
+    }
 
-        /* 车辆列表容器 */
-        .car-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: flex-start;
-        }
+    /* ---------------------------------- */
+    /* Car List and Categories */
+    /* ---------------------------------- */
 
-        /* 单个车辆卡片 */
-        .car-item {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            width: calc(33.333% - 14px);
-            box-sizing: border-box;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-        }
+    .brand-category-title {
+        background-color: #e9ecef;
+        color: #007bff;
+        padding: 10px 15px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        font-size: 1.8em;
+        border-bottom: 3px solid #007bff;
+        border-radius: 5px 5px 0 0;
+    }
+    
+    .dealership-separator {
+        color: #28a745;
+        text-align: center;
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 1.2em;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        background-color: #f8f9fa;
+    }
 
-        .car-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
+    .category-title {
+        font-size: 1.4em;
+        color: #6c757d;
+        border-left: 5px solid #ffc107;
+        padding-left: 10px;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
 
-        .car-title {
-            font-size: 1.3em;
-            color: #007bff;
-            margin-top: 0;
-            margin-bottom: 5px;
-        }
+    .car-list {
+        list-style: none;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+    }
 
-        .car-year {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
+    .car-item {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.2s;
+        border: 1px solid #ccc; /* Standard border for available cars */
+    }
 
-        .car-price {
-            font-size: 1.5em;
-            color: #dc3545;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .car-monthly {
-            font-size: 1.1em;
-            color: #28a745;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
+    .car-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
 
-        .car-status {
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 4px;
-        }
+    .car-title {
+        font-size: 1.4em;
+        color: #007bff;
+        margin-top: 0;
+        border-bottom: 2px solid #f4f4f4;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        padding-left: 50px; /* Space for the tag */
+        box-sizing: border-box; 
+    }
 
-        /* 状态颜色 */
-        .status-available .car-status {
-            color: #28a745;
-            background-color: #e2f0e6;
-        }
+    .car-price {
+        font-size: 1.2em;
+        color: #dc3545;
+        font-weight: bold;
+        margin: 10px 0 5px 0;
+    }
 
-        .status-sold .car-status {
-            color: #dc3545;
-            background-color: #f8d7da;
-        }
+    .car-monthly {
+        font-size: 1.1em;
+        color: #28a745;
+        margin: 5px 0 15px 0;
+    }
 
-        .whatsapp-btn {
-            display: block;
-            background-color: #25d366;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: background-color 0.2s;
-        }
+    .car-year, .car-plateno {
+        color: #6c757d;
+        margin: 3px 0;
+    }
 
-        .whatsapp-btn:hover {
-            background-color: #128c7e;
-        }
+    .car-status {
+        font-weight: bold;
+        color: #28a745; /* Available status color */
+    }
 
-        /* 已售卡片灰色处理 */
-        .status-sold {
-            opacity: 0.7;
-            background-color: #f1f1f1;
-            transform: none; 
-            box-shadow: none;
-        }
-        
-        .status-sold .whatsapp-btn {
-            display: none;
-        }
+    /* ---------------------------------- */
+    /* Tags */
+    /* ---------------------------------- */
+    .tag-top-left {
+        position: absolute;
+        top: 10px;
+        left: 10px; 
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.8em;
+        z-index: 10;
+    }
 
+    .manthong-tag {
+        background-color: #ffc107; /* Man Thong - Yellow */
+        color: #333;
+    }
 
-        /* 响应式设计 (手机屏幕优化) */
-        @media (max-width: 992px) {
-            .car-item {
-                width: calc(50% - 10px);
-            }
-        }
+    .ef-tag {
+        background-color: #17a2b8; /* EF - Cyan */
+        color: white;
+    }
 
-        @media (max-width: 576px) {
-            .car-item {
-                width: 100%;
-                padding: 15px;
-            }
-            .header h1 {
-                font-size: 1.8em;
-            }
-            .logo {
-                height: 40px; /* 手机上 Logo 略小 */
-            }
-        }
+    /* ---------------------------------- */
+    /* WhatsApp Button */
+    /* ---------------------------------- */
+    .whatsapp-btn {
+        display: block;
+        background-color: #25d366;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        margin-top: 15px;
+        transition: background-color 0.2s;
+    }
 
-        /* 浮动计算器按钮和容器样式 */
-        .calculator-icon {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background-color: #007bff; /* 蓝色主题 */
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            z-index: 1000; /* 确保它在最上层 */
-            transition: background-color 0.2s;
-        }
+    .whatsapp-btn:hover {
+        background-color: #128c7e;
+    }
 
-        .calculator-icon:hover {
-            background-color: #0056b3;
-        }
+    /* ---------------------------------- */
+    /* Footer */
+    /* ---------------------------------- */
+    .footer {
+        text-align: center;
+        padding: 15px;
+        background-color: #343a40;
+        color: #ccc;
+        margin-top: 40px;
+        font-size: 0.9em;
+    }
 
-        /* 浮动计算器窗口样式 */
-        .calculator-popup {
-            position: fixed;
-            bottom: 100px; /* 在按钮上方 */
-            left: 20px;
-            width: 300px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
-            padding: 20px;
-            z-index: 1001;
-            display: none; /* 默认隐藏 */
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        /* 动画效果 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* ---------------------------------- */
+    /* Calculator Pop-up */
+    /* ---------------------------------- */
+    .calculator-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #ffc107;
+        color: #333;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
 
-        .calculator-popup h4 {
-            margin-top: 0;
-            color: #1F2937;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-            text-align: center;
-        }
+    .calculator-popup {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        z-index: 999;
+        display: none; /* Hidden by default */
+    }
 
-        .calc-group {
-            margin-bottom: 15px;
-        }
+    .calculator-popup h4 {
+        margin-top: 0;
+        color: #007bff;
+        border-bottom: 2px solid #f4f4f4;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
 
-        .calc-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
+    .calc-group {
+        margin-bottom: 15px;
+    }
 
-        .calc-group input, .calc-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+    .calc-group label {
+        display: block;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
 
-        /* 结果显示区 */
-        #monthly-payment-result {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e2f0e6; /* 浅绿色背景 */
-            border-radius: 4px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #28a745;
-        }
-        
-        #monthly-payment-result span {
-            display: block;
-            font-size: 0.8em;
-            font-weight: normal;
-            color: #6c757d;
-        }
-        
-        /* 手机优化 */
-        @media (max-width: 576px) {
-            .calculator-icon {
-                bottom: 10px;
-                left: 10px;
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .calculator-popup {
-                width: 80%; /* 手机上宽度更大 */
-                left: 10px;
-                right: 10px;
-                bottom: 70px;
-                margin: 0;
-            }
-        }
-    </style>
+    .calc-group input[type="number"], .calc-group select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    #monthly-payment-result {
+        text-align: center;
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #d4edda;
+        color: #155724;
+        border-radius: 5px;
+        font-size: 1.8em;
+        font-weight: bold;
+    }
+
+    #monthly-payment-result span {
+        display: block;
+        font-size: 0.6em;
+        font-weight: normal;
+        margin-top: 5px;
+        color: #155724;
+    }
+</style>
 </head>
 <body>
 
     <div class="header">
         <div class="header-content">
-            <img src="Z (4) - Copy.png" alt="Zay Auto Logo" class="logo">
+            <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
             
             <h1>Stock List</h1>
         </div>
     </div>
 
     <div class="controls">
-        <input type="text" id="search-input" placeholder="输入关键词、型号或年份...">
+        <input type="text" id="search-input" placeholder="Enter keyword, model, or year...">
     </div>
 
     <div class="main-content" id="car-container">
-        <p style="text-align: center; margin-top: 50px;">正在加载车辆数据...</p>
+        <p style="text-align: center; margin-top: 50px;">Loading vehicle data...</p>
     </div>
+    
     <div class="calculator-icon" id="calc-toggle">
-        &#x270E; </div>
+        &#x270E; 
+    </div>
 
     <div class="calculator-popup" id="calculator-popup">
-        <h4>汽车贷款月供计算器</h4>
+        <h4>Car Loan Monthly Payment Calculator</h4>
+        
+        <p style="font-size: 0.85em; color: #dc3545; font-weight: bold; border-bottom: 1px dashed #dc3545; padding-bottom: 8px;">
+            **Calculator Notes:** Uses Simple Flat Rate Method. Your historical limits (RM20K/3Y, 10%) are noted.
+        </p>
         
         <div class="calc-group">
-            <label for="otr-price">汽车 OTR (RM)</label>
-            <input type="number" id="otr-price" placeholder="例如: 60000" value="60000">
+            <label for="otr-price">Car OTR (RM)</label>
+            <input type="number" id="otr-price" placeholder="e.g.: 60000" value="60000">
         </div>
 
         <div class="calc-group">
-            <label for="down-payment">头期/定金 (RM)</label>
-            <input type="number" id="down-payment" placeholder="例如: 6000" value="6000">
+            <label for="down-payment">Down Payment (RM)</label>
+            <input type="number" id="down-payment" placeholder="e.g.: 6000" value="6000">
         </div>
 
         <div class="calc-group">
-            <label for="loan-years">贷款年份</label>
+            <label for="loan-years">Loan Years</label>
             <select id="loan-years">
-                <option value="9">9 年</option>
-                <option value="8">8 年</option>
-                <option value="7">7 年</option>
-                <option value="6">6 年</option>
-                <option value="5">5 年</option>
-                <option value="4">4 年</option>
-                <option value="3">3 年</option>
-                <option value="2">2 年</option>
-                <option value="1">1 年</option>
+                <option value="9">9 Years</option>
+                <option value="8">8 Years</option>
+                <option value="7">7 Years</option>
+                <option value="6">6 Years</option>
+                <option value="5">5 Years</option>
+                <option value="4">4 Years</option>
+                <option value="3" selected>3 Years</option>
+                <option value="2">2 Years</option>
+                <option value="1">1 Year</option>
             </select>
         </div>
-
-        <div class="calc-group">
-            <label for="interest-rate">年利率 (p.a.)</label>
+        
+        <div class="calc-group interest-rate-group" id="interest-rate-group">
+            <label for="interest-rate">Annual Interest Rate (p.a.)</label>
             <select id="interest-rate">
                 <option value="0.036">3.6%</option>
                 <option value="0.038">3.8%</option>
                 <option value="0.075">7.5%</option>
                 <option value="0.079">7.9%</option>
-                <option value="0.10">10.0%</option>
+                <option value="0.10" selected>10.0%</option>
             </select>
         </div>
         
         <div id="monthly-payment-result">
             RM 0.00
-            <span>预计每月供款</span>
+            <span>Estimated Monthly Payment</span>
         </div>
     </div>
 
-<script>
-        // ----------------------------------------------------
-        // 1. 数据源 (最终版：请手动填入 'monthly' 月供字段)
-        // ----------------------------------------------------
-        const cars = [
-            // PROTON
-            { 
-                model: "PROTON X70 1.8 PREMIUM", 
-                year: 2019, 
-                price: "RM 64,600", 
-                monthly: "RM802.71", // <-- 请填入您的月供金额
-                status: "在售", 
-                id: 1, 
-            },
-            { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", status: "在售", id: 2 },
-            { model: "PROTON X50 1.5T PREMIUM", year: 2022, price: "RM 73,000", monthly: "RM907.09", status: "在售", id: 3 },
-            
-            // PERODUA
-            { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "465.28", status: "在售", id: 4 },
-            { model: "PERODUA MYVI 1.3", year: 2008, price: "RM 15,000", monthly: "Cash Only", status: "在售", id: 5 },
-            { model: "PERODUA MYVI 1.3 G", year: 2015, price: "RM 31,000", monthly: "RM480.79", status: "在售", id: 6 },
-            { model: "PERODUA MYVI 1.5 SE", year: 2016, price: "RM 36,000", monthly: "RM558.33", status: "在售", id: 7 },
-            { model: "PERODUA MYVI 1.3 X", year: 2020, price: "RM 43,000", monthly: "RM534.31", status: "在售", id: 8 },
-            { model: "PERODUA MYVI 1.5 H", year: 2020, price: "RM 48,000", monthly: "RM596.44", status: "在售", id: 9 },
-            { model: "PERODUA MYVI 1.5 AV", year: 2021, price: "RM 53,000", monthly: "RM658.57", status: "在售", id: 10 },
-            { model: "PERODUA BEZZA 1.3 X", year: 2022, price: "RM 44,000", monthly: "RM549.74", status: "在售", id: 11 },
-            { model: "PERODUA ATIVA 1.0 H", year: 2022, price: "RM 61,000", monthly: "RM757.98", status: "在售", id: 12 },
-            { model: "PERODUA ALZA 1.5 SE", year: 2019, price: "RM 51,600", monthly: "RM641.18", status: "在售", id: 13 },
-            { model: "PERODUA ALZA 1.5 SE", year: 2020, price: "RM 53,600", monthly: "RM666.03", status: "在售", id: 14 },
-            
-            // TOYOTA
-            { model: "TOYOTA VIOS 1.5 GX", year: 2018, price: "RM 61,600", monthly: "RM836.73", status: "在售", id: 15 },
-            { model: "TOYOTA VIOS 1.5 E", year: 2019, price: "RM 60,600", monthly: "RM753.01", status: "在售", id: 16 },
-            { model: "TOYOTA ALTIS 1.8 G", year: 2018, price: "RM 69,600", monthly: "RM945.40", status: "在售", id: 17 },
-            { model: "TOYOTA RUSH 1.5 S", year: 2020, price: "RM 69,600", monthly: "RM864.84", status: "在售", id: 18 },
-            { model: "TOYOTA AVANZA 1.5 S", year: 2020, price: "RM 60,600", monthly: "RM753.01", status: "在售", id: 19 },
-            { model: "TOYOTA ESTIMA 2.4", year: 2012, price: "RM 55,600", monthly: "RM1125.24", status: "在售", id: 20 },
-            { model: "TOYOTA HILUX 2.5 TRD", year: 2015, price: "RM 63,000", monthly: "RM977.08", status: "在售", id: 21 },
-            
-            // NISSAN
-            { model: "NISSAN X-TRAIL 2.0L IMPUL", year: 2018, price: "RM 59,600", monthly: "RM809.57", status: "在售", id: 22 },
-            { model: "NISSAN GRAND LIVINA 1.6L", year: 2012, price: "RM 24,000", monthly: "RM485.71", status: "在售", id: 23 },
-            { model: "NISSAN SERENA 2.0L IMPUL", year: 2020, price: "RM 99,000", monthly: "RM1230.17", status: "在售", id: 24 },
-            
-            // LEXUS
-            { model: "LEXUS RX350 F-SPORT", year: 2014, price: "RM 69,000", monthly: "-", status: "在售", id: 25 },
-            
-            // VOLKSWAGEN
-            { model: "VOLKSWAGEN PASSAT 1.8 TSI", year: 2012, price: "-", monthly: "-", status: "在售", id: 26 },
-            { model: "VOLKSWAGEN PASSAT 1.8 TSI 280", year: 2018, price: "RM 68,800", monthly: "RM934.53", status: "在售", id: 27 },
-            
-            // HONDA
-            { model: "HONDA CIVIC 1.8 S", year: 2020, price: "RM 83,800", monthly: "RM1041.29", status: "在售", id: 28 },
-            { model: "HONDA CITY 1.5 E", year: 2014, price: "RM 36,600", monthly: "RM740.71", status: "在售", id: 29 },
-            { model: "HONDA CITY 1.5 E", year: 2018, price: "RM 57,600", monthly: "RM782.40", status: "在售", id: 30 },
-            { model: "HONDA CITY 1.5 V", year: 2018, price: "RM 60,600", monthly: "RM823.15", status: "在售", id: 31 },
-            { model: "HONDA CITY 1.5 E", year: 2019, price: "RM 62,600", monthly: "RM777.86", status: "在售", id: 32 },
-            { model: "HONDA CITY 1.5 E", year: 2020, price: "RM 66,600", monthly: "RM827.57", status: "在售", id: 33 },
-            { model: "HONDA CITY 1.5 E", year: 2023, price: "RM 75,800", monthly: "RM941.89", status: "在售", id: 34 },
-            { model: "HONDA CITY 1.5 V HATCHBACK", year: 2022, price: "RM 77,800", monthly: "RM966.74", status: "在售", id: 35 },
-            { model: "HONDA JAZZ 1.5 E", year: 2016, price: "RM 53,800", monthly: "RM834.40", status: "在售", id: 36 },
-            { model: "HONDA JAZZ 1.5 V", year: 2019, price: "RM 67,600", monthly: "RM839.99", status: "在售", id: 37 },
-            { model: "HONDA HR-V 1.8 E", year: 2019, price: "RM 76,800", monthly: "RM879.76", status: "在售", id: 38 },
-            { model: "HONDA HR-V 1.8 V", year: 2016, price: "RM 54,600", monthly: "RM678.46", status: "在售", id: 39 },
-            { model: "HONDA CR-V 1.5 TC-P", year: 2019, price: "RM 99,000", monthly: "RM1230.17", status: "在售", id: 40 },
+    <div class="footer">
+        <p id="last-updated">List Updated: <span id="update-time">Loading...</span></p>
+    </div>
 
-            // HYUNDAI
-            { model: "HYUNDAI SONATA 2.0", year: 2012, price: "RM -", monthly: "-", status: "在售", id: 41 },
-            { model: "HYUNDAI ELANTRA 1.6L", year: 2014, price: "RM -", monthly: "-", status: "在售", id: 42 },
-
-            // MERCEDES BENZ
-            { model: "MERCEDES BENZ C180 KOMPRESSOR", year: 2012, price: "-", monthly: "-", status: "在售", id: 43 },
-            
-            // PROTON PERDANA
-            { model: "PROTON PERDANA 2.0", year: 2014, price: "RM 33,000", monthly: "RM667.86", status: "在售", id: 44 }
-        ];
-
-
-        // ----------------------------------------------------
-        // 2. 核心渲染函数和排序逻辑
-        // ----------------------------------------------------
+</body>
+    <script>
+// ----------------------------------------------------
+    // 1. Data Source (HARDCODED LIST - Manage cars HERE)
+    // ----------------------------------------------------
+    
+    // **要加车或减车，请直接修改这个列表**
+    const cars = [
+        // --- START Man Thong CARS ---
+        // PROTON
+        { model: "PROTON X70 1.8 PREMIUM", year: 2019, price: "RM 64,600", monthly: "RM802.71", plateNo: "VDB7826", status: "Available", id: 1, manthongTag: true, efTag: false },
+        { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
+        { model: "PROTON X50 1.5T PREMIUM", year: 2022, price: "RM 73,000", monthly: "RM907.09", plateNo: "VPG5937", status: "Available", id: 3, manthongTag: true, efTag: false },
+        { model: "PROTON PERDANA 2.0", year: 2014, price: "RM 33,000", monthly: "RM667.86", plateNo: "WA4296G", status: "Available", id: 4, manthongTag: true, efTag: false },
         
-        // 品牌自定义排序规则
-        const customBrandOrder = [
-            "PROTON",
-            "PERODUA",
-            "TOYOTA",
-            "NISSAN",
-            "HONDA",
-            "LEXUS",
-            "VOLKSWAGEN",
-            "HYUNDAI",
-            "MERCEDES", // MERCEDES BENZ 取第一个词
-        ];
-
-        // 辅助函数：生成列表项的 HTML 结构 (已移除图片和车况)
-        function renderList(list, ulElement) {
-             list.forEach(car => {
-                const isSold = car.status === '已售';
-                const statusClass = isSold ? 'status-sold' : 'status-available';
-                
-                // WhatsApp 询价链接
-                const waLink = `https://wa.me/60105000111?text=Hi%2C%20我对${encodeURIComponent(car.model)}%20${car.year}%20感兴趣%2C%20请发更多资料。`;
-                
-                const carItem = document.createElement('li');
-                carItem.className = `car-item ${statusClass}`;
-                
-                carItem.innerHTML = `
-                    <h3 class="car-title">${car.model}</h3>
-                    <p class="car-year">年份: ${car.year}</p>
-                    
-                    <p class="car-price">售价: ${car.price}</p>
-                    
-                    <p class="car-monthly">月供起价: <strong>${car.monthly || 'N/A'}</strong></p>
-                    
-                    <p><strong>状态:</strong> <span class="car-status">${car.status}</span></p>
-                    
-                    ${isSold ? '' : `<a href="${waLink}" target="_blank" class="whatsapp-btn">📲 立即询问 (wa.me/60105000111)</a>`}
-                `;
-                ulElement.appendChild(carItem);
-            });
-        }
+        // PERODUA
+        { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.3", year: 2008, price: "RM 15,000", monthly: "Cash Only", plateNo: "KCP2713", status: "Available", id: 6, manthongTag: true, efTag: false }, 
+        { model: "PERODUA MYVI 1.3 G", year: 2015, price: "RM 31,000", monthly: "RM480.79", plateNo: "AU7896", status: "Available", id: 7, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.5 SE", year: 2016, price: "RM 36,000", monthly: "RM558.33", plateNo: "WC705V", status: "Available", id: 8, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.3 X", year: 2020, price: "RM 43,000", monthly: "RM534.31", plateNo: "ALU7311", status: "Available", id: 9, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.5 H", year: 2020, price: "RM 48,000", monthly: "RM596.44", plateNo: "VFD3376", status: "Available", id: 10, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.5 AV", year: 2021, price: "RM 53,000", monthly: "RM658.57", plateNo: "VHA7963", status: "Available", id: 11, manthongTag: true, efTag: false },
+        { model: "PERODUA BEZZA 1.3 X", year: 2022, price: "RM 44,000", monthly: "RM549.74", plateNo: "VJK7298", status: "Available", id: 12, manthongTag: true, efTag: false },
+        { model: "PERODUA ATIVA 1.0 H", year: 2022, price: "RM 61,000", monthly: "RM757.98", plateNo: "VJF7444", status: "Available", id: 13, manthongTag: true, efTag: false },
+        { model: "PERODUA ALZA 1.5 SE", year: 2019, price: "RM 51,600", monthly: "RM641.18", plateNo: "VCS4934", status: "Available", id: 14, manthongTag: true, efTag: false },
+        { model: "PERODUA ALZA 1.5 SE", year: 2020, price: "RM 53,600", monthly: "RM666.03", plateNo: "CEH4200", status: "Available", id: 15, manthongTag: true, efTag: false },
         
-        // 新增辅助函数：用于渲染品牌内的子分类 (在售/已售)
-        function renderBrandGroup(title, cars, container) {
-            const availableCars = cars.filter(car => car.status === '在售');
-            const soldCars = cars.filter(car => car.status === '已售');
+        // TOYOTA
+        { model: "TOYOTA VIOS 1.5 GX", year: 2018, price: "RM 61,600", monthly: "RM836.73", plateNo: "VCB4362", status: "Available", id: 16, manthongTag: true, efTag: false },
+        { model: "TOYOTA VIOS 1.5 E", year: 2019, price: "RM 60,600", monthly: "RM753.01", plateNo: "TBY6057", status: "Available", id: 17, manthongTag: true, efTag: false },
+        { model: "TOYOTA ALTIS 1.8 G", year: 2018, price: "RM 69,600", monthly: "RM945.40", plateNo: "VBC4464", status: "Available", id: 18, manthongTag: true, efTag: false },
+        { model: "TOYOTA RUSH 1.5 S", year: 2020, price: "RM 69,600", monthly: "RM864.84", plateNo: "VPG5975", status: "Available", id: 19, manthongTag: true, efTag: false },
+        { model: "TOYOTA AVANZA 1.5 S", year: 2020, price: "RM 60,600", monthly: "RM753.01", plateNo: "VPG8380", status: "Available", id: 20, manthongTag: true, efTag: false },
+        { model: "TOYOTA ESTIMA 2.4", year: 2012, price: "RM 55,600", monthly: "RM1125.24", plateNo: "WXR3084", status: "Available", id: 21, manthongTag: true, efTag: false },
+        { model: "TOYOTA HILUX 2.5 TRD", year: 2015, price: "RM 63,000", monthly: "RM977.08", plateNo: "PLX877", status: "Available", id: 22, manthongTag: true, efTag: false },
+        
+        // NISSAN
+        { model: "NISSAN X-TRAIL 2.0L IMPUL", year: 2018, price: "RM 59,600", monthly: "RM809.57", plateNo: "VBT8586", status: "Available", id: 23, manthongTag: true, efTag: false },
+        { model: "NISSAN GRAND LIVINA 1.6L", year: 2012, price: "RM 24,000", monthly: "RM485.71", plateNo: "PKR7937", status: "Available", id: 24, manthongTag: true, efTag: false },
+        { model: "NISSAN SERENA 2.0L IMPUL", year: 2020, price: "RM 99,000", monthly: "RM1230.17", plateNo: "VEH1981", status: "Available", id: 25, manthongTag: true, efTag: false },
+        
+        // LEXUS
+        { model: "LEXUS RX350 F-SPORT", year: 2014, price: "RM 69,000", monthly: "-", plateNo: "VKR2204", status: "Available", id: 26, manthongTag: true, efTag: false },
+        
+        // VOLKSWAGEN
+        { model: "VOLKSWAGEN PASSAT 1.8 TSI", year: 2012, price: "-", monthly: "-", plateNo: "KDK171", status: "Available", id: 27, manthongTag: true, efTag: false },
+        { model: "VOLKSWAGEN PASSAT 1.8 TSI 280", year: 2018, price: "RM 68,800", monthly: "RM934.53", plateNo: "PNP5006", status: "Available", id: 28, manthongTag: true, efTag: false },
+        
+        // HONDA
+        { model: "HONDA CIVIC 1.8 S", year: 2020, price: "RM 83,800", monthly: "RM1041.29", plateNo: "JYE2435", status: "Available", id: 29, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2014, price: "RM 36,600", monthly: "RM740.71", plateNo: "IPW9966", status: "Available", id: 30, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2018, price: "RM 57,600", monthly: "RM782.40", plateNo: "VBH9936", status: "Available", id: 31, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 V", year: 2018, price: "RM 60,600", monthly: "RM823.15", plateNo: "QRL1100", status: "Available", id: 32, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2019, price: "RM 62,600", monthly: "RM777.86", plateNo: "VCR3550", status: "Available", id: 33, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2020, price: "RM 66,600", monthly: "RM827.57", plateNo: "JUD1645", status: "Available", id: 34, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2023, price: "RM 75,800", monthly: "RM941.89", plateNo: "M4917M", status: "Available", id: 35, manthongTag: true, efTag: false },
+        { model: "HONDA CITY 1.5 V HATCHBACK", year: 2022, price: "RM 77,800", monthly: "RM966.74", plateNo: "JVC1588", status: "Available", id: 36, manthongTag: true, efTag: false },
+        { model: "HONDA JAZZ 1.5 E", year: 2016, price: "RM 53,800", monthly: "RM834.40", plateNo: "VB7251", status: "Available", id: 37, manthongTag: true, efTag: false },
+        { model: "HONDA JAZZ 1.5 V", year: 2019, price: "RM 67,600", monthly: "RM839.99", plateNo: "BNH4411", status: "Available", id: 38, manthongTag: true, efTag: false },
+        { model: "HONDA HR-V 1.8 E", year: 2019, price: "RM 76,800", monthly: "RM879.76", plateNo: "JTV4993", status: "Available", id: 39, manthongTag: true, efTag: false },
+        { model: "HONDA HR-V 1.8 V", year: 2016, price: "RM 54,600", monthly: "RM678.46", plateNo: "PRU2975", status: "Available", id: 40, manthongTag: true, efTag: false },
+        { model: "HONDA CR-V 1.5 TC-P", year: 2019, price: "RM 99,000", monthly: "RM1230.17", plateNo: "VPC7508", status: "Available", id: 41, manthongTag: true, efTag: false },
 
-            // --- 渲染 '在售' 车辆 ---
-            if (availableCars.length > 0) {
-                container.innerHTML += `<h3 class="category-title">🟢 在售现车 ${title ? `(${title})` : ''}</h3>`;
-                const availableList = document.createElement('ul');
-                availableList.className = 'car-list';
-                renderList(availableCars, availableList); 
-                container.appendChild(availableList);
-            }
+        // HYUNDAI
+        { model: "HYUNDAI SONATA 2.0", year: 2012, price: "RM -", monthly: "-", plateNo: "WYM7510", status: "Available", id: 42, manthongTag: true, efTag: false },
+        { model: "HYUNDAI ELANTRA 1.6L", year: 2014, price: "RM -", monthly: "-", plateNo: "BNB8583", status: "Available", id: 43, manthongTag: true, efTag: false },
 
-            // --- 渲染 '已售' 车辆 ---
-            if (soldCars.length > 0) {
-                container.innerHTML += `<h3 class="category-title">🔴 已售记录 (Sold History) ${title ? `(${title})` : ''}</h3>`;
-                const soldList = document.createElement('ul');
-                soldList.className = 'car-list';
-                renderList(soldCars, soldList);
-                container.appendChild(soldList);
-            }
-        }
+        // MERCEDES BENZ
+        { model: "MERCEDES BENZ C180 KOMPRESSOR", year: 2012, price: "-", monthly: "-", plateNo: "PJR328", status: "Available", id: 44, manthongTag: true, efTag: false },
+        
+        // --- END Man Thong CARS ---
 
-        // 主渲染函数：按品牌分组并渲染
-        function renderCars(carArray) {
-            const container = document.getElementById('car-container');
-            container.innerHTML = ''; // 清空现有内容
+        // --- START EF CARS ---
+        // PERODUA (EF) - ID starting from 45
+        { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false },
+        { model: "PERODUA MYVI 1.5 AV", year: 2017, price: "RM 41,000", monthly: "", plateNo: "JRX8129", status: "Available", id: 46, efTag: true, manthongTag: false },
+        { model: "PERODUA ALZA 1.5 AV", year: 2012, price: "RM 27,600", monthly: "", plateNo: "WNR5448", status: "Available", id: 47, efTag: true, manthongTag: false },
+        { model: "PERODUA AXIA 1.0 AV", year: 2018, price: "RM 35,000", monthly: "", plateNo: "RX9467", status: "Available", id: 48, efTag: true, manthongTag: false },
+        { model: "PERODUA MYVI 1.5 AV", year: 2017, price: "RM 41,000", monthly: "", plateNo: "BPG2761", status: "Available", id: 49, efTag: true, manthongTag: false },
+        { model: "PERODUA MYVI 1.5 H", year: 2018, price: "RM 41,000", monthly: "", plateNo: "VCL6445", status: "Available", id: 50, efTag: true, manthongTag: false },
+        { model: "PERODUA MYVI 1.5 AV", year: 2020, price: "RM 52,000", monthly: "", plateNo: "ALN2395", status: "Available", id: 51, efTag: true, manthongTag: false },
 
-            // 1. 按品牌名称分组
-            const groupedByBrand = carArray.reduce((acc, car) => {
-                // 提取品牌名 (假设品牌名是 model 字段中的第一个词)
-                const brand = car.model.split(' ')[0].toUpperCase();
-                if (!acc[brand]) {
-                    acc[brand] = [];
-                }
-                acc[brand].push(car);
-                return acc;
-            }, {});
+        // PROTON (EF)
+        { model: "PROTON PERSONA 1.6 PREMIUM", year: 2016, price: "RM 28,000", monthly: "", plateNo: "RP9787", status: "Available", id: 52, efTag: true, manthongTag: false },
+        { model: "PROTON PERSONA 1.6", year: 2017, price: "RM 29,000", monthly: "", plateNo: "AKS8358", status: "Available", id: 53, efTag: true, manthongTag: false },
+        { model: "PROTON SAGA 1.3 FL", year: 2016, price: "RM 22,600", monthly: "", plateNo: "WCW841N", status: "Available", id: 54, efTag: true, manthongTag: false },
+        { model: "PROTON SAGA 1.3 PREMIUM", year: 2021, price: "RM 36,000", monthly: "", plateNo: "JUK6541", status: "Available", id: 55, efTag: true, manthongTag: false },
+        { model: "PROTON IRIZ 1.3", year: 2015, price: "RM 22,600", monthly: "", plateNo: "WR4996V", status: "Available", id: 56, efTag: true, manthongTag: false },
+        { model: "PROTON PREVE 1.6L", year: 2017, price: "RM 30,000", monthly: "", plateNo: "AKT1566", status: "Available", id: 57, efTag: true, manthongTag: false },
+        { model: "PROTON EXORA 1.6", year: 2014, price: "RM 28,600", monthly: "", plateNo: "BNJ5393", status: "Available", id: 58, efTag: true, manthongTag: false },
+        { model: "PROTON EXORA 1.5 PREMIUM", year: 2019, price: "RM 47,000", monthly: "", plateNo: "RAD1649", status: "Available", id: 59, efTag: true, manthongTag: false },
+
+        // HONDA (EF)
+        { model: "HONDA CITY 1.5 IDSI", year: 2003, price: "RM 14,000", monthly: "", plateNo: "PT15977", status: "Available", id: 60, efTag: true, manthongTag: false },
+        { model: "HONDA CITY 1.5 S", year: 2019, price: "RM 57,600", monthly: "", plateNo: "MDE2308", status: "Available", id: 61, efTag: true, manthongTag: false },
+        { model: "HONDA CIVIC 2.0 S", year: 2016, price: "RM 57,600", monthly: "", plateNo: "BNS494", status: "Available", id: 62, efTag: true, manthongTag: false },
+        { model: "HONDA HR-V 1.8 S", year: 2016, price: "RM 56,600", monthly: "", plateNo: "VPE5603", status: "Available", id: 63, efTag: true, manthongTag: false },
+        { model: "HONDA JAZZ 1.5 E", year: 2018, price: "RM 57,600", monthly: "", plateNo: "BNV5888", status: "Available", id: 64, efTag: true, manthongTag: false },
+        { model: "HONDA CITY 1.5 E", year: 2018, price: "RM 57,600", monthly: "", plateNo: "BLY3814", status: "Available", id: 65, efTag: true, manthongTag: false },
+        { model: "HONDA ACCORD 2.0L", year: 2015, price: "RM 49,600", monthly: "", plateNo: "WB5711Y", status: "Available", id: 66, efTag: true, manthongTag: false },
+
+        // TOYOTA (EF)
+        { model: "TOYOTA VIOS 1.5 E", year: 2013, price: "RM 57,600", monthly: "", plateNo: "PRK3985", status: "Available", id: 67, efTag: true, manthongTag: false },
+        { model: "TOYOTA VIOS 1.5 G", year: 2018, price: "RM 37,000", monthly: "", plateNo: "WYL3873", status: "Available", id: 68, efTag: true, manthongTag: false },
+        { model: "TOYOTA YARIS 1.5 E", year: 2020, price: "RM 61,600", monthly: "", plateNo: "ALU6988", status: "Available", id: 69, efTag: true, manthongTag: false },
+        
+        // NISSAN (EF)
+        { model: "NISSAN GRAND LIVINA 1.6L", year: 2015, price: "RM 37,000", monthly: "", plateNo: "WB5198C", status: "Available", id: 70, efTag: true, manthongTag: false },
+
+        // NASA (EF)
+        { model: "NAZA CITRA 2.0", year: 2009, price: "RM 9,700", monthly: "", plateNo: "PJD9280", status: "Available", id: 71, efTag: true, manthongTag: false }
+        // --- END EF CARS ---
+    ];
+
+    // ----------------------------------------------------
+    // 2. Core Rendering Functions and Sorting Logic
+    // ----------------------------------------------------
+    
+    // Custom brand order (for display)
+    const customBrandOrder = [
+        "PROTON", 
+        "PERODUA",
+        "TOYOTA",
+        "HONDA",
+        "NISSAN",
+        "LEXUS", 
+        "VOLKSWAGEN", 
+        "HYUNDAI", 
+        "MERCEDES BENZ",
+        "NAZA"
+    ];
+
+    // Helper function: Renders the HTML structure for car list items
+    function renderList(list, ulElement) {
+        list.forEach(car => {
+            const waLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo || 'N/A'}%2E%20Please%20send%20more%20details%2E`;
             
-            // *** 使用自定义顺序进行排序 ***
-            const allBrands = Object.keys(groupedByBrand);
-            const sortedBrands = customBrandOrder.filter(brand => allBrands.includes(brand));
+            const carItem = document.createElement('li');
+            carItem.className = 'car-item status-available';
             
-            allBrands.forEach(brand => {
-                if (!sortedBrands.includes(brand)) {
-                    sortedBrands.push(brand);
-                }
-            });
-            // **********************************
+            // --- TAGS LOGIC ---
+            let tagHtml = '';
+            if (car.efTag) {
+                tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
+            }
+            if (car.manthongTag && !car.efTag) {
+                    tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
+            }
+            
+            // **已移除删除按钮**
 
-            // 2. 遍历品牌，逐个渲染
-            sortedBrands.forEach(brand => {
-                const carsOfBrand = groupedByBrand[brand];
+            carItem.innerHTML = `
+                ${tagHtml} 
+                <h3 class="car-title">${car.model}</h3>
+                <p class="car-year">Year: ${car.year}</p>
                 
-                if (carsOfBrand.length === 0) return;
-
-                // 创建品牌大标题 (带分隔线)
-                container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
-
-                if (brand === 'PROTON') {
-                    // 分离出 PROTON PERDANA
-                    const perdana = carsOfBrand.filter(car => car.model.toUpperCase().includes('PERDANA'));
-                    const otherProtons = carsOfBrand.filter(car => !car.model.toUpperCase().includes('PERDANA'));
-
-                    // 先渲染 PROTON 核心车系 (X70, X50)
-                    renderBrandGroup('', otherProtons, container);
-                    
-                    // 然后渲染 PROTON PERDANA (作为您要求的第 10 项)
-                    if (perdana.length > 0) {
-                        // 注意：这里我们单独创建一个标题并渲染，以实现排在最后的效果
-                        container.innerHTML += `<h2 class="brand-category-title" style="margin-top: 20px; border-bottom: 2px solid #ccc; font-size: 1.5em;">🚗 PROTON PERDANA</h2>`;
-                        renderBrandGroup('', perdana, container);
-                    }
-                } else {
-                    // 渲染其他所有品牌
-                    renderBrandGroup('', carsOfBrand, container);
-                }
-            });
-            
-            if (carArray.length === 0) {
-                 container.innerHTML += '<h2 class="brand-category-title" style="border-bottom:none; color:#dc3545;">未找到匹配车辆...</h2>';
-            }
-        }
-
-        // ----------------------------------------------------
-        // 3. 搜索功能
-        // ----------------------------------------------------
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filteredCars = cars.filter(car => 
-                car.model.toLowerCase().includes(searchTerm) || 
-                car.year.toString().includes(searchTerm)
-            );
-            renderCars(filteredCars);
+                <p class="car-plateno">Plate No: <strong>${car.plateNo || 'N/A'}</strong></p>
+                
+                <p class="car-price">Price: ${car.price}</p>
+                
+                <p class="car-monthly">Monthly Est: <strong>${car.monthly || 'N/A'}</strong></p>
+                
+                <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
+                
+                <a href="${waLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW (wa.me/60105000111)</a>
+            `;
+            ulElement.appendChild(carItem);
         });
         
-        // ----------------------------------------------------
-        // 4. 贷款计算器逻辑
-        // ----------------------------------------------------
-        
-        // 贷款计算公式 (您之前提供的简化平息法)
-        function calculateMonthlyPayment(principal, years, rate) {
-            // 贷款总额 = 本金 * (1 + 年利率 * 年限)
-            const totalLoanAmount = principal * (1 + rate * years);
+        // **已移除删除事件监听器**
+    }
+    
+    // Helper function: Renders sub-groups within a brand 
+    function renderSubGroup(title, cars, container) {
+        // Sort available cars by year descending (newest first)
+        cars.sort((a, b) => b.year - a.year); 
+
+        if (cars.length > 0) {
+            container.innerHTML += `<h3 class="category-title">🟢 Available Stock ${title ? `(${title})` : ''}</h3>`;
+            const availableList = document.createElement('ul');
+            availableList.className = 'car-list';
             
-            // 总月数
-            const months = years * 12;
-            
-            // 每月供款 = 贷款总额 / 总月数
-            const monthlyPayment = totalLoanAmount / months;
-            
-            return monthlyPayment;
+            renderList(cars, availableList); 
+            container.appendChild(availableList);
         }
+    }
 
-        // 获取所有输入/选择元素
-        const otrInput = document.getElementById('otr-price');
-        const downPaymentInput = document.getElementById('down-payment');
-        const loanYearsSelect = document.getElementById('loan-years');
-        const interestRateSelect = document.getElementById('interest-rate');
-        const resultDiv = document.getElementById('monthly-payment-result');
+    // Main rendering function: Groups and renders cars by brand 
+    function renderCars(carArray) {
+        const container = document.getElementById('car-container');
+        container.innerHTML = ''; // Clear existing content
 
-        // 计算并更新结果
-        function updateCalculation() {
-            const otr = parseFloat(otrInput.value) || 0;
-            const downPayment = parseFloat(downPaymentInput.value) || 0;
-            const years = parseInt(loanYearsSelect.value) || 0;
-            const rate = parseFloat(interestRateSelect.value) || 0;
-            
-            // 确保 OTR 大于 头期
-            if (otr <= downPayment) {
-                resultDiv.innerHTML = "RM 0.00<span>OTR 需大于头期</span>";
-                return;
+        // 1. Group by brand name
+        const groupedByBrand = carArray.reduce((acc, car) => {
+            const brand = car.model.split(' ')[0].toUpperCase();
+            // Special handling for MERCEDES BENZ
+            const finalBrand = brand === 'MERCEDES' ? 'MERCEDES BENZ' : brand;
+            if (!acc[finalBrand]) {
+                acc[finalBrand] = [];
             }
-
-            const principal = otr - downPayment;
-            
-            if (years === 0 || rate === 0) {
-                resultDiv.innerHTML = "RM 0.00<span>请选择年限和利率</span>";
-                return;
-            }
-
-            const monthlyPayment = calculateMonthlyPayment(principal, years, rate);
-            
-            resultDiv.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>预计每月供款</span>`;
-        }
+            acc[finalBrand].push(car);
+            return acc;
+        }, {});
         
-        // 监听所有输入变化
-        otrInput.addEventListener('input', updateCalculation);
-        downPaymentInput.addEventListener('input', updateCalculation);
-        loanYearsSelect.addEventListener('change', updateCalculation);
-        interestRateSelect.addEventListener('change', updateCalculation);
-
-        // 初始化计算器弹出/隐藏功能
-        const calcToggleButton = document.getElementById('calc-toggle');
-        const calcPopup = document.getElementById('calculator-popup');
-
-        // 检查元素是否存在，防止报错（用于旧版本代码兼容）
-        if (calcToggleButton && calcPopup) {
-             calcToggleButton.addEventListener('click', () => {
-                const isHidden = calcPopup.style.display === 'none' || calcPopup.style.display === '';
-                if (isHidden) {
-                    calcPopup.style.display = 'block';
-                    calcToggleButton.innerHTML = '&#x2715;'; // X 图标
-                    updateCalculation(); // 弹出时进行一次计算
-                } else {
-                    calcPopup.style.display = 'none';
-                    calcToggleButton.innerHTML = '&#x270E;'; // 铅笔图标
-                }
-            });
-        }
+        // Sort brands using custom order
+        const allBrands = Object.keys(groupedByBrand);
+        const sortedBrands = customBrandOrder.filter(brand => allBrands.includes(brand));
         
-
-        // 页面加载完成后，首先显示所有车辆并执行初始计算
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCars(cars);
-            // 确保元素存在再执行初始计算
-            if (otrInput) {
-                updateCalculation();
+        allBrands.forEach(brand => {
+            if (!sortedBrands.includes(brand) && !customBrandOrder.includes(brand)) {
+                sortedBrands.push(brand);
             }
         });
 
-</script>
+        // 2. Iterate through brands and render Man Thong & EF separately
+        sortedBrands.forEach(brand => {
+            const carsOfBrand = groupedByBrand[brand];
+            
+            if (carsOfBrand.length === 0) return;
+
+            const brandTitleContent = `🚗 ${brand}`; 
+            // Create main brand title
+            container.innerHTML += `<h2 class="brand-category-title">${brandTitleContent}</h2>`;
+            
+            // Separate Man Thong and EF
+            const manthongCars = carsOfBrand.filter(car => car.manthongTag);
+            const efCars = carsOfBrand.filter(car => car.efTag);
+
+            // Render Man Thong Cars
+            if (manthongCars.length > 0) {
+                container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
+                renderSubGroup('Man Thong Auto Trading', manthongCars, container);
+            }
+
+            // Render EF Cars
+            if (efCars.length > 0) {
+                container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
+                renderSubGroup('Ever Forward Auto Trading', efCars, container);
+            }
+        });
+        
+        if (carArray.length === 0) {
+                container.innerHTML += '<h2 class="brand-category-title" style="border-bottom:none; color:#dc3545;">No matching cars found...</h2>';
+        }
+    }
+
+    // ----------------------------------------------------
+    // 3. Search Functionality
+    // ----------------------------------------------------
+    document.getElementById('search-input').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredCars = cars.filter(car => 
+            car.model.toLowerCase().includes(searchTerm) || 
+            car.year.toString().includes(searchTerm) ||
+            (car.plateNo && car.plateNo.toLowerCase().includes(searchTerm))
+        );
+        renderCars(filteredCars);
+    });
+    
+    // ----------------------------------------------------
+    // 4. Loan Calculator Logic
+    // ----------------------------------------------------
+    
+    // Loan calculation formula (Simple Flat Rate Method)
+    function calculateMonthlyPayment(principal, years, rate) {
+        // Rate is expected as a decimal (e.g., 0.10 for 10%)
+        const totalInterest = principal * rate * years;
+        const totalLoanAmount = principal + totalInterest;
+        const months = years * 12;
+        const monthlyPayment = totalLoanAmount / months;
+        return monthlyPayment;
+    }
+
+    const otrInput = document.getElementById('otr-price');
+    const downPaymentInput = document.getElementById('down-payment');
+    const loanYearsSelect = document.getElementById('loan-years');
+    const interestRateSelect = document.getElementById('interest-rate');
+    const resultDiv = document.getElementById('monthly-payment-result');
+
+    function updateCalculation() {
+        // 引用您的记忆信息：当车辆不能再借贷时，通过 "365" 银行借款，最多 20000，3年，利率 10%。
+        // 我们将使用选定的利率/年限，但会保留这个信息作为参考。
+
+        const otr = parseFloat(otrInput.value) || 0;
+        const downPayment = parseFloat(downPaymentInput.value) || 0;
+        const years = parseInt(loanYearsSelect.value) || 0;
+        const rate = parseFloat(interestRateSelect.value) || 0; // Read selected rate
+
+        let principal = otr - downPayment;
+
+        if (principal <= 0 || years <= 0 || rate <= 0) {
+            let message = "Fill in OTR, Down Payment, Years, and Rate.";
+            if (principal <= 0) {
+                message = "OTR must be greater than Down Payment.";
+            }
+            resultDiv.innerHTML = `RM 0.00<span>${message}</span>`;
+            return;
+        }
+        
+        const monthlyPayment = calculateMonthlyPayment(principal, years, rate);
+        const ratePercent = (rate * 100).toFixed(1);
+        
+        resultDiv.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${years} Years, ${ratePercent}%)</span>`;
+    }
+    
+    // Event listeners for calculator inputs
+    if (otrInput) otrInput.addEventListener('input', updateCalculation);
+    if (downPaymentInput) downPaymentInput.addEventListener('input', updateCalculation);
+    if (loanYearsSelect) loanYearsSelect.addEventListener('change', updateCalculation);
+    if (interestRateSelect) interestRateSelect.addEventListener('change', updateCalculation);
+
+    // Initialization of calculator toggle button
+    const calcToggleButton = document.getElementById('calc-toggle');
+    const calcPopup = document.getElementById('calculator-popup');
+
+    if (calcToggleButton && calcPopup) {
+        calcToggleButton.addEventListener('click', () => {
+            const isHidden = calcPopup.style.display === 'none' || calcPopup.style.display === '';
+            if (isHidden) {
+                calcPopup.style.display = 'block';
+                calcToggleButton.innerHTML = '&#x2715;'; // Close symbol
+                updateCalculation(); 
+            } else {
+                calcPopup.style.display = 'none';
+                calcToggleButton.innerHTML = '&#x270E;'; // Calculator symbol
+            }
+        });
+    }
+    
+    // ----------------------------------------------------
+    // 5. Stock Management (Removed Add Car Logic)
+    // ----------------------------------------------------
+    
+    // **已移除 Add Car 的表单和逻辑，以及 Add Car 的弹出窗口切换逻辑**
+
+    // ----------------------------------------------------
+    // 6. Update Time Functionality (Removed Local Save status)
+    // ----------------------------------------------------
+    function displayCurrentTime() {
+        const now = new Date();
+        // Format the date/time string: e.g., Oct 17, 2025 17:13:10
+        const dateString = now.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+
+        const timeElement = document.getElementById('update-time');
+        if (timeElement) {
+            // 提示用户这是一个基于代码的静态列表
+            timeElement.innerHTML = `<strong>${dateString} MYT (Code-Based List)</strong>`;
+        }
+    }
+
+    // Initial render on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCars(cars);
+        if (otrInput) {
+            updateCalculation();
+        }
+        displayCurrentTime(); 
+    });
+    </script>
 </body>
 </html>
