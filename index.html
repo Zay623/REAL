@@ -718,12 +718,8 @@ function getCars() {
         { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
         // --- PERODUA ---
         { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "RM465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.3", year: 2008, price: "RM 15,000", monthly: "Cash Only", plateNo: "KCP2713", status: "Available", id: 6, manthongTag: true, efTag: false },
-        // --- TOYOTA ---
-        { model: "TOYOTA VIOS 1.5 GX", year: 2018, price: "RM 61,600", monthly: "RM836.73", plateNo: "VCB4362", status: "Available", id: 16, manthongTag: true, efTag: false },
         // --- Ever Forward Cars ---
-        { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false },
-        { model: "HONDA CITY 1.5 IDSI", year: 2003, price: "RM 14,000", monthly: "", plateNo: "PT15977", status: "Available", id: 60, efTag: true, manthongTag: false }
+        { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false }
     ];
     
     if (storedCars) return JSON.parse(storedCars);
@@ -748,7 +744,44 @@ function generateUniqueId() {
 }
 
 // ----------------------------------------------------
-// 3. Modal Operations
+// NEW: 3. Export Data Functionality
+// ----------------------------------------------------
+function exportCarData() {
+    if (cars.length === 0) {
+        showNotification('No car data to export', 'error');
+        return;
+    }
+
+    // 1. Format data as readable JSON
+    const carDataStr = JSON.stringify(cars, null, 2);
+    
+    // 2. Create filename with current date (e.g., car_data_20251018.json)
+    const today = new Date();
+    const dateStr = today.getFullYear() + 
+                   String(today.getMonth() + 1).padStart(2, '0') + 
+                   String(today.getDate()).padStart(2, '0');
+    const fileName = `car_data_${dateStr}.json`;
+    
+    // 3. Create download link
+    const blob = new Blob([carDataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    
+    downloadLink.href = url;
+    downloadLink.download = fileName;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    
+    // 4. Clean up
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+    
+    // 5. Show success message
+    showNotification(`Car data exported: ${fileName}`, 'success');
+}
+
+// ----------------------------------------------------
+// 4. Modal Operations
 // ----------------------------------------------------
 function openAddCarModal(carModal, carForm) {
     document.getElementById('modal-title').textContent = 'Add New Car';
@@ -788,7 +821,7 @@ function closeAllModals(carModal, deleteModal) {
 }
 
 // ----------------------------------------------------
-// 4. Car Data Management
+// 5. Car Data Management
 // ----------------------------------------------------
 function saveCarData(carModal, deleteModal, carForm) {
     // Get form values
@@ -856,7 +889,7 @@ function deleteCarData(carModal, deleteModal) {
 }
 
 // ----------------------------------------------------
-// 5. Notification System
+// 6. Notification System
 // ----------------------------------------------------
 function showNotification(message, type) {
     const notification = document.createElement('div');
@@ -878,7 +911,7 @@ function showNotification(message, type) {
 }
 
 // ----------------------------------------------------
-// 6. Car List Rendering
+// 7. Car List Rendering
 // ----------------------------------------------------
 function renderCarItems(list, containerElement) {
     list.forEach(car => {
@@ -961,7 +994,7 @@ function renderCarList(carArray) {
 }
 
 // ----------------------------------------------------
-// 7. Loan Calculator
+// 8. Loan Calculator
 // ----------------------------------------------------
 function calculateMonthlyPayment(principal, years, rate) {
     const totalInterest = principal * rate * years;
@@ -989,7 +1022,7 @@ function updateLoanCalculation() {
 }
 
 // ----------------------------------------------------
-// 8. Update Time Display
+// 9. Update Time Display
 // ----------------------------------------------------
 function displayLastUpdatedTime() {
     const now = new Date();
@@ -1002,15 +1035,28 @@ function displayLastUpdatedTime() {
 }
 
 // ----------------------------------------------------
-// 9. Event Listeners Initialization
+// 10. Event Listeners Initialization
 // ----------------------------------------------------
 function initializeEventListeners(carModal, deleteModal, carForm) {
-    // Add car button
+    // 1. Add Export Data button
+    const exportBtn = document.createElement('button');
+    exportBtn.className = 'btn btn-primary';
+    exportBtn.innerHTML = '<span>📤</span> Export Data';
+    exportBtn.addEventListener('click', exportCarData);
+    document.querySelector('.action-buttons').appendChild(exportBtn);
+    // 在 initializeEventListeners 函数中添加
+    const githubImportBtn = document.createElement('button');
+    githubImportBtn.className = 'btn btn-primary';
+    githubImportBtn.innerHTML = '<span>🔄</span> Import from GitHub';
+    githubImportBtn.addEventListener('click', importFromGitHub);
+    document.querySelector('.action-buttons').appendChild(githubImportBtn);
+
+    // 2. Add car button
     document.getElementById('add-car-btn').addEventListener('click', () => {
         openAddCarModal(carModal, carForm);
     });
 
-    // Save and reset buttons
+    // 3. Save and reset buttons
     document.getElementById('save-data-btn').addEventListener('click', () => {
         saveCars(cars);
         showNotification('Data saved successfully', 'success');
@@ -1018,12 +1064,12 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
     
     document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
 
-    // Save car button
+    // 4. Save car button
     document.getElementById('save-car-btn').addEventListener('click', () => {
         saveCarData(carModal, deleteModal, carForm);
     });
 
-    // Delete functionality
+    // 5. Delete functionality
     document.getElementById('delete-car-btn').addEventListener('click', () => {
         deleteModal.classList.add('active');
     });
@@ -1032,7 +1078,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
         deleteCarData(carModal, deleteModal);
     });
 
-    // Close modals
+    // 6. Close modals
     document.getElementById('close-modal').addEventListener('click', () => {
         closeAllModals(carModal, deleteModal);
     });
@@ -1049,7 +1095,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
         closeAllModals(carModal, deleteModal);
     });
 
-    // Edit car functionality (using event delegation)
+    // 7. Edit car functionality (event delegation)
     document.getElementById('car-container').addEventListener('click', (e) => {
         if (e.target.classList.contains('edit-car-btn')) {
             const carId = parseInt(e.target.closest('.car-item').getAttribute('data-car-id'));
@@ -1057,7 +1103,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
         }
     });
 
-    // Search functionality
+    // 8. Search functionality
     document.getElementById('search-input').addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredCars = cars.filter(car => 
@@ -1068,7 +1114,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
         renderCarList(filteredCars);
     });
 
-    // Calculator functionality
+    // 9. Calculator functionality
     const calculatorInputs = [
         document.getElementById('otr-price'),
         document.getElementById('down-payment'),
@@ -1079,7 +1125,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
         input.addEventListener('input', updateLoanCalculation);
     });
 
-    // Calculator toggle
+    // 10. Calculator toggle
     document.getElementById('calc-toggle').addEventListener('click', () => {
         const popup = document.getElementById('calculator-popup');
         const toggleBtn = document.getElementById('calc-toggle');
@@ -1096,7 +1142,7 @@ function initializeEventListeners(carModal, deleteModal, carForm) {
 }
 
 // ----------------------------------------------------
-// 10. Initialization on Page Load
+// 11. Initialization on Page Load
 // ----------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
     // Get DOM elements
@@ -1117,6 +1163,23 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLoanCalculation();
     displayLastUpdatedTime();
 });
+// 从 GitHub 加载 JSON 数据（替换为你的文件地址）
+async function importFromGitHub() {
+    const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/main/car_data_20251018 (1) ";
+    
+    try {
+        const response = await fetch(githubJsonUrl);
+        if (!response.ok) throw new Error("Failed to load data");
+        
+        const importedCars = await response.json();
+        cars = importedCars; // 替换现有车辆数据
+        saveCars(cars); // 保存到本地存储
+        renderCarList(cars); // 重新渲染列表
+        showNotification("Data imported from GitHub successfully", "success");
+    } catch (error) {
+        showNotification("Failed to import data: " + error.message, "error");
+    }
+}
 </script>
 </body>
 </html>
