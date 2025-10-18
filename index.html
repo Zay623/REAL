@@ -4,556 +4,861 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Man Thong Auto Trading Stock List</title>
-<style>
-    /* ---------------------------------- */
-    /* Base Layout and Header */
-    /* ---------------------------------- */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-        color: #333;
-    }
+    <style>
+        /* ---------------------------------- */
+        /* CSS Variables and Base Styles */
+        /* ---------------------------------- */
+        :root {
+            --primary: #007bff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
 
-    .header {
-        background-color: #007bff;
-        color: white;
-        padding: 20px 10px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .header-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            padding-bottom: 60px; /* Space for mobile action bar */
+        }
 
-    .logo {
-        height: 50px;
-        width: auto;
-        border-radius: 8px;
-    }
+        /* ---------------------------------- */
+        /* Header Styles */
+        /* ---------------------------------- */
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 10px;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    .header h1 {
-        margin: 0;
-        font-size: 2em;
-    }
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
 
-    .controls {
-        padding: 15px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        text-align: center;
-    }
+        .logo {
+            height: 40px;
+            width: auto;
+            border-radius: var(--border-radius);
+        }
 
-    #search-input {
-        width: 90%;
-        max-width: 500px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            text-align: center;
+        }
 
-    .main-content {
-        max-width: 1200px;
-        margin: 20px auto;
-        padding: 0 15px;
-    }
+        /* ---------------------------------- */
+        /* Controls Section */
+        /* ---------------------------------- */
+        .controls {
+            padding: 15px 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+        }
 
-    /* ---------------------------------- */
-    /* Car List and Categories */
-    /* ---------------------------------- */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 15px;
+        }
 
-    .brand-category-title {
-        background-color: #e9ecef;
-        color: #007bff;
-        padding: 10px 15px;
-        margin-top: 30px;
-        margin-bottom: 10px;
-        font-size: 1.8em;
-        border-bottom: 3px solid #007bff;
-        border-radius: 5px 5px 0 0;
-    }
-    
-    .dealership-separator {
-        color: #28a745;
-        text-align: center;
-        padding: 10px;
-        margin-top: 20px;
-        margin-bottom: 15px;
-        font-size: 1.2em;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid #ddd;
-        background-color: #f8f9fa;
-    }
+        #search-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: var(--border-radius);
+            font-size: 16px; /* Prevents zoom on iOS */
+        }
 
-    .category-title {
-        font-size: 1.4em;
-        color: #6c757d;
-        border-left: 5px solid #ffc107;
-        padding-left: 10px;
-        margin-top: 15px;
-        margin-bottom: 10px;
-    }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
 
-    .car-list {
-        list-style: none;
-        padding: 0;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-    }
+        /* ---------------------------------- */
+        /* Main Content */
+        /* ---------------------------------- */
+        .main-content {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
 
-    .car-item {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        position: relative;
-        overflow: hidden;
-        transition: transform 0.2s;
-        border: 1px solid #ccc; /* Standard border for available cars */
-    }
+        /* ---------------------------------- */
+        /* Car List and Categories */
+        /* ---------------------------------- */
+        .brand-category-title {
+            background-color: #e9ecef;
+            color: var(--primary);
+            padding: 12px 15px;
+            margin: 25px 0 15px;
+            font-size: 1.5rem;
+            border-bottom: 3px solid var(--primary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+        
+        .dealership-separator {
+            color: var(--success);
+            text-align: center;
+            padding: 10px;
+            margin: 20px 0 15px;
+            font-size: 1.1rem;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            background-color: #f8f9fa;
+        }
 
-    .car-item:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    }
+        .category-title {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            border-left: 5px solid var(--warning);
+            padding-left: 10px;
+            margin: 15px 0 10px;
+        }
 
-    .car-title {
-        font-size: 1.4em;
-        color: #007bff;
-        margin-top: 0;
-        border-bottom: 2px solid #f4f4f4;
-        padding-bottom: 5px;
-        margin-bottom: 10px;
-        padding-left: 50px; /* Space for the tag */
-        box-sizing: border-box; 
-    }
+        .car-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-    .car-price {
-        font-size: 1.2em;
-        color: #dc3545;
-        font-weight: bold;
-        margin: 10px 0 5px 0;
-    }
+        @media (max-width: 768px) {
+            .car-list {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .car-monthly {
-        font-size: 1.1em;
-        color: #28a745;
-        margin: 5px 0 15px 0;
-    }
+        .car-item {
+            background-color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid #ccc;
+        }
 
-    .car-year, .car-plateno {
-        color: #6c757d;
-        margin: 3px 0;
-    }
+        .car-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
 
-    .car-status {
-        font-weight: bold;
-        color: #28a745; /* Available status color */
-    }
+        .car-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-top: 0;
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+            padding-left: 50px;
+        }
 
-    /* ---------------------------------- */
-    /* Tags */
-    /* ---------------------------------- */
-    .tag-top-left {
-        position: absolute;
-        top: 10px;
-        left: 10px; 
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-weight: bold;
-        font-size: 0.8em;
-        z-index: 10;
-    }
+        .car-price {
+            font-size: 1.2rem;
+            color: var(--danger);
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
 
-    .manthong-tag {
-        background-color: #ffc107; /* Man Thong - Yellow */
-        color: #333;
-    }
+        .car-monthly {
+            font-size: 1.1rem;
+            color: var(--success);
+            margin: 5px 0 15px;
+        }
 
-    .ef-tag {
-        background-color: #17a2b8; /* EF - Cyan */
-        color: white;
-    }
+        .car-year, .car-plateno {
+            color: var(--secondary);
+            margin: 3px 0;
+        }
 
-    /* ---------------------------------- */
-    /* WhatsApp Button */
-    /* ---------------------------------- */
-    .whatsapp-btn {
-        display: block;
-        background-color: #25d366;
-        color: white;
-        text-align: center;
-        padding: 10px;
-        border-radius: 5px;
-        text-decoration: none;
-        font-weight: bold;
-        margin-top: 15px;
-        transition: background-color 0.2s;
-    }
+        .car-status {
+            font-weight: bold;
+            color: var(--success);
+        }
 
-    .whatsapp-btn:hover {
-        background-color: #128c7e;
-    }
+        /* ---------------------------------- */
+        /* Tags */
+        /* ---------------------------------- */
+        .tag-top-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
 
-    /* ---------------------------------- */
-    /* Footer */
-    /* ---------------------------------- */
-    .footer {
-        text-align: center;
-        padding: 15px;
-        background-color: #343a40;
-        color: #ccc;
-        margin-top: 40px;
-        font-size: 0.9em;
-    }
+        .manthong-tag {
+            background-color: var(--warning);
+            color: #333;
+        }
 
-    /* ---------------------------------- */
-    /* Calculator Pop-up */
-    /* ---------------------------------- */
-    .calculator-icon {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #ffc107;
-        color: #333;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 50px;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        z-index: 1000;
-    }
+        .ef-tag {
+            background-color: #17a2b8;
+            color: white;
+        }
 
-    .calculator-popup {
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        width: 300px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        z-index: 999;
-        display: none; /* Hidden by default */
-    }
+        /* ---------------------------------- */
+        /* WhatsApp Button */
+        /* ---------------------------------- */
+        .whatsapp-btn {
+            display: block;
+            background-color: #25d366;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: var(--transition);
+        }
 
-    .calculator-popup h4 {
-        margin-top: 0;
-        color: #007bff;
-        border-bottom: 2px solid #f4f4f4;
-        padding-bottom: 10px;
-        margin-bottom: 15px;
-    }
+        .whatsapp-btn:hover {
+            background-color: #128c7e;
+        }
 
-    .calc-group {
-        margin-bottom: 15px;
-    }
+        /* ---------------------------------- */
+        /* Footer */
+        /* ---------------------------------- */
+        .footer {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--dark);
+            color: #ccc;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
 
-    .calc-group label {
-        display: block;
-        font-size: 0.9em;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
+        /* ---------------------------------- */
+        /* Calculator Pop-up */
+        /* ---------------------------------- */
+        .calculator-icon {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--warning);
+            color: #333;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: var(--transition);
+        }
 
-    .calc-group input[type="number"], .calc-group select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 16px;
-    }
+        @media (max-width: 768px) {
+            .calculator-icon {
+                bottom: 70px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                font-size: 20px;
+            }
+        }
 
-    #monthly-payment-result {
-        text-align: center;
-        margin-top: 20px;
-        padding: 15px;
-        background-color: #d4edda;
-        color: #155724;
-        border-radius: 5px;
-        font-size: 1.8em;
-        font-weight: bold;
-    }
+        .calculator-popup {
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            width: 320px;
+            max-width: 90vw;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 999;
+            display: none;
+        }
 
-    #monthly-payment-result span {
-        display: block;
-        font-size: 0.6em;
-        font-weight: normal;
-        margin-top: 5px;
-        color: #155724;
-    }
-    /* ---------------------------------- */
-/* Add/Edit Car Modal */
-/* ---------------------------------- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    padding: 20px;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
-}
+        @media (max-width: 768px) {
+            .calculator-popup {
+                bottom: 130px;
+                right: 10px;
+                width: calc(100vw - 20px);
+            }
+        }
 
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
+        .calculator-popup h4 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 2px solid #f4f4f4;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
 
-.modal {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    transform: scale(0.9);
-    transition: all 0.3s;
-}
+        .calc-group {
+            margin-bottom: 15px;
+        }
 
-.modal-overlay.active .modal {
-    transform: scale(1);
-}
+        .calc-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-.modal-header {
-    padding: 20px;
-    border-bottom: 1px solid #e9ecef;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 12px 12px 0 0;
-}
+        .calc-group input[type="number"], .calc-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
 
-.modal-header h3 {
-    margin: 0;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        #monthly-payment-result {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: var(--border-radius);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-.close-modal {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: var(--secondary);
-    transition: all 0.3s;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        #monthly-payment-result span {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: normal;
+            margin-top: 5px;
+            color: #155724;
+        }
 
-.close-modal:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    color: var(--dark);
-}
+        /* ---------------------------------- */
+        /* Add/Edit Car Modal */
+        /* ---------------------------------- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
 
-.modal-body {
-    padding: 20px;
-}
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
 
-.form-group {
-    margin-bottom: 20px;
-}
+        .modal {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: var(--transition);
+        }
 
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: var(--dark);
-}
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
 
-.form-control {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    box-sizing: border-box;
-    transition: all 0.3s;
-}
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px 12px 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
 
-.form-control:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
+        .modal-header h3 {
+            margin: 0;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.form-row {
-    display: flex;
-    gap: 15px;
-}
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary);
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.form-row .form-group {
-    flex: 1;
-}
+        .close-modal:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            color: var(--dark);
+        }
 
-.checkbox-group {
-    display: flex;
-    gap: 20px;
-    margin-top: 10px;
-}
+        .modal-body {
+            padding: 20px;
+        }
 
-.checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.checkbox-item input {
-    width: 18px;
-    height: 18px;
-}
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
 
-.modal-footer {
-    padding: 20px;
-    border-top: 1px solid #e9ecef;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    background-color: #f8f9fa;
-    border-radius: 0 0 12px 12px;
-}
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
 
-/* Delete confirmation */
-.delete-confirm {
-    text-align: center;
-    padding: 20px;
-}
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
 
-.delete-confirm p {
-    margin-bottom: 20px;
-    font-size: 1.1em;
-}
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
 
-/* Action buttons in controls */
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
+        @media (max-width: 576px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
 
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
+        .form-row .form-group {
+            flex: 1;
+        }
 
-.btn-primary {
-    background-color: var(--primary);
-    color: white;
-}
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
 
-.btn-primary:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
-}
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-.btn-success {
-    background-color: var(--success);
-    color: white;
-}
+        .checkbox-item input {
+            width: 18px;
+            height: 18px;
+        }
 
-.btn-success:hover {
-    background-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
-}
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            background-color: #f8f9fa;
+            border-radius: 0 0 12px 12px;
+            flex-wrap: wrap;
+        }
 
-.btn-danger {
-    background-color: var(--danger);
-    color: white;
-}
+        @media (max-width: 576px) {
+            .modal-footer {
+                justify-content: center;
+            }
+        }
 
-.btn-danger:hover {
-    background-color: #c82333;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-}
+        /* Delete confirmation */
+        .delete-confirm {
+            text-align: center;
+            padding: 20px;
+        }
 
-/* Notification styles */
-@keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
+        .delete-confirm p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
 
-@keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
-}
-:root {
-    --primary: #007bff;
-    --secondary: #6c757d;
-    --success: #28a745;
-    --warning: #ffc107;
-    --danger: #dc3545;
-    --light: #f8f9fa;
-    --dark: #343a40;
-}
-</style>
+        /* ---------------------------------- */
+        /* Buttons */
+        /* ---------------------------------- */
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            text-align: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                padding: 12px 16px;
+                font-size: 14px;
+                width: 100%;
+            }
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: #333;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        /* ---------------------------------- */
+        /* Mobile Action Bar */
+        /* ---------------------------------- */
+        .mobile-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px 15px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-action-bar {
+                display: flex;
+                justify-content: space-around;
+            }
+            
+            /* Hide desktop action buttons on mobile */
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        .mobile-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            font-size: 12px;
+            color: var(--secondary);
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .mobile-action-btn.active {
+            color: var(--primary);
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .mobile-action-btn i {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        /* ---------------------------------- */
+        /* Notification styles */
+        /* ---------------------------------- */
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 600;
+            z-index: 3000;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+            max-width: 90vw;
+        }
+
+        @media (max-width: 768px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        .notification.success {
+            background-color: var(--success);
+        }
+
+        .notification.error {
+            background-color: var(--danger);
+        }
+
+        /* ---------------------------------- */
+        /* Edit Button in Car Items */
+        /* ---------------------------------- */
+        .edit-car-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 20;
+            transition: var(--transition);
+        }
+
+        .edit-car-btn:hover {
+            background: #5a6268;
+        }
+
+        /* ---------------------------------- */
+        /* Loading Spinner */
+        /* ---------------------------------- */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---------------------------------- */
+        /* Empty State */
+        /* ---------------------------------- */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--secondary);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        /* ---------------------------------- */
+        /* Utility Classes */
+        /* ---------------------------------- */
+        .text-center {
+            text-align: center;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
-
-    <div class="header">
+    <!-- Header Section -->
+    <header class="header">
         <div class="header-content">
             <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
-            
             <h1>Stock List</h1>
+        </div>
+    </header>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search by model, year, or plate number...">
+        </div>
+        
+        <!-- Desktop Action Buttons -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="add-car-btn">
+                <span>➕</span> Add Car
+            </button>
+            <button class="btn btn-success" id="save-data-btn">
+                <span>💾</span> Save Data
+            </button>
+            <button class="btn btn-warning" id="export-data-btn">
+                <span>📤</span> Export Data
+            </button>
+            <button class="btn btn-primary" id="import-github-btn">
+                <span>🔄</span> Import GitHub
+            </button>
+            <button class="btn btn-danger" id="reset-data-btn">
+                <span>🔄</span> Reset Data
+            </button>
         </div>
     </div>
 
-<div class="controls">
-    <input type="text" id="search-input" placeholder="Enter keyword, model, or year...">
-    <div class="action-buttons">
-        <button class="btn btn-primary" id="add-car-btn">
-            <span>➕</span> Add Car
-        </button>
-        <button class="btn btn-success" id="save-data-btn">
-            <span>💾</span> Save Data
-        </button>
-        <button class="btn btn-danger" id="reset-data-btn">
-            <span>🔄</span> Reset Data
-        </button>
-    </div>
-</div>
-
-    <div class="main-content" id="car-container">
-        <p style="text-align: center; margin-top: 50px;">Loading vehicle data...</p>
-    </div>
+    <!-- Main Content -->
+    <main class="main-content" id="car-container">
+        <div class="empty-state">
+            <i>🚗</i>
+            <h3>Loading vehicle data...</h3>
+            <p>Please wait while we load the car inventory</p>
+        </div>
+    </main>
     
+    <!-- Mobile Action Bar -->
+    <div class="mobile-action-bar">
+        <button class="mobile-action-btn" id="mobile-add-btn">
+            <span>➕</span>
+            <span>Add</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-search-btn">
+            <span>🔍</span>
+            <span>Search</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-save-btn">
+            <span>💾</span>
+            <span>Save</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-more-btn">
+            <span>⋯</span>
+            <span>More</span>
+        </button>
+    </div>
+
+    <!-- Calculator -->
     <div class="calculator-icon" id="calc-toggle">
         &#x270E; 
     </div>
@@ -602,584 +907,645 @@
             <span>Estimated Monthly Payment</span>
         </div>
     </div>
-    <!-- Add/Edit Car Modal -->
-<div class="modal-overlay" id="car-modal">
-    <div class="modal">
-        <div class="modal-header">
-            <h3><span id="modal-icon">🚗</span> <span id="modal-title">Add New Car</span></h3>
-            <button class="close-modal" id="close-modal">&times;</button>
-        </div>
-        <div class="modal-body">
-            <form id="car-form">
-                <input type="hidden" id="car-id">
-                
-                <div class="form-group">
-                    <label for="car-model">Car Model</label>
-                    <input type="text" id="car-model" class="form-control" placeholder="e.g., PROTON X70 1.8 PREMIUM" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="car-year">Year</label>
-                        <input type="number" id="car-year" class="form-control" placeholder="e.g., 2020" min="1990" max="2030" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="car-price">Price (RM)</label>
-                        <input type="text" id="car-price" class="form-control" placeholder="e.g., 64,600" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="car-monthly">Monthly Estimate (RM)</label>
-                        <input type="text" id="car-monthly" class="form-control" placeholder="e.g., 802.71">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="car-plate">Plate Number</label>
-                        <input type="text" id="car-plate" class="form-control" placeholder="e.g., VDB7826" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="car-status">Status</label>
-                    <select id="car-status" class="form-control">
-                        <option value="Available">Available</option>
-                        <option value="Sold">Sold</option>
-                        <option value="Reserved">Reserved</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label>Dealership</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="manthong-tag" value="true">
-                            <label for="manthong-tag">Man Thong</label>
-                        </div>
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="ef-tag" value="true">
-                            <label for="ef-tag">Ever Forward</label>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" id="delete-car-btn" style="display: none;">Delete Car</button>
-            <button class="btn" id="cancel-btn">Cancel</button>
-            <button class="btn btn-primary" id="save-car-btn">Save Car</button>
-        </div>
-    </div>
-</div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal-overlay" id="delete-modal">
-    <div class="modal">
-        <div class="modal-header">
-            <h3>⚠️ Confirm Deletion</h3>
-            <button class="close-modal" id="close-delete-modal">&times;</button>
-        </div>
-        <div class="modal-body delete-confirm">
-            <p>Are you sure you want to delete this car? This action cannot be undone.</p>
-            <div>
-                <button class="btn" id="cancel-delete-btn">Cancel</button>
-                <button class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+    <!-- Add/Edit Car Modal -->
+    <div class="modal-overlay" id="car-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><span id="modal-icon">🚗</span> <span id="modal-title">Add New Car</span></h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="car-form">
+                    <input type="hidden" id="car-id">
+                    
+                    <div class="form-group">
+                        <label for="car-model">Car Model *</label>
+                        <input type="text" id="car-model" class="form-control" placeholder="e.g., PROTON X70 1.8 PREMIUM" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="car-year">Year *</label>
+                            <input type="number" id="car-year" class="form-control" placeholder="e.g., 2020" min="1990" max="2030" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="car-price">Price (RM) *</label>
+                            <input type="text" id="car-price" class="form-control" placeholder="e.g., 64,600" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="car-monthly">Monthly Estimate (RM)</label>
+                            <input type="text" id="car-monthly" class="form-control" placeholder="e.g., 802.71">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="car-plate">Plate Number *</label>
+                            <input type="text" id="car-plate" class="form-control" placeholder="e.g., VDB7826" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="car-status">Status</label>
+                        <select id="car-status" class="form-control">
+                            <option value="Available">Available</option>
+                            <option value="Sold">Sold</option>
+                            <option value="Reserved">Reserved</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Dealership</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="manthong-tag" value="true">
+                                <label for="manthong-tag">Man Thong</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="ef-tag" value="true">
+                                <label for="ef-tag">Ever Forward</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="delete-car-btn" style="display: none;">Delete Car</button>
+                <button class="btn btn-secondary" id="cancel-btn">Cancel</button>
+                <button class="btn btn-primary" id="save-car-btn">Save Car</button>
             </div>
         </div>
     </div>
-</div>
 
-    <div class="footer">
-        <p id="last-updated">List Updated: <span id="update-time">Loading...</span></p>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>⚠️ Confirm Deletion</h3>
+                <button class="close-modal" id="close-delete-modal">&times;</button>
+            </div>
+            <div class="modal-body delete-confirm">
+                <p>Are you sure you want to delete this car? This action cannot be undone.</p>
+                <div>
+                    <button class="btn btn-secondary" id="cancel-delete-btn">Cancel</button>
+                    <button class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-</body>
-<script>
-// ----------------------------------------------------
-// 1. Global Variables Initialization
-// ----------------------------------------------------
-let cars = [];
-let currentCarId = null;
-const customBrandOrder = [
-    "PROTON", "PERODUA", "TOYOTA", "HONDA", "NISSAN",
-    "LEXUS", "VOLKSWAGEN", "HYUNDAI", "MERCEDES BENZ", "NAZA"
-];
+    <!-- Footer -->
+    <footer class="footer">
+        <p id="last-updated">List Updated: <span id="update-time">Loading...</span></p>
+    </footer>
 
-// ----------------------------------------------------
-// 2. Local Storage Data Management
-// ----------------------------------------------------
-function getCars() {
-    const storedCars = localStorage.getItem('manthongCars');
-    const defaultCars = [
-        // --- PROTON ---
-        { model: "PROTON X70 1.8 PREMIUM", year: 2019, price: "RM 64,600", monthly: "RM802.71", plateNo: "VDB7826", status: "Available", id: 1, manthongTag: true, efTag: false },
-        { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
-        // --- PERODUA ---
-        { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "RM465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
-        // --- Ever Forward Cars ---
-        { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false }
-    ];
-    
-    if (storedCars) return JSON.parse(storedCars);
-    localStorage.setItem('manthongCars', JSON.stringify(defaultCars));
-    return defaultCars;
-}
+    <script>
+        // ----------------------------------------------------
+        // 1. Global Variables Initialization
+        // ----------------------------------------------------
+        let cars = [];
+        let currentCarId = null;
+        const customBrandOrder = [
+            "PROTON", "PERODUA", "TOYOTA", "HONDA", "NISSAN",
+            "LEXUS", "VOLKSWAGEN", "HYUNDAI", "MERCEDES BENZ", "NAZA"
+        ];
 
-function saveCars(carArray) {
-    localStorage.setItem('manthongCars', JSON.stringify(carArray));
-    displayLastUpdatedTime();
-}
-
-function resetToDefaultData() {
-    if (confirm("Are you sure you want to reset all data to default? This will delete any cars you've added or modified.")) {
-        localStorage.removeItem('manthongCars');
-        location.reload();
-    }
-}
-
-function generateUniqueId() {
-    return Date.now();
-}
-
-// ----------------------------------------------------
-// NEW: 3. Export Data Functionality
-// ----------------------------------------------------
-function exportCarData() {
-    if (cars.length === 0) {
-        showNotification('No car data to export', 'error');
-        return;
-    }
-
-    // 1. Format data as readable JSON
-    const carDataStr = JSON.stringify(cars, null, 2);
-    
-    // 2. Create filename with current date (e.g., car_data_20251018.json)
-    const today = new Date();
-    const dateStr = today.getFullYear() + 
-                   String(today.getMonth() + 1).padStart(2, '0') + 
-                   String(today.getDate()).padStart(2, '0');
-    const fileName = `car_data_${dateStr}.json`;
-    
-    // 3. Create download link
-    const blob = new Blob([carDataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement('a');
-    
-    downloadLink.href = url;
-    downloadLink.download = fileName;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    
-    // 4. Clean up
-    document.body.removeChild(downloadLink);
-    URL.revokeObjectURL(url);
-    
-    // 5. Show success message
-    showNotification(`Car data exported: ${fileName}`, 'success');
-}
-
-// ----------------------------------------------------
-// 4. Modal Operations
-// ----------------------------------------------------
-function openAddCarModal(carModal, carForm) {
-    document.getElementById('modal-title').textContent = 'Add New Car';
-    document.getElementById('modal-icon').textContent = '🚗';
-    document.getElementById('delete-car-btn').style.display = 'none';
-    carForm.reset();
-    currentCarId = null;
-    carModal.classList.add('active');
-}
-
-function openEditCarModal(carModal, carId) {
-    const car = cars.find(c => c.id === carId);
-    if (!car) return;
-
-    document.getElementById('modal-title').textContent = 'Edit Car';
-    document.getElementById('modal-icon').textContent = '✏️';
-    document.getElementById('delete-car-btn').style.display = 'block';
-
-    // Populate form with car data
-    document.getElementById('car-id').value = car.id;
-    document.getElementById('car-model').value = car.model;
-    document.getElementById('car-year').value = car.year;
-    document.getElementById('car-price').value = car.price.replace('RM ', '');
-    document.getElementById('car-monthly').value = car.monthly.replace('RM ', '') || '';
-    document.getElementById('car-plate').value = car.plateNo;
-    document.getElementById('car-status').value = car.status;
-    document.getElementById('manthong-tag').checked = car.manthongTag;
-    document.getElementById('ef-tag').checked = car.efTag;
-
-    currentCarId = carId;
-    carModal.classList.add('active');
-}
-
-function closeAllModals(carModal, deleteModal) {
-    carModal.classList.remove('active');
-    deleteModal.classList.remove('active');
-}
-
-// ----------------------------------------------------
-// 5. Car Data Management
-// ----------------------------------------------------
-function saveCarData(carModal, deleteModal, carForm) {
-    // Get form values
-    const model = document.getElementById('car-model').value.trim();
-    const year = parseInt(document.getElementById('car-year').value);
-    const price = document.getElementById('car-price').value.trim();
-    const monthly = document.getElementById('car-monthly').value.trim();
-    const plateNo = document.getElementById('car-plate').value.trim();
-    const status = document.getElementById('car-status').value;
-    const manthongTag = document.getElementById('manthong-tag').checked;
-    const efTag = document.getElementById('ef-tag').checked;
-
-    // Validate required fields
-    if (!model || !year || !price || !plateNo) {
-        showNotification('Please fill in all required fields (Model, Year, Price, Plate Number)', 'error');
-        return;
-    }
-
-    // Format car data
-    const carData = {
-        model,
-        year,
-        price: price.includes('RM') ? price : `RM ${price}`,
-        monthly: monthly ? (monthly.includes('RM') ? monthly : `RM ${monthly}`) : '',
-        plateNo,
-        status,
-        manthongTag,
-        efTag
-    };
-
-    // Update existing car or add new car
-    if (currentCarId) {
-        const index = cars.findIndex(c => c.id === currentCarId);
-        if (index !== -1) {
-            carData.id = currentCarId;
-            cars[index] = carData;
-            showNotification('Car updated successfully', 'success');
-        }
-    } else {
-        carData.id = generateUniqueId();
-        cars.push(carData);
-        showNotification('Car added successfully', 'success');
-    }
-
-    saveCars(cars);
-    renderCarList(cars);
-    closeAllModals(carModal, deleteModal);
-}
-
-function deleteCarData(carModal, deleteModal) {
-    if (!currentCarId) return;
-    
-    const confirmation = confirm("Are you sure you want to delete this car? This action cannot be undone.");
-    if (!confirmation) return;
-
-    const index = cars.findIndex(c => c.id === currentCarId);
-    if (index !== -1) {
-        cars.splice(index, 1);
-        saveCars(cars);
-        renderCarList(cars);
-        showNotification('Car deleted successfully', 'success');
-    }
-    
-    closeAllModals(carModal, deleteModal);
-}
-
-// ----------------------------------------------------
-// 6. Notification System
-// ----------------------------------------------------
-function showNotification(message, type) {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px; padding: 12px 20px;
-        border-radius: 6px; color: white; font-weight: 600; z-index: 3000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideIn 0.3s ease-out;
-    `;
-    
-    notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
-    document.body.appendChild(notification);
-
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-in';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// ----------------------------------------------------
-// 7. Car List Rendering
-// ----------------------------------------------------
-function renderCarItems(list, containerElement) {
-    list.forEach(car => {
-        const whatsappLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo}%2E`;
-        
-        // Generate tags HTML
-        let tagHtml = '';
-        if (car.efTag) tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
-        if (car.manthongTag && !car.efTag) tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
-
-        const carItem = document.createElement('li');
-        carItem.className = 'car-item';
-        carItem.setAttribute('data-car-id', car.id);
-        carItem.innerHTML = `
-            ${tagHtml}
-            <button class="edit-car-btn" style="position:absolute; top:10px; right:10px; background:#6c757d; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer; font-size:12px;">✏️ Edit</button>
-            <h3 class="car-title">${car.model}</h3>
-            <p class="car-year">Year: ${car.year}</p>
-            <p class="car-plateno">Plate No: <strong>${car.plateNo}</strong></p>
-            <p class="car-price">Price: ${car.price}</p>
-            <p class="car-monthly">Monthly Estimate: <strong>${car.monthly || 'N/A'}</strong></p>
-            <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
-            <a href="${whatsappLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW</a>
-        `;
-        containerElement.appendChild(carItem);
-    });
-}
-
-function renderCarList(carArray) {
-    const container = document.getElementById('car-container');
-    container.innerHTML = '';
-
-    // Group cars by brand
-    const groupedByBrand = carArray.reduce((acc, car) => {
-        let brand = car.model.split(' ')[0].toUpperCase();
-        if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
-        if (!acc[brand]) acc[brand] = [];
-        acc[brand].push(car);
-        return acc;
-    }, {});
-
-    // Sort brands using custom order
-    const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
-        .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
-
-    // Render each brand group
-    sortedBrands.forEach(brand => {
-        const brandCars = groupedByBrand[brand];
-        if (brandCars.length === 0) return;
-
-        container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
-
-        // Separate by dealership
-        const manthongCars = brandCars.filter(car => car.manthongTag);
-        const efCars = brandCars.filter(car => car.efTag);
-
-        // Render Man Thong cars
-        if (manthongCars.length > 0) {
-            container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
-            const mtList = document.createElement('ul');
-            mtList.className = 'car-list';
-            renderCarItems(manthongCars.sort((a, b) => b.year - a.year), mtList);
-            container.appendChild(mtList);
+        // ----------------------------------------------------
+        // 2. Local Storage Data Management
+        // ----------------------------------------------------
+        function getCars() {
+            const storedCars = localStorage.getItem('manthongCars');
+            const defaultCars = [
+                // --- PROTON ---
+                { model: "PROTON X70 1.8 PREMIUM", year: 2019, price: "RM 64,600", monthly: "RM802.71", plateNo: "VDB7826", status: "Available", id: 1, manthongTag: true, efTag: false },
+                { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
+                // --- PERODUA ---
+                { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "RM465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
+                // --- Ever Forward Cars ---
+                { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false }
+            ];
+            
+            if (storedCars) return JSON.parse(storedCars);
+            localStorage.setItem('manthongCars', JSON.stringify(defaultCars));
+            return defaultCars;
         }
 
-        // Render Ever Forward cars
-        if (efCars.length > 0) {
-            container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
-            const efList = document.createElement('ul');
-            efList.className = 'car-list';
-            renderCarItems(efCars.sort((a, b) => b.year - a.year), efList);
-            container.appendChild(efList);
+        function saveCars(carArray) {
+            localStorage.setItem('manthongCars', JSON.stringify(carArray));
+            displayLastUpdatedTime();
         }
-    });
 
-    // Show message if no cars found
-    if (carArray.length === 0) {
-        container.innerHTML = '<h2 class="brand-category-title" style="border-bottom:none; color:#dc3545;">No matching cars found</h2>';
-    }
-}
-
-// ----------------------------------------------------
-// 8. Loan Calculator
-// ----------------------------------------------------
-function calculateMonthlyPayment(principal, years, rate) {
-    const totalInterest = principal * rate * years;
-    const totalLoanAmount = principal + totalInterest;
-    return totalLoanAmount / (years * 12);
-}
-
-function updateLoanCalculation() {
-    const otrPrice = parseFloat(document.getElementById('otr-price').value) || 0;
-    const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
-    const loanYears = parseInt(document.getElementById('loan-years').value) || 0;
-    const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
-    const resultElement = document.getElementById('monthly-payment-result');
-
-    // Validate inputs
-    if (otrPrice <= downPayment || loanYears <= 0 || interestRate <= 0) {
-        resultElement.innerHTML = `RM 0.00<span>Please ensure OTR > Down Payment and all values are positive</span>`;
-        return;
-    }
-
-    // Calculate and display result
-    const principal = otrPrice - downPayment;
-    const monthlyPayment = calculateMonthlyPayment(principal, loanYears, interestRate);
-    resultElement.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
-}
-
-// ----------------------------------------------------
-// 9. Update Time Display
-// ----------------------------------------------------
-function displayLastUpdatedTime() {
-    const now = new Date();
-    const dateString = now.toLocaleDateString('en-US', {
-        year: 'numeric', month: 'short', day: 'numeric',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-        hour12: false, timeZone: 'Asia/Kuala_Lumpur'
-    });
-    document.getElementById('update-time').textContent = dateString + ' MYT';
-}
-
-// ----------------------------------------------------
-// 10. Event Listeners Initialization
-// ----------------------------------------------------
-function initializeEventListeners(carModal, deleteModal, carForm) {
-    // 1. Add Export Data button
-    const exportBtn = document.createElement('button');
-    exportBtn.className = 'btn btn-primary';
-    exportBtn.innerHTML = '<span>📤</span> Export Data';
-    exportBtn.addEventListener('click', exportCarData);
-    document.querySelector('.action-buttons').appendChild(exportBtn);
-    // 在 initializeEventListeners 函数中添加
-    const githubImportBtn = document.createElement('button');
-    githubImportBtn.className = 'btn btn-primary';
-    githubImportBtn.innerHTML = '<span>🔄</span> Import from GitHub';
-    githubImportBtn.addEventListener('click', importFromGitHub);
-    document.querySelector('.action-buttons').appendChild(githubImportBtn);
-
-    // 2. Add car button
-    document.getElementById('add-car-btn').addEventListener('click', () => {
-        openAddCarModal(carModal, carForm);
-    });
-
-    // 3. Save and reset buttons
-    document.getElementById('save-data-btn').addEventListener('click', () => {
-        saveCars(cars);
-        showNotification('Data saved successfully', 'success');
-    });
-    
-    document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
-
-    // 4. Save car button
-    document.getElementById('save-car-btn').addEventListener('click', () => {
-        saveCarData(carModal, deleteModal, carForm);
-    });
-
-    // 5. Delete functionality
-    document.getElementById('delete-car-btn').addEventListener('click', () => {
-        deleteModal.classList.add('active');
-    });
-    
-    document.getElementById('confirm-delete-btn').addEventListener('click', () => {
-        deleteCarData(carModal, deleteModal);
-    });
-
-    // 6. Close modals
-    document.getElementById('close-modal').addEventListener('click', () => {
-        closeAllModals(carModal, deleteModal);
-    });
-    
-    document.getElementById('close-delete-modal').addEventListener('click', () => {
-        closeAllModals(carModal, deleteModal);
-    });
-    
-    document.getElementById('cancel-btn').addEventListener('click', () => {
-        closeAllModals(carModal, deleteModal);
-    });
-    
-    document.getElementById('cancel-delete-btn').addEventListener('click', () => {
-        closeAllModals(carModal, deleteModal);
-    });
-
-    // 7. Edit car functionality (event delegation)
-    document.getElementById('car-container').addEventListener('click', (e) => {
-        if (e.target.classList.contains('edit-car-btn')) {
-            const carId = parseInt(e.target.closest('.car-item').getAttribute('data-car-id'));
-            openEditCarModal(carModal, carId);
+        function resetToDefaultData() {
+            if (confirm("Are you sure you want to reset all data to default? This will delete any cars you've added or modified.")) {
+                localStorage.removeItem('manthongCars');
+                location.reload();
+            }
         }
-    });
 
-    // 8. Search functionality
-    document.getElementById('search-input').addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const filteredCars = cars.filter(car => 
-            car.model.toLowerCase().includes(searchTerm) ||
-            car.year.toString().includes(searchTerm) ||
-            car.plateNo.toLowerCase().includes(searchTerm)
-        );
-        renderCarList(filteredCars);
-    });
+        function generateUniqueId() {
+            return Date.now();
+        }
 
-    // 9. Calculator functionality
-    const calculatorInputs = [
-        document.getElementById('otr-price'),
-        document.getElementById('down-payment'),
-        document.getElementById('loan-years'),
-        document.getElementById('interest-rate')
-    ];
-    calculatorInputs.forEach(input => {
-        input.addEventListener('input', updateLoanCalculation);
-    });
+        // ----------------------------------------------------
+        // 3. Export Data Functionality
+        // ----------------------------------------------------
+        function exportCarData() {
+            if (cars.length === 0) {
+                showNotification('No car data to export', 'error');
+                return;
+            }
 
-    // 10. Calculator toggle
-    document.getElementById('calc-toggle').addEventListener('click', () => {
-        const popup = document.getElementById('calculator-popup');
-        const toggleBtn = document.getElementById('calc-toggle');
-        
-        if (popup.style.display === 'block') {
-            popup.style.display = 'none';
-            toggleBtn.innerHTML = '&#x270E;';
-        } else {
-            popup.style.display = 'block';
-            toggleBtn.innerHTML = '&#x2715;';
+            // Format data as readable JSON
+            const carDataStr = JSON.stringify(cars, null, 2);
+            
+            // Create filename with current date
+            const today = new Date();
+            const dateStr = today.getFullYear() + 
+                           String(today.getMonth() + 1).padStart(2, '0') + 
+                           String(today.getDate()).padStart(2, '0');
+            const fileName = `car_data_${dateStr}.json`;
+            
+            // Create download link
+            const blob = new Blob([carDataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            
+            downloadLink.href = url;
+            downloadLink.download = fileName;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            // Clean up
+            document.body.removeChild(downloadLink);
+            URL.revokeObjectURL(url);
+            
+            // Show success message
+            showNotification(`Car data exported: ${fileName}`, 'success');
+        }
+
+        // ----------------------------------------------------
+        // 4. Import from GitHub
+        // ----------------------------------------------------
+        async function importFromGitHub() {
+            const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
+            
+            try {
+                showNotification('Importing data from GitHub...', 'success');
+                
+                const response = await fetch(githubJsonUrl);
+                if (!response.ok) throw new Error("Failed to load data");
+                
+                const importedCars = await response.json();
+                cars = importedCars;
+                saveCars(cars);
+                renderCarList(cars);
+                showNotification("Data imported from GitHub successfully", "success");
+            } catch (error) {
+                showNotification("Failed to import data: " + error.message, "error");
+            }
+        }
+
+        // ----------------------------------------------------
+        // 5. Modal Operations
+        // ----------------------------------------------------
+        function openAddCarModal() {
+            document.getElementById('modal-title').textContent = 'Add New Car';
+            document.getElementById('modal-icon').textContent = '🚗';
+            document.getElementById('delete-car-btn').style.display = 'none';
+            document.getElementById('car-form').reset();
+            currentCarId = null;
+            document.getElementById('car-modal').classList.add('active');
+        }
+
+        function openEditCarModal(carId) {
+            const car = cars.find(c => c.id === carId);
+            if (!car) return;
+
+            document.getElementById('modal-title').textContent = 'Edit Car';
+            document.getElementById('modal-icon').textContent = '✏️';
+            document.getElementById('delete-car-btn').style.display = 'block';
+
+            // Populate form with car data
+            document.getElementById('car-id').value = car.id;
+            document.getElementById('car-model').value = car.model;
+            document.getElementById('car-year').value = car.year;
+            document.getElementById('car-price').value = car.price.replace('RM ', '');
+            document.getElementById('car-monthly').value = car.monthly.replace('RM ', '') || '';
+            document.getElementById('car-plate').value = car.plateNo;
+            document.getElementById('car-status').value = car.status;
+            document.getElementById('manthong-tag').checked = car.manthongTag;
+            document.getElementById('ef-tag').checked = car.efTag;
+
+            currentCarId = carId;
+            document.getElementById('car-modal').classList.add('active');
+        }
+
+        function closeAllModals() {
+            document.getElementById('car-modal').classList.remove('active');
+            document.getElementById('delete-modal').classList.remove('active');
+        }
+
+        // ----------------------------------------------------
+        // 6. Car Data Management
+        // ----------------------------------------------------
+        function saveCarData() {
+            // Get form values
+            const model = document.getElementById('car-model').value.trim();
+            const year = parseInt(document.getElementById('car-year').value);
+            const price = document.getElementById('car-price').value.trim();
+            const monthly = document.getElementById('car-monthly').value.trim();
+            const plateNo = document.getElementById('car-plate').value.trim();
+            const status = document.getElementById('car-status').value;
+            const manthongTag = document.getElementById('manthong-tag').checked;
+            const efTag = document.getElementById('ef-tag').checked;
+
+            // Validate required fields
+            if (!model || !year || !price || !plateNo) {
+                showNotification('Please fill in all required fields (Model, Year, Price, Plate Number)', 'error');
+                return;
+            }
+
+            // Format car data
+            const carData = {
+                model,
+                year,
+                price: price.includes('RM') ? price : `RM ${price}`,
+                monthly: monthly ? (monthly.includes('RM') ? monthly : `RM ${monthly}`) : '',
+                plateNo,
+                status,
+                manthongTag,
+                efTag
+            };
+
+            // Update existing car or add new car
+            if (currentCarId) {
+                const index = cars.findIndex(c => c.id === currentCarId);
+                if (index !== -1) {
+                    carData.id = currentCarId;
+                    cars[index] = carData;
+                    showNotification('Car updated successfully', 'success');
+                }
+            } else {
+                carData.id = generateUniqueId();
+                cars.push(carData);
+                showNotification('Car added successfully', 'success');
+            }
+
+            saveCars(cars);
+            renderCarList(cars);
+            closeAllModals();
+        }
+
+        function deleteCarData() {
+            if (!currentCarId) return;
+            
+            const index = cars.findIndex(c => c.id === currentCarId);
+            if (index !== -1) {
+                cars.splice(index, 1);
+                saveCars(cars);
+                renderCarList(cars);
+                showNotification('Car deleted successfully', 'success');
+            }
+            
+            closeAllModals();
+        }
+
+        // ----------------------------------------------------
+        // 7. Notification System
+        // ----------------------------------------------------
+        function showNotification(message, type) {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Auto remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // ----------------------------------------------------
+        // 8. Car List Rendering
+        // ----------------------------------------------------
+        function renderCarItems(list, containerElement) {
+            list.forEach(car => {
+                const whatsappLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo}%2E`;
+                
+                // Generate tags HTML
+                let tagHtml = '';
+                if (car.efTag) tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
+                if (car.manthongTag && !car.efTag) tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
+
+                const carItem = document.createElement('li');
+                carItem.className = 'car-item';
+                carItem.setAttribute('data-car-id', car.id);
+                carItem.innerHTML = `
+                    ${tagHtml}
+                    <button class="edit-car-btn">✏️ Edit</button>
+                    <h3 class="car-title">${car.model}</h3>
+                    <p class="car-year">Year: ${car.year}</p>
+                    <p class="car-plateno">Plate No: <strong>${car.plateNo}</strong></p>
+                    <p class="car-price">Price: ${car.price}</p>
+                    <p class="car-monthly">Monthly Estimate: <strong>${car.monthly || 'N/A'}</strong></p>
+                    <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
+                    <a href="${whatsappLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW</a>
+                `;
+                containerElement.appendChild(carItem);
+            });
+        }
+
+        function renderCarList(carArray) {
+            const container = document.getElementById('car-container');
+            
+            if (carArray.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i>🚗</i>
+                        <h3>No cars found</h3>
+                        <p>Try adjusting your search or add a new car</p>
+                        <button class="btn btn-primary" id="empty-add-btn" style="margin-top: 15px;">
+                            <span>➕</span> Add Your First Car
+                        </button>
+                    </div>
+                `;
+                
+                // Add event listener to the empty state button
+                document.getElementById('empty-add-btn').addEventListener('click', openAddCarModal);
+                return;
+            }
+
+            container.innerHTML = '';
+
+            // Group cars by brand
+            const groupedByBrand = carArray.reduce((acc, car) => {
+                let brand = car.model.split(' ')[0].toUpperCase();
+                if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
+                if (!acc[brand]) acc[brand] = [];
+                acc[brand].push(car);
+                return acc;
+            }, {});
+
+            // Sort brands using custom order
+            const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
+                .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
+
+            // Render each brand group
+            sortedBrands.forEach(brand => {
+                const brandCars = groupedByBrand[brand];
+                if (brandCars.length === 0) return;
+
+                container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
+
+                // Separate by dealership
+                const manthongCars = brandCars.filter(car => car.manthongTag);
+                const efCars = brandCars.filter(car => car.efTag);
+
+                // Render Man Thong cars
+                if (manthongCars.length > 0) {
+                    container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
+                    const mtList = document.createElement('ul');
+                    mtList.className = 'car-list';
+                    renderCarItems(manthongCars.sort((a, b) => b.year - a.year), mtList);
+                    container.appendChild(mtList);
+                }
+
+                // Render Ever Forward cars
+                if (efCars.length > 0) {
+                    container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
+                    const efList = document.createElement('ul');
+                    efList.className = 'car-list';
+                    renderCarItems(efCars.sort((a, b) => b.year - a.year), efList);
+                    container.appendChild(efList);
+                }
+            });
+        }
+
+        // ----------------------------------------------------
+        // 9. Loan Calculator
+        // ----------------------------------------------------
+        function calculateMonthlyPayment(principal, years, rate) {
+            const totalInterest = principal * rate * years;
+            const totalLoanAmount = principal + totalInterest;
+            return totalLoanAmount / (years * 12);
+        }
+
+        function updateLoanCalculation() {
+            const otrPrice = parseFloat(document.getElementById('otr-price').value) || 0;
+            const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
+            const loanYears = parseInt(document.getElementById('loan-years').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+            const resultElement = document.getElementById('monthly-payment-result');
+
+            // Validate inputs
+            if (otrPrice <= downPayment || loanYears <= 0 || interestRate <= 0) {
+                resultElement.innerHTML = `RM 0.00<span>Please ensure OTR > Down Payment and all values are positive</span>`;
+                return;
+            }
+
+            // Calculate and display result
+            const principal = otrPrice - downPayment;
+            const monthlyPayment = calculateMonthlyPayment(principal, loanYears, interestRate);
+            resultElement.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
+        }
+
+        // ----------------------------------------------------
+        // 10. Update Time Display
+        // ----------------------------------------------------
+        function displayLastUpdatedTime() {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false, timeZone: 'Asia/Kuala_Lumpur'
+            });
+            document.getElementById('update-time').textContent = dateString + ' MYT';
+        }
+
+        // ----------------------------------------------------
+        // 11. Mobile Menu Toggle
+        // ----------------------------------------------------
+        function toggleMobileMenu() {
+            const moreMenu = document.getElementById('mobile-more-menu');
+            if (moreMenu) {
+                moreMenu.classList.toggle('hidden');
+            } else {
+                // Create mobile more menu if it doesn't exist
+                const menu = document.createElement('div');
+                menu.id = 'mobile-more-menu';
+                menu.className = 'mobile-more-menu';
+                menu.innerHTML = `
+                    <button class="btn btn-warning mobile-menu-btn" id="mobile-export-btn">
+                        <span>📤</span> Export Data
+                    </button>
+                    <button class="btn btn-primary mobile-menu-btn" id="mobile-import-btn">
+                        <span>🔄</span> Import GitHub
+                    </button>
+                    <button class="btn btn-danger mobile-menu-btn" id="mobile-reset-btn">
+                        <span>🔄</span> Reset Data
+                    </button>
+                `;
+                document.querySelector('.mobile-action-bar').appendChild(menu);
+                
+                // Add event listeners to mobile menu buttons
+                document.getElementById('mobile-export-btn').addEventListener('click', exportCarData);
+                document.getElementById('mobile-import-btn').addEventListener('click', importFromGitHub);
+                document.getElementById('mobile-reset-btn').addEventListener('click', resetToDefaultData);
+            }
+        }
+
+        // ----------------------------------------------------
+        // 12. Event Listeners Initialization
+        // ----------------------------------------------------
+        function initializeEventListeners() {
+            // Add car button
+            document.getElementById('add-car-btn').addEventListener('click', openAddCarModal);
+
+            // Save and reset buttons
+            document.getElementById('save-data-btn').addEventListener('click', () => {
+                saveCars(cars);
+                showNotification('Data saved successfully', 'success');
+            });
+            
+            document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
+
+            // Export and import buttons
+            document.getElementById('export-data-btn').addEventListener('click', exportCarData);
+            document.getElementById('import-github-btn').addEventListener('click', importFromGitHub);
+
+            // Save car button
+            document.getElementById('save-car-btn').addEventListener('click', saveCarData);
+
+            // Delete functionality
+            document.getElementById('delete-car-btn').addEventListener('click', () => {
+                document.getElementById('delete-modal').classList.add('active');
+            });
+            
+            document.getElementById('confirm-delete-btn').addEventListener('click', deleteCarData);
+
+            // Close modals
+            document.getElementById('close-modal').addEventListener('click', closeAllModals);
+            document.getElementById('close-delete-modal').addEventListener('click', closeAllModals);
+            document.getElementById('cancel-btn').addEventListener('click', closeAllModals);
+            document.getElementById('cancel-delete-btn').addEventListener('click', closeAllModals);
+
+            // Edit car functionality (event delegation)
+            document.getElementById('car-container').addEventListener('click', (e) => {
+                if (e.target.classList.contains('edit-car-btn')) {
+                    const carId = parseInt(e.target.closest('.car-item').getAttribute('data-car-id'));
+                    openEditCarModal(carId);
+                }
+            });
+
+            // Search functionality
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredCars = cars.filter(car => 
+                    car.model.toLowerCase().includes(searchTerm) ||
+                    car.year.toString().includes(searchTerm) ||
+                    car.plateNo.toLowerCase().includes(searchTerm)
+                );
+                renderCarList(filteredCars);
+            });
+
+            // Calculator functionality
+            const calculatorInputs = [
+                document.getElementById('otr-price'),
+                document.getElementById('down-payment'),
+                document.getElementById('loan-years'),
+                document.getElementById('interest-rate')
+            ];
+            calculatorInputs.forEach(input => {
+                input.addEventListener('input', updateLoanCalculation);
+            });
+
+            // Calculator toggle
+            document.getElementById('calc-toggle').addEventListener('click', () => {
+                const popup = document.getElementById('calculator-popup');
+                const toggleBtn = document.getElementById('calc-toggle');
+                
+                if (popup.style.display === 'block') {
+                    popup.style.display = 'none';
+                    toggleBtn.innerHTML = '&#x270E;';
+                } else {
+                    popup.style.display = 'block';
+                    toggleBtn.innerHTML = '&#x2715;';
+                    updateLoanCalculation();
+                }
+            });
+
+            // Mobile action buttons
+            document.getElementById('mobile-add-btn').addEventListener('click', openAddCarModal);
+            document.getElementById('mobile-save-btn').addEventListener('click', () => {
+                saveCars(cars);
+                showNotification('Data saved successfully', 'success');
+            });
+            document.getElementById('mobile-more-btn').addEventListener('click', toggleMobileMenu);
+            
+            // Close calculator when clicking outside
+            document.addEventListener('click', (e) => {
+                const calculator = document.getElementById('calculator-popup');
+                const toggle = document.getElementById('calc-toggle');
+                
+                if (calculator.style.display === 'block' && 
+                    !calculator.contains(e.target) && 
+                    !toggle.contains(e.target)) {
+                    calculator.style.display = 'none';
+                    toggle.innerHTML = '&#x270E;';
+                }
+            });
+        }
+
+        // ----------------------------------------------------
+        // 13. Initialization on Page Load
+        // ----------------------------------------------------
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize data
+            cars = getCars();
+
+            // Render cars
+            renderCarList(cars);
+
+            // Setup event listeners
+            initializeEventListeners();
+
+            // Initialize calculator and time display
             updateLoanCalculation();
-        }
-    });
-}
-
-// ----------------------------------------------------
-// 11. Initialization on Page Load
-// ----------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-    // Get DOM elements
-    const carModal = document.getElementById('car-modal');
-    const deleteModal = document.getElementById('delete-modal');
-    const carForm = document.getElementById('car-form');
-
-    // Initialize data
-    cars = getCars();
-
-    // Render cars
-    renderCarList(cars);
-
-    // Setup event listeners
-    initializeEventListeners(carModal, deleteModal, carForm);
-
-    // Initialize calculator and time display
-    updateLoanCalculation();
-    displayLastUpdatedTime();
-});
-// 从 GitHub 加载 JSON 数据（替换为你的文件地址）
-async function importFromGitHub() {
-    const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/main/car_data_20251018 (1) ";
-    
-    try {
-        const response = await fetch(githubJsonUrl);
-        if (!response.ok) throw new Error("Failed to load data");
-        
-        const importedCars = await response.json();
-        cars = importedCars; // 替换现有车辆数据
-        saveCars(cars); // 保存到本地存储
-        renderCarList(cars); // 重新渲染列表
-        showNotification("Data imported from GitHub successfully", "success");
-    } catch (error) {
-        showNotification("Failed to import data: " + error.message, "error");
-    }
-}
-</script>
+            displayLastUpdatedTime();
+            
+            // Add CSS for mobile more menu
+            const style = document.createElement('style');
+            style.textContent = `
+                .mobile-more-menu {
+                    position: absolute;
+                    bottom: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    padding: 10px;
+                    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                .mobile-menu-btn {
+                    width: 100%;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
 </body>
 </html>
