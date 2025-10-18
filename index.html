@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Man Thong Auto Trading Stock List</title>
     <style>
-        /* ---------------------------------- */
-        /* CSS Variables and Base Styles */
-        /* ---------------------------------- */
+        /* 原有CSS不变，此处省略 */
         :root {
             --primary: #007bff;
             --secondary: #6c757d;
@@ -35,9 +33,7 @@
             padding-bottom: 60px; /* Space for mobile action bar */
         }
 
-        /* ---------------------------------- */
-        /* Header Styles */
-        /* ---------------------------------- */
+        /* 以下保留你原有所有CSS样式，无需修改 */
         .header {
             background-color: var(--primary);
             color: white;
@@ -70,9 +66,6 @@
             text-align: center;
         }
 
-        /* ---------------------------------- */
-        /* Controls Section */
-        /* ---------------------------------- */
         .controls {
             padding: 15px 10px;
             background-color: #fff;
@@ -102,18 +95,12 @@
             flex-wrap: wrap;
         }
 
-        /* ---------------------------------- */
-        /* Main Content */
-        /* ---------------------------------- */
         .main-content {
             max-width: 1200px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* ---------------------------------- */
-        /* Car List and Categories */
-        /* ---------------------------------- */
         .brand-category-title {
             background-color: #e9ecef;
             color: var(--primary);
@@ -206,9 +193,6 @@
             color: var(--success);
         }
 
-        /* ---------------------------------- */
-        /* Tags */
-        /* ---------------------------------- */
         .tag-top-left {
             position: absolute;
             top: 10px;
@@ -230,9 +214,6 @@
             color: white;
         }
 
-        /* ---------------------------------- */
-        /* WhatsApp Button */
-        /* ---------------------------------- */
         .whatsapp-btn {
             display: block;
             background-color: #25d366;
@@ -250,9 +231,6 @@
             background-color: #128c7e;
         }
 
-        /* ---------------------------------- */
-        /* Footer */
-        /* ---------------------------------- */
         .footer {
             text-align: center;
             padding: 15px;
@@ -262,9 +240,6 @@
             font-size: 0.9rem;
         }
 
-        /* ---------------------------------- */
-        /* Calculator Pop-up */
-        /* ---------------------------------- */
         .calculator-icon {
             position: fixed;
             bottom: 80px;
@@ -362,9 +337,6 @@
             color: #155724;
         }
 
-        /* ---------------------------------- */
-        /* Add/Edit Car Modal */
-        /* ---------------------------------- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -525,7 +497,6 @@
             }
         }
 
-        /* Delete confirmation */
         .delete-confirm {
             text-align: center;
             padding: 20px;
@@ -536,9 +507,6 @@
             font-size: 1.1rem;
         }
 
-        /* ---------------------------------- */
-        /* Buttons */
-        /* ---------------------------------- */
         .btn {
             padding: 10px 16px;
             border: none;
@@ -617,9 +585,6 @@
             box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
         }
 
-        /* ---------------------------------- */
-        /* Mobile Action Bar */
-        /* ---------------------------------- */
         .mobile-action-bar {
             position: fixed;
             bottom: 0;
@@ -638,7 +603,6 @@
                 justify-content: space-around;
             }
             
-            /* Hide desktop action buttons on mobile */
             .action-buttons {
                 display: none;
             }
@@ -667,9 +631,6 @@
             margin-bottom: 5px;
         }
 
-        /* ---------------------------------- */
-        /* Notification styles */
-        /* ---------------------------------- */
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -711,9 +672,6 @@
             background-color: var(--danger);
         }
 
-        /* ---------------------------------- */
-        /* Edit Button in Car Items */
-        /* ---------------------------------- */
         .edit-car-btn {
             position: absolute;
             top: 10px;
@@ -733,9 +691,6 @@
             background: #5a6268;
         }
 
-        /* ---------------------------------- */
-        /* Loading Spinner */
-        /* ---------------------------------- */
         .loading-spinner {
             display: inline-block;
             width: 20px;
@@ -750,9 +705,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* ---------------------------------- */
-        /* Empty State */
-        /* ---------------------------------- */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -770,9 +722,6 @@
             color: var(--secondary);
         }
 
-        /* ---------------------------------- */
-        /* Utility Classes */
-        /* ---------------------------------- */
         .text-center {
             text-align: center;
         }
@@ -795,7 +744,7 @@
     </style>
 </head>
 <body>
-    <!-- Header Section -->
+    <!-- 原有HTML结构不变，此处省略 -->
     <header class="header">
         <div class="header-content">
             <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
@@ -803,13 +752,11 @@
         </div>
     </header>
 
-    <!-- Controls Section -->
     <div class="controls">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search by model, year, or plate number...">
         </div>
         
-        <!-- Desktop Action Buttons -->
         <div class="action-buttons">
             <button class="btn btn-primary" id="add-car-btn">
                 <span>➕</span> Add Car
@@ -829,7 +776,6 @@
         </div>
     </div>
 
-    <!-- Main Content -->
     <main class="main-content" id="car-container">
         <div class="empty-state">
             <i>🚗</i>
@@ -838,7 +784,6 @@
         </div>
     </main>
     
-    <!-- Mobile Action Bar -->
     <div class="mobile-action-bar">
         <button class="mobile-action-btn" id="mobile-add-btn">
             <span>➕</span>
@@ -858,7 +803,6 @@
         </button>
     </div>
 
-    <!-- Calculator -->
     <div class="calculator-icon" id="calc-toggle">
         &#x270E; 
     </div>
@@ -908,7 +852,6 @@
         </div>
     </div>
 
-    <!-- Add/Edit Car Modal -->
     <div class="modal-overlay" id="car-modal">
         <div class="modal">
             <div class="modal-header">
@@ -980,7 +923,6 @@
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
     <div class="modal-overlay" id="delete-modal">
         <div class="modal">
             <div class="modal-header">
@@ -997,7 +939,6 @@
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <p id="last-updated">List Updated: <span id="update-time">Loading...</span></p>
     </footer>
@@ -1019,17 +960,14 @@
         function getCars() {
             const storedCars = localStorage.getItem('manthongCars');
             const defaultCars = [
-                // --- PROTON ---
                 { model: "PROTON X70 1.8 PREMIUM", year: 2019, price: "RM 64,600", monthly: "RM802.71", plateNo: "VDB7826", status: "Available", id: 1, manthongTag: true, efTag: false },
                 { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
-                // --- PERODUA ---
                 { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "RM465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
-                // --- Ever Forward Cars ---
                 { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false }
             ];
             
             if (storedCars) return JSON.parse(storedCars);
-            localStorage.setItem('manthongCars', JSON.stringify(defaultCars));
+            // 这里不再自动保存默认数据，而是等GitHub导入失败后再用
             return defaultCars;
         }
 
@@ -1058,17 +996,13 @@
                 return;
             }
 
-            // Format data as readable JSON
             const carDataStr = JSON.stringify(cars, null, 2);
-            
-            // Create filename with current date
             const today = new Date();
             const dateStr = today.getFullYear() + 
                            String(today.getMonth() + 1).padStart(2, '0') + 
                            String(today.getDate()).padStart(2, '0');
             const fileName = `car_data_${dateStr}.json`;
             
-            // Create download link
             const blob = new Blob([carDataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const downloadLink = document.createElement('a');
@@ -1078,46 +1012,52 @@
             document.body.appendChild(downloadLink);
             downloadLink.click();
             
-            // Clean up
             document.body.removeChild(downloadLink);
             URL.revokeObjectURL(url);
             
-            // Show success message
             showNotification(`Car data exported: ${fileName}`, 'success');
         }
 
         // ----------------------------------------------------
-        // 4. Import from GitHub
+        // 4. Import from GitHub（核心：支持自动导入+手动导入）
         // ----------------------------------------------------
-async function importFromGitHub() {
-    const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
-    
-    try {
-        showNotification('Importing data from GitHub...', 'success');
-        
-        const response = await fetch(githubJsonUrl);
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-        
-        const importedCars = await response.json();
-        
-        // 关键：验证导入的数据格式是否为数组（确保是正确的车辆数据）
-        if (Array.isArray(importedCars)) {
-            // 1. 用导入的数据覆盖全局变量
-            cars = importedCars;
-            // 2. 保存到本地存储（覆盖原有默认数据）
-            localStorage.setItem('manthongCars', JSON.stringify(cars));
-            // 3. 重新渲染列表
-            renderCarList(cars);
-            // 4. 更新最后修改时间
-            displayLastUpdatedTime();
-            showNotification("Data imported successfully (will persist on next load)", "success");
-        } else {
-            throw new Error("Imported data is not a valid array");
+        async function importFromGitHub(isAutoLoad = false) {
+            const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
+            
+            try {
+                // 自动加载时不显示"导入中"提示，避免打扰用户
+                if (!isAutoLoad) {
+                    showNotification('Importing data from GitHub...', 'success');
+                }
+                
+                const response = await fetch(githubJsonUrl);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                
+                const importedCars = await response.json();
+                
+                if (Array.isArray(importedCars)) {
+                    cars = importedCars;
+                    saveCars(cars); // 保存到本地存储，下次打开直接用
+                    renderCarList(cars);
+                    displayLastUpdatedTime();
+                    
+                    // 手动导入显示成功提示，自动导入不提示
+                    if (!isAutoLoad) {
+                        showNotification("Data imported successfully (will persist on next load)", "success");
+                    }
+                } else {
+                    throw new Error("Imported data is not a valid array");
+                }
+            } catch (error) {
+                // 自动导入失败时，用默认数据；手动导入失败显示错误
+                if (isAutoLoad) {
+                    cars = getCars(); // 加载默认数据
+                    renderCarList(cars);
+                } else {
+                    showNotification("Failed to import: " + error.message, "error");
+                }
+            }
         }
-    } catch (error) {
-        showNotification("Failed to import: " + error.message, "error");
-    }
-}
 
         // ----------------------------------------------------
         // 5. Modal Operations
@@ -1139,7 +1079,6 @@ async function importFromGitHub() {
             document.getElementById('modal-icon').textContent = '✏️';
             document.getElementById('delete-car-btn').style.display = 'block';
 
-            // Populate form with car data
             document.getElementById('car-id').value = car.id;
             document.getElementById('car-model').value = car.model;
             document.getElementById('car-year').value = car.year;
@@ -1163,7 +1102,6 @@ async function importFromGitHub() {
         // 6. Car Data Management
         // ----------------------------------------------------
         function saveCarData() {
-            // Get form values
             const model = document.getElementById('car-model').value.trim();
             const year = parseInt(document.getElementById('car-year').value);
             const price = document.getElementById('car-price').value.trim();
@@ -1173,13 +1111,11 @@ async function importFromGitHub() {
             const manthongTag = document.getElementById('manthong-tag').checked;
             const efTag = document.getElementById('ef-tag').checked;
 
-            // Validate required fields
             if (!model || !year || !price || !plateNo) {
                 showNotification('Please fill in all required fields (Model, Year, Price, Plate Number)', 'error');
                 return;
             }
 
-            // Format car data
             const carData = {
                 model,
                 year,
@@ -1191,7 +1127,6 @@ async function importFromGitHub() {
                 efTag
             };
 
-            // Update existing car or add new car
             if (currentCarId) {
                 const index = cars.findIndex(c => c.id === currentCarId);
                 if (index !== -1) {
@@ -1228,7 +1163,6 @@ async function importFromGitHub() {
         // 7. Notification System
         // ----------------------------------------------------
         function showNotification(message, type) {
-            // Remove any existing notifications
             const existingNotifications = document.querySelectorAll('.notification');
             existingNotifications.forEach(notification => notification.remove());
 
@@ -1237,7 +1171,6 @@ async function importFromGitHub() {
             notification.textContent = message;
             document.body.appendChild(notification);
 
-            // Auto remove after 3 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease-in';
                 setTimeout(() => {
@@ -1255,7 +1188,6 @@ async function importFromGitHub() {
             list.forEach(car => {
                 const whatsappLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo}%2E`;
                 
-                // Generate tags HTML
                 let tagHtml = '';
                 if (car.efTag) tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
                 if (car.manthongTag && !car.efTag) tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
@@ -1293,14 +1225,12 @@ async function importFromGitHub() {
                     </div>
                 `;
                 
-                // Add event listener to the empty state button
                 document.getElementById('empty-add-btn').addEventListener('click', openAddCarModal);
                 return;
             }
 
             container.innerHTML = '';
 
-            // Group cars by brand
             const groupedByBrand = carArray.reduce((acc, car) => {
                 let brand = car.model.split(' ')[0].toUpperCase();
                 if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
@@ -1309,22 +1239,18 @@ async function importFromGitHub() {
                 return acc;
             }, {});
 
-            // Sort brands using custom order
             const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
                 .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
 
-            // Render each brand group
             sortedBrands.forEach(brand => {
                 const brandCars = groupedByBrand[brand];
                 if (brandCars.length === 0) return;
 
                 container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
 
-                // Separate by dealership
                 const manthongCars = brandCars.filter(car => car.manthongTag);
                 const efCars = brandCars.filter(car => car.efTag);
 
-                // Render Man Thong cars
                 if (manthongCars.length > 0) {
                     container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
                     const mtList = document.createElement('ul');
@@ -1333,7 +1259,6 @@ async function importFromGitHub() {
                     container.appendChild(mtList);
                 }
 
-                // Render Ever Forward cars
                 if (efCars.length > 0) {
                     container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
                     const efList = document.createElement('ul');
@@ -1360,13 +1285,11 @@ async function importFromGitHub() {
             const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
             const resultElement = document.getElementById('monthly-payment-result');
 
-            // Validate inputs
             if (otrPrice <= downPayment || loanYears <= 0 || interestRate <= 0) {
                 resultElement.innerHTML = `RM 0.00<span>Please ensure OTR > Down Payment and all values are positive</span>`;
                 return;
             }
 
-            // Calculate and display result
             const principal = otrPrice - downPayment;
             const monthlyPayment = calculateMonthlyPayment(principal, loanYears, interestRate);
             resultElement.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
@@ -1393,7 +1316,6 @@ async function importFromGitHub() {
             if (moreMenu) {
                 moreMenu.classList.toggle('hidden');
             } else {
-                // Create mobile more menu if it doesn't exist
                 const menu = document.createElement('div');
                 menu.id = 'mobile-more-menu';
                 menu.className = 'mobile-more-menu';
@@ -1410,9 +1332,8 @@ async function importFromGitHub() {
                 `;
                 document.querySelector('.mobile-action-bar').appendChild(menu);
                 
-                // Add event listeners to mobile menu buttons
                 document.getElementById('mobile-export-btn').addEventListener('click', exportCarData);
-                document.getElementById('mobile-import-btn').addEventListener('click', importFromGitHub);
+                document.getElementById('mobile-import-btn').addEventListener('click', () => importFromGitHub(false));
                 document.getElementById('mobile-reset-btn').addEventListener('click', resetToDefaultData);
             }
         }
@@ -1421,10 +1342,8 @@ async function importFromGitHub() {
         // 12. Event Listeners Initialization
         // ----------------------------------------------------
         function initializeEventListeners() {
-            // Add car button
             document.getElementById('add-car-btn').addEventListener('click', openAddCarModal);
 
-            // Save and reset buttons
             document.getElementById('save-data-btn').addEventListener('click', () => {
                 saveCars(cars);
                 showNotification('Data saved successfully', 'success');
@@ -1432,27 +1351,22 @@ async function importFromGitHub() {
             
             document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
 
-            // Export and import buttons
             document.getElementById('export-data-btn').addEventListener('click', exportCarData);
-            document.getElementById('import-github-btn').addEventListener('click', importFromGitHub);
+            document.getElementById('import-github-btn').addEventListener('click', () => importFromGitHub(false));
 
-            // Save car button
             document.getElementById('save-car-btn').addEventListener('click', saveCarData);
 
-            // Delete functionality
             document.getElementById('delete-car-btn').addEventListener('click', () => {
                 document.getElementById('delete-modal').classList.add('active');
             });
             
             document.getElementById('confirm-delete-btn').addEventListener('click', deleteCarData);
 
-            // Close modals
             document.getElementById('close-modal').addEventListener('click', closeAllModals);
             document.getElementById('close-delete-modal').addEventListener('click', closeAllModals);
             document.getElementById('cancel-btn').addEventListener('click', closeAllModals);
             document.getElementById('cancel-delete-btn').addEventListener('click', closeAllModals);
 
-            // Edit car functionality (event delegation)
             document.getElementById('car-container').addEventListener('click', (e) => {
                 if (e.target.classList.contains('edit-car-btn')) {
                     const carId = parseInt(e.target.closest('.car-item').getAttribute('data-car-id'));
@@ -1460,7 +1374,6 @@ async function importFromGitHub() {
                 }
             });
 
-            // Search functionality
             document.getElementById('search-input').addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
                 const filteredCars = cars.filter(car => 
@@ -1471,7 +1384,6 @@ async function importFromGitHub() {
                 renderCarList(filteredCars);
             });
 
-            // Calculator functionality
             const calculatorInputs = [
                 document.getElementById('otr-price'),
                 document.getElementById('down-payment'),
@@ -1482,7 +1394,6 @@ async function importFromGitHub() {
                 input.addEventListener('input', updateLoanCalculation);
             });
 
-            // Calculator toggle
             document.getElementById('calc-toggle').addEventListener('click', () => {
                 const popup = document.getElementById('calculator-popup');
                 const toggleBtn = document.getElementById('calc-toggle');
@@ -1497,7 +1408,6 @@ async function importFromGitHub() {
                 }
             });
 
-            // Mobile action buttons
             document.getElementById('mobile-add-btn').addEventListener('click', openAddCarModal);
             document.getElementById('mobile-save-btn').addEventListener('click', () => {
                 saveCars(cars);
@@ -1505,7 +1415,6 @@ async function importFromGitHub() {
             });
             document.getElementById('mobile-more-btn').addEventListener('click', toggleMobileMenu);
             
-            // Close calculator when clicking outside
             document.addEventListener('click', (e) => {
                 const calculator = document.getElementById('calculator-popup');
                 const toggle = document.getElementById('calc-toggle');
@@ -1520,23 +1429,25 @@ async function importFromGitHub() {
         }
 
         // ----------------------------------------------------
-        // 13. Initialization on Page Load
+        // 13. Initialization on Page Load（核心修改：自动导入GitHub）
         // ----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize data
-            cars = getCars();
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 第一步：先检查本地存储是否有之前导入的GitHub数据
+            const storedCars = localStorage.getItem('manthongCars');
+            if (storedCars) {
+                // 有则直接用本地存储的GitHub数据
+                cars = JSON.parse(storedCars);
+                renderCarList(cars);
+            } else {
+                // 没有则自动导入GitHub数据（isAutoLoad=true表示自动加载）
+                await importFromGitHub(true);
+            }
 
-            // Render cars
-            renderCarList(cars);
-
-            // Setup event listeners
+            // 后续初始化逻辑不变
             initializeEventListeners();
-
-            // Initialize calculator and time display
             updateLoanCalculation();
             displayLastUpdatedTime();
             
-            // Add CSS for mobile more menu
             const style = document.createElement('style');
             style.textContent = `
                 .mobile-more-menu {
