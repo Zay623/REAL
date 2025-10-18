@@ -295,6 +295,234 @@
         margin-top: 5px;
         color: #155724;
     }
+    /* ---------------------------------- */
+/* Add/Edit Car Modal */
+/* ---------------------------------- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.9);
+    transition: all 0.3s;
+}
+
+.modal-overlay.active .modal {
+    transform: scale(1);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--secondary);
+    transition: all 0.3s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--dark);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-item input {
+    width: 18px;
+    height: 18px;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    background-color: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+}
+
+/* Delete confirmation */
+.delete-confirm {
+    text-align: center;
+    padding: 20px;
+}
+
+.delete-confirm p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+}
+
+/* Action buttons in controls */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-success {
+    background-color: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-danger {
+    background-color: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Notification styles */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+:root {
+    --primary: #007bff;
+    --secondary: #6c757d;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --light: #f8f9fa;
+    --dark: #343a40;
+}
 </style>
 </head>
 <body>
@@ -307,9 +535,20 @@
         </div>
     </div>
 
-    <div class="controls">
-        <input type="text" id="search-input" placeholder="Enter keyword, model, or year...">
+<div class="controls">
+    <input type="text" id="search-input" placeholder="Enter keyword, model, or year...">
+    <div class="action-buttons">
+        <button class="btn btn-primary" id="add-car-btn">
+            <span>➕</span> Add Car
+        </button>
+        <button class="btn btn-success" id="save-data-btn">
+            <span>💾</span> Save Data
+        </button>
+        <button class="btn btn-danger" id="reset-data-btn">
+            <span>🔄</span> Reset Data
+        </button>
     </div>
+</div>
 
     <div class="main-content" id="car-container">
         <p style="text-align: center; margin-top: 50px;">Loading vehicle data...</p>
@@ -320,11 +559,7 @@
     </div>
 
     <div class="calculator-popup" id="calculator-popup">
-        <h4>Car Loan Monthly Payment Calculator</h4>
-        
-        <p style="font-size: 0.85em; color: #dc3545; font-weight: bold; border-bottom: 1px dashed #dc3545; padding-bottom: 8px;">
-            **Calculator Notes:** Uses Simple Flat Rate Method. Your historical limits (RM20K/3Y, 10%) are noted.
-        </p>
+        <h4>Car Loan Calculator</h4>
         
         <div class="calc-group">
             <label for="otr-price">Car OTR (RM)</label>
@@ -367,378 +602,521 @@
             <span>Estimated Monthly Payment</span>
         </div>
     </div>
+    <!-- Add/Edit Car Modal -->
+<div class="modal-overlay" id="car-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3><span id="modal-icon">🚗</span> <span id="modal-title">Add New Car</span></h3>
+            <button class="close-modal" id="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="car-form">
+                <input type="hidden" id="car-id">
+                
+                <div class="form-group">
+                    <label for="car-model">Car Model</label>
+                    <input type="text" id="car-model" class="form-control" placeholder="e.g., PROTON X70 1.8 PREMIUM" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="car-year">Year</label>
+                        <input type="number" id="car-year" class="form-control" placeholder="e.g., 2020" min="1990" max="2030" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="car-price">Price (RM)</label>
+                        <input type="text" id="car-price" class="form-control" placeholder="e.g., 64,600" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="car-monthly">Monthly Estimate (RM)</label>
+                        <input type="text" id="car-monthly" class="form-control" placeholder="e.g., 802.71">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="car-plate">Plate Number</label>
+                        <input type="text" id="car-plate" class="form-control" placeholder="e.g., VDB7826" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="car-status">Status</label>
+                    <select id="car-status" class="form-control">
+                        <option value="Available">Available</option>
+                        <option value="Sold">Sold</option>
+                        <option value="Reserved">Reserved</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Dealership</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="manthong-tag" value="true">
+                            <label for="manthong-tag">Man Thong</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="ef-tag" value="true">
+                            <label for="ef-tag">Ever Forward</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" id="delete-car-btn" style="display: none;">Delete Car</button>
+            <button class="btn" id="cancel-btn">Cancel</button>
+            <button class="btn btn-primary" id="save-car-btn">Save Car</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="delete-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>⚠️ Confirm Deletion</h3>
+            <button class="close-modal" id="close-delete-modal">&times;</button>
+        </div>
+        <div class="modal-body delete-confirm">
+            <p>Are you sure you want to delete this car? This action cannot be undone.</p>
+            <div>
+                <button class="btn" id="cancel-delete-btn">Cancel</button>
+                <button class="btn btn-danger" id="confirm-delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <div class="footer">
         <p id="last-updated">List Updated: <span id="update-time">Loading...</span></p>
     </div>
 
 </body>
-    <script>
+<script>
 // ----------------------------------------------------
-    // 1. Data Source (HARDCODED LIST - Manage cars HERE)
-    // ----------------------------------------------------
-    
-    // **要加车或减车，请直接修改这个列表**
-    const cars = [
-        // --- START Man Thong CARS ---
-        // PROTON
+// 1. Global Variables Initialization
+// ----------------------------------------------------
+let cars = [];
+let currentCarId = null;
+const customBrandOrder = [
+    "PROTON", "PERODUA", "TOYOTA", "HONDA", "NISSAN",
+    "LEXUS", "VOLKSWAGEN", "HYUNDAI", "MERCEDES BENZ", "NAZA"
+];
+
+// ----------------------------------------------------
+// 2. Local Storage Data Management
+// ----------------------------------------------------
+function getCars() {
+    const storedCars = localStorage.getItem('manthongCars');
+    const defaultCars = [
+        // --- PROTON ---
         { model: "PROTON X70 1.8 PREMIUM", year: 2019, price: "RM 64,600", monthly: "RM802.71", plateNo: "VDB7826", status: "Available", id: 1, manthongTag: true, efTag: false },
         { model: "PROTON X50 1.5T FLAGSHIP", year: 2021, price: "RM 74,000", monthly: "RM919.52", plateNo: "VGA7888", status: "Available", id: 2, manthongTag: true, efTag: false },
-        { model: "PROTON X50 1.5T PREMIUM", year: 2022, price: "RM 73,000", monthly: "RM907.09", plateNo: "VPG5937", status: "Available", id: 3, manthongTag: true, efTag: false },
-        { model: "PROTON PERDANA 2.0", year: 2014, price: "RM 33,000", monthly: "RM667.86", plateNo: "WA4296G", status: "Available", id: 4, manthongTag: true, efTag: false },
-        
-        // PERODUA
-        { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.3", year: 2008, price: "RM 15,000", monthly: "Cash Only", plateNo: "KCP2713", status: "Available", id: 6, manthongTag: true, efTag: false }, 
-        { model: "PERODUA MYVI 1.3 G", year: 2015, price: "RM 31,000", monthly: "RM480.79", plateNo: "AU7896", status: "Available", id: 7, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.5 SE", year: 2016, price: "RM 36,000", monthly: "RM558.33", plateNo: "WC705V", status: "Available", id: 8, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.3 X", year: 2020, price: "RM 43,000", monthly: "RM534.31", plateNo: "ALU7311", status: "Available", id: 9, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.5 H", year: 2020, price: "RM 48,000", monthly: "RM596.44", plateNo: "VFD3376", status: "Available", id: 10, manthongTag: true, efTag: false },
-        { model: "PERODUA MYVI 1.5 AV", year: 2021, price: "RM 53,000", monthly: "RM658.57", plateNo: "VHA7963", status: "Available", id: 11, manthongTag: true, efTag: false },
-        { model: "PERODUA BEZZA 1.3 X", year: 2022, price: "RM 44,000", monthly: "RM549.74", plateNo: "VJK7298", status: "Available", id: 12, manthongTag: true, efTag: false },
-        { model: "PERODUA ATIVA 1.0 H", year: 2022, price: "RM 61,000", monthly: "RM757.98", plateNo: "VJF7444", status: "Available", id: 13, manthongTag: true, efTag: false },
-        { model: "PERODUA ALZA 1.5 SE", year: 2019, price: "RM 51,600", monthly: "RM641.18", plateNo: "VCS4934", status: "Available", id: 14, manthongTag: true, efTag: false },
-        { model: "PERODUA ALZA 1.5 SE", year: 2020, price: "RM 53,600", monthly: "RM666.03", plateNo: "CEH4200", status: "Available", id: 15, manthongTag: true, efTag: false },
-        
-        // TOYOTA
+        // --- PERODUA ---
+        { model: "PERODUA AXIA 1.0 AV", year: 2015, price: "RM 30,000", monthly: "RM465.28", plateNo: "PMB1745", status: "Available", id: 5, manthongTag: true, efTag: false },
+        { model: "PERODUA MYVI 1.3", year: 2008, price: "RM 15,000", monthly: "Cash Only", plateNo: "KCP2713", status: "Available", id: 6, manthongTag: true, efTag: false },
+        // --- TOYOTA ---
         { model: "TOYOTA VIOS 1.5 GX", year: 2018, price: "RM 61,600", monthly: "RM836.73", plateNo: "VCB4362", status: "Available", id: 16, manthongTag: true, efTag: false },
-        { model: "TOYOTA VIOS 1.5 E", year: 2019, price: "RM 60,600", monthly: "RM753.01", plateNo: "TBY6057", status: "Available", id: 17, manthongTag: true, efTag: false },
-        { model: "TOYOTA ALTIS 1.8 G", year: 2018, price: "RM 69,600", monthly: "RM945.40", plateNo: "VBC4464", status: "Available", id: 18, manthongTag: true, efTag: false },
-        { model: "TOYOTA RUSH 1.5 S", year: 2020, price: "RM 69,600", monthly: "RM864.84", plateNo: "VPG5975", status: "Available", id: 19, manthongTag: true, efTag: false },
-        { model: "TOYOTA AVANZA 1.5 S", year: 2020, price: "RM 60,600", monthly: "RM753.01", plateNo: "VPG8380", status: "Available", id: 20, manthongTag: true, efTag: false },
-        { model: "TOYOTA ESTIMA 2.4", year: 2012, price: "RM 55,600", monthly: "RM1125.24", plateNo: "WXR3084", status: "Available", id: 21, manthongTag: true, efTag: false },
-        { model: "TOYOTA HILUX 2.5 TRD", year: 2015, price: "RM 63,000", monthly: "RM977.08", plateNo: "PLX877", status: "Available", id: 22, manthongTag: true, efTag: false },
-        
-        // NISSAN
-        { model: "NISSAN X-TRAIL 2.0L IMPUL", year: 2018, price: "RM 59,600", monthly: "RM809.57", plateNo: "VBT8586", status: "Available", id: 23, manthongTag: true, efTag: false },
-        { model: "NISSAN GRAND LIVINA 1.6L", year: 2012, price: "RM 24,000", monthly: "RM485.71", plateNo: "PKR7937", status: "Available", id: 24, manthongTag: true, efTag: false },
-        { model: "NISSAN SERENA 2.0L IMPUL", year: 2020, price: "RM 99,000", monthly: "RM1230.17", plateNo: "VEH1981", status: "Available", id: 25, manthongTag: true, efTag: false },
-        
-        // LEXUS
-        { model: "LEXUS RX350 F-SPORT", year: 2014, price: "RM 69,000", monthly: "-", plateNo: "VKR2204", status: "Available", id: 26, manthongTag: true, efTag: false },
-        
-        // VOLKSWAGEN
-        { model: "VOLKSWAGEN PASSAT 1.8 TSI", year: 2012, price: "-", monthly: "-", plateNo: "KDK171", status: "Available", id: 27, manthongTag: true, efTag: false },
-        { model: "VOLKSWAGEN PASSAT 1.8 TSI 280", year: 2018, price: "RM 68,800", monthly: "RM934.53", plateNo: "PNP5006", status: "Available", id: 28, manthongTag: true, efTag: false },
-        
-        // HONDA
-        { model: "HONDA CIVIC 1.8 S", year: 2020, price: "RM 83,800", monthly: "RM1041.29", plateNo: "JYE2435", status: "Available", id: 29, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2014, price: "RM 36,600", monthly: "RM740.71", plateNo: "IPW9966", status: "Available", id: 30, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2018, price: "RM 57,600", monthly: "RM782.40", plateNo: "VBH9936", status: "Available", id: 31, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 V", year: 2018, price: "RM 60,600", monthly: "RM823.15", plateNo: "QRL1100", status: "Available", id: 32, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2019, price: "RM 62,600", monthly: "RM777.86", plateNo: "VCR3550", status: "Available", id: 33, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2020, price: "RM 66,600", monthly: "RM827.57", plateNo: "JUD1645", status: "Available", id: 34, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2023, price: "RM 75,800", monthly: "RM941.89", plateNo: "M4917M", status: "Available", id: 35, manthongTag: true, efTag: false },
-        { model: "HONDA CITY 1.5 V HATCHBACK", year: 2022, price: "RM 77,800", monthly: "RM966.74", plateNo: "JVC1588", status: "Available", id: 36, manthongTag: true, efTag: false },
-        { model: "HONDA JAZZ 1.5 E", year: 2016, price: "RM 53,800", monthly: "RM834.40", plateNo: "VB7251", status: "Available", id: 37, manthongTag: true, efTag: false },
-        { model: "HONDA JAZZ 1.5 V", year: 2019, price: "RM 67,600", monthly: "RM839.99", plateNo: "BNH4411", status: "Available", id: 38, manthongTag: true, efTag: false },
-        { model: "HONDA HR-V 1.8 E", year: 2019, price: "RM 76,800", monthly: "RM879.76", plateNo: "JTV4993", status: "Available", id: 39, manthongTag: true, efTag: false },
-        { model: "HONDA HR-V 1.8 V", year: 2016, price: "RM 54,600", monthly: "RM678.46", plateNo: "PRU2975", status: "Available", id: 40, manthongTag: true, efTag: false },
-        { model: "HONDA CR-V 1.5 TC-P", year: 2019, price: "RM 99,000", monthly: "RM1230.17", plateNo: "VPC7508", status: "Available", id: 41, manthongTag: true, efTag: false },
-
-        // HYUNDAI
-        { model: "HYUNDAI SONATA 2.0", year: 2012, price: "RM -", monthly: "-", plateNo: "WYM7510", status: "Available", id: 42, manthongTag: true, efTag: false },
-        { model: "HYUNDAI ELANTRA 1.6L", year: 2014, price: "RM -", monthly: "-", plateNo: "BNB8583", status: "Available", id: 43, manthongTag: true, efTag: false },
-
-        // MERCEDES BENZ
-        { model: "MERCEDES BENZ C180 KOMPRESSOR", year: 2012, price: "-", monthly: "-", plateNo: "PJR328", status: "Available", id: 44, manthongTag: true, efTag: false },
-        
-        // --- END Man Thong CARS ---
-
-        // --- START EF CARS ---
-        // PERODUA (EF) - ID starting from 45
+        // --- Ever Forward Cars ---
         { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false },
-        { model: "PERODUA MYVI 1.5 AV", year: 2017, price: "RM 41,000", monthly: "", plateNo: "JRX8129", status: "Available", id: 46, efTag: true, manthongTag: false },
-        { model: "PERODUA ALZA 1.5 AV", year: 2012, price: "RM 27,600", monthly: "", plateNo: "WNR5448", status: "Available", id: 47, efTag: true, manthongTag: false },
-        { model: "PERODUA AXIA 1.0 AV", year: 2018, price: "RM 35,000", monthly: "", plateNo: "RX9467", status: "Available", id: 48, efTag: true, manthongTag: false },
-        { model: "PERODUA MYVI 1.5 AV", year: 2017, price: "RM 41,000", monthly: "", plateNo: "BPG2761", status: "Available", id: 49, efTag: true, manthongTag: false },
-        { model: "PERODUA MYVI 1.5 H", year: 2018, price: "RM 41,000", monthly: "", plateNo: "VCL6445", status: "Available", id: 50, efTag: true, manthongTag: false },
-        { model: "PERODUA MYVI 1.5 AV", year: 2020, price: "RM 52,000", monthly: "", plateNo: "ALN2395", status: "Available", id: 51, efTag: true, manthongTag: false },
-
-        // PROTON (EF)
-        { model: "PROTON PERSONA 1.6 PREMIUM", year: 2016, price: "RM 28,000", monthly: "", plateNo: "RP9787", status: "Available", id: 52, efTag: true, manthongTag: false },
-        { model: "PROTON PERSONA 1.6", year: 2017, price: "RM 29,000", monthly: "", plateNo: "AKS8358", status: "Available", id: 53, efTag: true, manthongTag: false },
-        { model: "PROTON SAGA 1.3 FL", year: 2016, price: "RM 22,600", monthly: "", plateNo: "WCW841N", status: "Available", id: 54, efTag: true, manthongTag: false },
-        { model: "PROTON SAGA 1.3 PREMIUM", year: 2021, price: "RM 36,000", monthly: "", plateNo: "JUK6541", status: "Available", id: 55, efTag: true, manthongTag: false },
-        { model: "PROTON IRIZ 1.3", year: 2015, price: "RM 22,600", monthly: "", plateNo: "WR4996V", status: "Available", id: 56, efTag: true, manthongTag: false },
-        { model: "PROTON PREVE 1.6L", year: 2017, price: "RM 30,000", monthly: "", plateNo: "AKT1566", status: "Available", id: 57, efTag: true, manthongTag: false },
-        { model: "PROTON EXORA 1.6", year: 2014, price: "RM 28,600", monthly: "", plateNo: "BNJ5393", status: "Available", id: 58, efTag: true, manthongTag: false },
-        { model: "PROTON EXORA 1.5 PREMIUM", year: 2019, price: "RM 47,000", monthly: "", plateNo: "RAD1649", status: "Available", id: 59, efTag: true, manthongTag: false },
-
-        // HONDA (EF)
-        { model: "HONDA CITY 1.5 IDSI", year: 2003, price: "RM 14,000", monthly: "", plateNo: "PT15977", status: "Available", id: 60, efTag: true, manthongTag: false },
-        { model: "HONDA CITY 1.5 S", year: 2019, price: "RM 57,600", monthly: "", plateNo: "MDE2308", status: "Available", id: 61, efTag: true, manthongTag: false },
-        { model: "HONDA CIVIC 2.0 S", year: 2016, price: "RM 57,600", monthly: "", plateNo: "BNS494", status: "Available", id: 62, efTag: true, manthongTag: false },
-        { model: "HONDA HR-V 1.8 S", year: 2016, price: "RM 56,600", monthly: "", plateNo: "VPE5603", status: "Available", id: 63, efTag: true, manthongTag: false },
-        { model: "HONDA JAZZ 1.5 E", year: 2018, price: "RM 57,600", monthly: "", plateNo: "BNV5888", status: "Available", id: 64, efTag: true, manthongTag: false },
-        { model: "HONDA CITY 1.5 E", year: 2018, price: "RM 57,600", monthly: "", plateNo: "BLY3814", status: "Available", id: 65, efTag: true, manthongTag: false },
-        { model: "HONDA ACCORD 2.0L", year: 2015, price: "RM 49,600", monthly: "", plateNo: "WB5711Y", status: "Available", id: 66, efTag: true, manthongTag: false },
-
-        // TOYOTA (EF)
-        { model: "TOYOTA VIOS 1.5 E", year: 2013, price: "RM 57,600", monthly: "", plateNo: "PRK3985", status: "Available", id: 67, efTag: true, manthongTag: false },
-        { model: "TOYOTA VIOS 1.5 G", year: 2018, price: "RM 37,000", monthly: "", plateNo: "WYL3873", status: "Available", id: 68, efTag: true, manthongTag: false },
-        { model: "TOYOTA YARIS 1.5 E", year: 2020, price: "RM 61,600", monthly: "", plateNo: "ALU6988", status: "Available", id: 69, efTag: true, manthongTag: false },
-        
-        // NISSAN (EF)
-        { model: "NISSAN GRAND LIVINA 1.6L", year: 2015, price: "RM 37,000", monthly: "", plateNo: "WB5198C", status: "Available", id: 70, efTag: true, manthongTag: false },
-
-        // NASA (EF)
-        { model: "NAZA CITRA 2.0", year: 2009, price: "RM 9,700", monthly: "", plateNo: "PJD9280", status: "Available", id: 71, efTag: true, manthongTag: false }
-        // --- END EF CARS ---
+        { model: "HONDA CITY 1.5 IDSI", year: 2003, price: "RM 14,000", monthly: "", plateNo: "PT15977", status: "Available", id: 60, efTag: true, manthongTag: false }
     ];
-
-    // ----------------------------------------------------
-    // 2. Core Rendering Functions and Sorting Logic
-    // ----------------------------------------------------
     
-    // Custom brand order (for display)
-    const customBrandOrder = [
-        "PROTON", 
-        "PERODUA",
-        "TOYOTA",
-        "HONDA",
-        "NISSAN",
-        "LEXUS", 
-        "VOLKSWAGEN", 
-        "HYUNDAI", 
-        "MERCEDES BENZ",
-        "NAZA"
-    ];
+    if (storedCars) return JSON.parse(storedCars);
+    localStorage.setItem('manthongCars', JSON.stringify(defaultCars));
+    return defaultCars;
+}
 
-    // Helper function: Renders the HTML structure for car list items
-    function renderList(list, ulElement) {
-        list.forEach(car => {
-            const waLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo || 'N/A'}%2E%20Please%20send%20more%20details%2E`;
-            
-            const carItem = document.createElement('li');
-            carItem.className = 'car-item status-available';
-            
-            // --- TAGS LOGIC ---
-            let tagHtml = '';
-            if (car.efTag) {
-                tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
-            }
-            if (car.manthongTag && !car.efTag) {
-                    tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
-            }
-            
-            // **已移除删除按钮**
+function saveCars(carArray) {
+    localStorage.setItem('manthongCars', JSON.stringify(carArray));
+    displayLastUpdatedTime();
+}
 
-            carItem.innerHTML = `
-                ${tagHtml} 
-                <h3 class="car-title">${car.model}</h3>
-                <p class="car-year">Year: ${car.year}</p>
-                
-                <p class="car-plateno">Plate No: <strong>${car.plateNo || 'N/A'}</strong></p>
-                
-                <p class="car-price">Price: ${car.price}</p>
-                
-                <p class="car-monthly">Monthly Est: <strong>${car.monthly || 'N/A'}</strong></p>
-                
-                <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
-                
-                <a href="${waLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW (wa.me/60105000111)</a>
-            `;
-            ulElement.appendChild(carItem);
-        });
-        
-        // **已移除删除事件监听器**
+function resetToDefaultData() {
+    if (confirm("Are you sure you want to reset all data to default? This will delete any cars you've added or modified.")) {
+        localStorage.removeItem('manthongCars');
+        location.reload();
+    }
+}
+
+function generateUniqueId() {
+    return Date.now();
+}
+
+// ----------------------------------------------------
+// 3. Modal Operations
+// ----------------------------------------------------
+function openAddCarModal(carModal, carForm) {
+    document.getElementById('modal-title').textContent = 'Add New Car';
+    document.getElementById('modal-icon').textContent = '🚗';
+    document.getElementById('delete-car-btn').style.display = 'none';
+    carForm.reset();
+    currentCarId = null;
+    carModal.classList.add('active');
+}
+
+function openEditCarModal(carModal, carId) {
+    const car = cars.find(c => c.id === carId);
+    if (!car) return;
+
+    document.getElementById('modal-title').textContent = 'Edit Car';
+    document.getElementById('modal-icon').textContent = '✏️';
+    document.getElementById('delete-car-btn').style.display = 'block';
+
+    // Populate form with car data
+    document.getElementById('car-id').value = car.id;
+    document.getElementById('car-model').value = car.model;
+    document.getElementById('car-year').value = car.year;
+    document.getElementById('car-price').value = car.price.replace('RM ', '');
+    document.getElementById('car-monthly').value = car.monthly.replace('RM ', '') || '';
+    document.getElementById('car-plate').value = car.plateNo;
+    document.getElementById('car-status').value = car.status;
+    document.getElementById('manthong-tag').checked = car.manthongTag;
+    document.getElementById('ef-tag').checked = car.efTag;
+
+    currentCarId = carId;
+    carModal.classList.add('active');
+}
+
+function closeAllModals(carModal, deleteModal) {
+    carModal.classList.remove('active');
+    deleteModal.classList.remove('active');
+}
+
+// ----------------------------------------------------
+// 4. Car Data Management
+// ----------------------------------------------------
+function saveCarData(carModal, deleteModal, carForm) {
+    // Get form values
+    const model = document.getElementById('car-model').value.trim();
+    const year = parseInt(document.getElementById('car-year').value);
+    const price = document.getElementById('car-price').value.trim();
+    const monthly = document.getElementById('car-monthly').value.trim();
+    const plateNo = document.getElementById('car-plate').value.trim();
+    const status = document.getElementById('car-status').value;
+    const manthongTag = document.getElementById('manthong-tag').checked;
+    const efTag = document.getElementById('ef-tag').checked;
+
+    // Validate required fields
+    if (!model || !year || !price || !plateNo) {
+        showNotification('Please fill in all required fields (Model, Year, Price, Plate Number)', 'error');
+        return;
+    }
+
+    // Format car data
+    const carData = {
+        model,
+        year,
+        price: price.includes('RM') ? price : `RM ${price}`,
+        monthly: monthly ? (monthly.includes('RM') ? monthly : `RM ${monthly}`) : '',
+        plateNo,
+        status,
+        manthongTag,
+        efTag
+    };
+
+    // Update existing car or add new car
+    if (currentCarId) {
+        const index = cars.findIndex(c => c.id === currentCarId);
+        if (index !== -1) {
+            carData.id = currentCarId;
+            cars[index] = carData;
+            showNotification('Car updated successfully', 'success');
+        }
+    } else {
+        carData.id = generateUniqueId();
+        cars.push(carData);
+        showNotification('Car added successfully', 'success');
+    }
+
+    saveCars(cars);
+    renderCarList(cars);
+    closeAllModals(carModal, deleteModal);
+}
+
+function deleteCarData(carModal, deleteModal) {
+    if (!currentCarId) return;
+    
+    const confirmation = confirm("Are you sure you want to delete this car? This action cannot be undone.");
+    if (!confirmation) return;
+
+    const index = cars.findIndex(c => c.id === currentCarId);
+    if (index !== -1) {
+        cars.splice(index, 1);
+        saveCars(cars);
+        renderCarList(cars);
+        showNotification('Car deleted successfully', 'success');
     }
     
-    // Helper function: Renders sub-groups within a brand 
-    function renderSubGroup(title, cars, container) {
-        // Sort available cars by year descending (newest first)
-        cars.sort((a, b) => b.year - a.year); 
+    closeAllModals(carModal, deleteModal);
+}
 
-        if (cars.length > 0) {
-            container.innerHTML += `<h3 class="category-title">🟢 Available Stock ${title ? `(${title})` : ''}</h3>`;
-            const availableList = document.createElement('ul');
-            availableList.className = 'car-list';
-            
-            renderList(cars, availableList); 
-            container.appendChild(availableList);
+// ----------------------------------------------------
+// 5. Notification System
+// ----------------------------------------------------
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; padding: 12px 20px;
+        border-radius: 6px; color: white; font-weight: 600; z-index: 3000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideIn 0.3s ease-out;
+    `;
+    
+    notification.style.backgroundColor = type === 'success' ? '#28a745' : '#dc3545';
+    document.body.appendChild(notification);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// ----------------------------------------------------
+// 6. Car List Rendering
+// ----------------------------------------------------
+function renderCarItems(list, containerElement) {
+    list.forEach(car => {
+        const whatsappLink = `https://wa.me/60105000111?text=Hi%2C%20I'm%20interested%20in%20the%20${encodeURIComponent(car.model)}%20${car.year}%2C%20Plate%20No%3A%20${car.plateNo}%2E`;
+        
+        // Generate tags HTML
+        let tagHtml = '';
+        if (car.efTag) tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
+        if (car.manthongTag && !car.efTag) tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
+
+        const carItem = document.createElement('li');
+        carItem.className = 'car-item';
+        carItem.setAttribute('data-car-id', car.id);
+        carItem.innerHTML = `
+            ${tagHtml}
+            <button class="edit-car-btn" style="position:absolute; top:10px; right:10px; background:#6c757d; color:white; border:none; border-radius:4px; padding:5px 10px; cursor:pointer; font-size:12px;">✏️ Edit</button>
+            <h3 class="car-title">${car.model}</h3>
+            <p class="car-year">Year: ${car.year}</p>
+            <p class="car-plateno">Plate No: <strong>${car.plateNo}</strong></p>
+            <p class="car-price">Price: ${car.price}</p>
+            <p class="car-monthly">Monthly Estimate: <strong>${car.monthly || 'N/A'}</strong></p>
+            <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
+            <a href="${whatsappLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW</a>
+        `;
+        containerElement.appendChild(carItem);
+    });
+}
+
+function renderCarList(carArray) {
+    const container = document.getElementById('car-container');
+    container.innerHTML = '';
+
+    // Group cars by brand
+    const groupedByBrand = carArray.reduce((acc, car) => {
+        let brand = car.model.split(' ')[0].toUpperCase();
+        if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
+        if (!acc[brand]) acc[brand] = [];
+        acc[brand].push(car);
+        return acc;
+    }, {});
+
+    // Sort brands using custom order
+    const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
+        .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
+
+    // Render each brand group
+    sortedBrands.forEach(brand => {
+        const brandCars = groupedByBrand[brand];
+        if (brandCars.length === 0) return;
+
+        container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
+
+        // Separate by dealership
+        const manthongCars = brandCars.filter(car => car.manthongTag);
+        const efCars = brandCars.filter(car => car.efTag);
+
+        // Render Man Thong cars
+        if (manthongCars.length > 0) {
+            container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
+            const mtList = document.createElement('ul');
+            mtList.className = 'car-list';
+            renderCarItems(manthongCars.sort((a, b) => b.year - a.year), mtList);
+            container.appendChild(mtList);
         }
+
+        // Render Ever Forward cars
+        if (efCars.length > 0) {
+            container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
+            const efList = document.createElement('ul');
+            efList.className = 'car-list';
+            renderCarItems(efCars.sort((a, b) => b.year - a.year), efList);
+            container.appendChild(efList);
+        }
+    });
+
+    // Show message if no cars found
+    if (carArray.length === 0) {
+        container.innerHTML = '<h2 class="brand-category-title" style="border-bottom:none; color:#dc3545;">No matching cars found</h2>';
+    }
+}
+
+// ----------------------------------------------------
+// 7. Loan Calculator
+// ----------------------------------------------------
+function calculateMonthlyPayment(principal, years, rate) {
+    const totalInterest = principal * rate * years;
+    const totalLoanAmount = principal + totalInterest;
+    return totalLoanAmount / (years * 12);
+}
+
+function updateLoanCalculation() {
+    const otrPrice = parseFloat(document.getElementById('otr-price').value) || 0;
+    const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
+    const loanYears = parseInt(document.getElementById('loan-years').value) || 0;
+    const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+    const resultElement = document.getElementById('monthly-payment-result');
+
+    // Validate inputs
+    if (otrPrice <= downPayment || loanYears <= 0 || interestRate <= 0) {
+        resultElement.innerHTML = `RM 0.00<span>Please ensure OTR > Down Payment and all values are positive</span>`;
+        return;
     }
 
-    // Main rendering function: Groups and renders cars by brand 
-    function renderCars(carArray) {
-        const container = document.getElementById('car-container');
-        container.innerHTML = ''; // Clear existing content
+    // Calculate and display result
+    const principal = otrPrice - downPayment;
+    const monthlyPayment = calculateMonthlyPayment(principal, loanYears, interestRate);
+    resultElement.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
+}
 
-        // 1. Group by brand name
-        const groupedByBrand = carArray.reduce((acc, car) => {
-            const brand = car.model.split(' ')[0].toUpperCase();
-            // Special handling for MERCEDES BENZ
-            const finalBrand = brand === 'MERCEDES' ? 'MERCEDES BENZ' : brand;
-            if (!acc[finalBrand]) {
-                acc[finalBrand] = [];
-            }
-            acc[finalBrand].push(car);
-            return acc;
-        }, {});
-        
-        // Sort brands using custom order
-        const allBrands = Object.keys(groupedByBrand);
-        const sortedBrands = customBrandOrder.filter(brand => allBrands.includes(brand));
-        
-        allBrands.forEach(brand => {
-            if (!sortedBrands.includes(brand) && !customBrandOrder.includes(brand)) {
-                sortedBrands.push(brand);
-            }
-        });
+// ----------------------------------------------------
+// 8. Update Time Display
+// ----------------------------------------------------
+function displayLastUpdatedTime() {
+    const now = new Date();
+    const dateString = now.toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false, timeZone: 'Asia/Kuala_Lumpur'
+    });
+    document.getElementById('update-time').textContent = dateString + ' MYT';
+}
 
-        // 2. Iterate through brands and render Man Thong & EF separately
-        sortedBrands.forEach(brand => {
-            const carsOfBrand = groupedByBrand[brand];
-            
-            if (carsOfBrand.length === 0) return;
+// ----------------------------------------------------
+// 9. Event Listeners Initialization
+// ----------------------------------------------------
+function initializeEventListeners(carModal, deleteModal, carForm) {
+    // Add car button
+    document.getElementById('add-car-btn').addEventListener('click', () => {
+        openAddCarModal(carModal, carForm);
+    });
 
-            const brandTitleContent = `🚗 ${brand}`; 
-            // Create main brand title
-            container.innerHTML += `<h2 class="brand-category-title">${brandTitleContent}</h2>`;
-            
-            // Separate Man Thong and EF
-            const manthongCars = carsOfBrand.filter(car => car.manthongTag);
-            const efCars = carsOfBrand.filter(car => car.efTag);
+    // Save and reset buttons
+    document.getElementById('save-data-btn').addEventListener('click', () => {
+        saveCars(cars);
+        showNotification('Data saved successfully', 'success');
+    });
+    
+    document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
 
-            // Render Man Thong Cars
-            if (manthongCars.length > 0) {
-                container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
-                renderSubGroup('Man Thong Auto Trading', manthongCars, container);
-            }
+    // Save car button
+    document.getElementById('save-car-btn').addEventListener('click', () => {
+        saveCarData(carModal, deleteModal, carForm);
+    });
 
-            // Render EF Cars
-            if (efCars.length > 0) {
-                container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
-                renderSubGroup('Ever Forward Auto Trading', efCars, container);
-            }
-        });
-        
-        if (carArray.length === 0) {
-                container.innerHTML += '<h2 class="brand-category-title" style="border-bottom:none; color:#dc3545;">No matching cars found...</h2>';
+    // Delete functionality
+    document.getElementById('delete-car-btn').addEventListener('click', () => {
+        deleteModal.classList.add('active');
+    });
+    
+    document.getElementById('confirm-delete-btn').addEventListener('click', () => {
+        deleteCarData(carModal, deleteModal);
+    });
+
+    // Close modals
+    document.getElementById('close-modal').addEventListener('click', () => {
+        closeAllModals(carModal, deleteModal);
+    });
+    
+    document.getElementById('close-delete-modal').addEventListener('click', () => {
+        closeAllModals(carModal, deleteModal);
+    });
+    
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        closeAllModals(carModal, deleteModal);
+    });
+    
+    document.getElementById('cancel-delete-btn').addEventListener('click', () => {
+        closeAllModals(carModal, deleteModal);
+    });
+
+    // Edit car functionality (using event delegation)
+    document.getElementById('car-container').addEventListener('click', (e) => {
+        if (e.target.classList.contains('edit-car-btn')) {
+            const carId = parseInt(e.target.closest('.car-item').getAttribute('data-car-id'));
+            openEditCarModal(carModal, carId);
         }
-    }
+    });
 
-    // ----------------------------------------------------
-    // 3. Search Functionality
-    // ----------------------------------------------------
+    // Search functionality
     document.getElementById('search-input').addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const filteredCars = cars.filter(car => 
-            car.model.toLowerCase().includes(searchTerm) || 
+            car.model.toLowerCase().includes(searchTerm) ||
             car.year.toString().includes(searchTerm) ||
-            (car.plateNo && car.plateNo.toLowerCase().includes(searchTerm))
+            car.plateNo.toLowerCase().includes(searchTerm)
         );
-        renderCars(filteredCars);
+        renderCarList(filteredCars);
     });
-    
-    // ----------------------------------------------------
-    // 4. Loan Calculator Logic
-    // ----------------------------------------------------
-    
-    // Loan calculation formula (Simple Flat Rate Method)
-    function calculateMonthlyPayment(principal, years, rate) {
-        // Rate is expected as a decimal (e.g., 0.10 for 10%)
-        const totalInterest = principal * rate * years;
-        const totalLoanAmount = principal + totalInterest;
-        const months = years * 12;
-        const monthlyPayment = totalLoanAmount / months;
-        return monthlyPayment;
-    }
 
-    const otrInput = document.getElementById('otr-price');
-    const downPaymentInput = document.getElementById('down-payment');
-    const loanYearsSelect = document.getElementById('loan-years');
-    const interestRateSelect = document.getElementById('interest-rate');
-    const resultDiv = document.getElementById('monthly-payment-result');
-
-    function updateCalculation() {
-        // 引用您的记忆信息：当车辆不能再借贷时，通过 "365" 银行借款，最多 20000，3年，利率 10%。
-        // 我们将使用选定的利率/年限，但会保留这个信息作为参考。
-
-        const otr = parseFloat(otrInput.value) || 0;
-        const downPayment = parseFloat(downPaymentInput.value) || 0;
-        const years = parseInt(loanYearsSelect.value) || 0;
-        const rate = parseFloat(interestRateSelect.value) || 0; // Read selected rate
-
-        let principal = otr - downPayment;
-
-        if (principal <= 0 || years <= 0 || rate <= 0) {
-            let message = "Fill in OTR, Down Payment, Years, and Rate.";
-            if (principal <= 0) {
-                message = "OTR must be greater than Down Payment.";
-            }
-            resultDiv.innerHTML = `RM 0.00<span>${message}</span>`;
-            return;
-        }
-        
-        const monthlyPayment = calculateMonthlyPayment(principal, years, rate);
-        const ratePercent = (rate * 100).toFixed(1);
-        
-        resultDiv.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${years} Years, ${ratePercent}%)</span>`;
-    }
-    
-    // Event listeners for calculator inputs
-    if (otrInput) otrInput.addEventListener('input', updateCalculation);
-    if (downPaymentInput) downPaymentInput.addEventListener('input', updateCalculation);
-    if (loanYearsSelect) loanYearsSelect.addEventListener('change', updateCalculation);
-    if (interestRateSelect) interestRateSelect.addEventListener('change', updateCalculation);
-
-    // Initialization of calculator toggle button
-    const calcToggleButton = document.getElementById('calc-toggle');
-    const calcPopup = document.getElementById('calculator-popup');
-
-    if (calcToggleButton && calcPopup) {
-        calcToggleButton.addEventListener('click', () => {
-            const isHidden = calcPopup.style.display === 'none' || calcPopup.style.display === '';
-            if (isHidden) {
-                calcPopup.style.display = 'block';
-                calcToggleButton.innerHTML = '&#x2715;'; // Close symbol
-                updateCalculation(); 
-            } else {
-                calcPopup.style.display = 'none';
-                calcToggleButton.innerHTML = '&#x270E;'; // Calculator symbol
-            }
-        });
-    }
-    
-    // ----------------------------------------------------
-    // 5. Stock Management (Removed Add Car Logic)
-    // ----------------------------------------------------
-    
-    // **已移除 Add Car 的表单和逻辑，以及 Add Car 的弹出窗口切换逻辑**
-
-    // ----------------------------------------------------
-    // 6. Update Time Functionality (Removed Local Save status)
-    // ----------------------------------------------------
-    function displayCurrentTime() {
-        const now = new Date();
-        // Format the date/time string: e.g., Oct 17, 2025 17:13:10
-        const dateString = now.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        });
-
-        const timeElement = document.getElementById('update-time');
-        if (timeElement) {
-            // 提示用户这是一个基于代码的静态列表
-            timeElement.innerHTML = `<strong>${dateString} MYT (Code-Based List)</strong>`;
-        }
-    }
-
-    // Initial render on page load
-    document.addEventListener('DOMContentLoaded', () => {
-        renderCars(cars);
-        if (otrInput) {
-            updateCalculation();
-        }
-        displayCurrentTime(); 
+    // Calculator functionality
+    const calculatorInputs = [
+        document.getElementById('otr-price'),
+        document.getElementById('down-payment'),
+        document.getElementById('loan-years'),
+        document.getElementById('interest-rate')
+    ];
+    calculatorInputs.forEach(input => {
+        input.addEventListener('input', updateLoanCalculation);
     });
-    </script>
+
+    // Calculator toggle
+    document.getElementById('calc-toggle').addEventListener('click', () => {
+        const popup = document.getElementById('calculator-popup');
+        const toggleBtn = document.getElementById('calc-toggle');
+        
+        if (popup.style.display === 'block') {
+            popup.style.display = 'none';
+            toggleBtn.innerHTML = '&#x270E;';
+        } else {
+            popup.style.display = 'block';
+            toggleBtn.innerHTML = '&#x2715;';
+            updateLoanCalculation();
+        }
+    });
+}
+
+// ----------------------------------------------------
+// 10. Initialization on Page Load
+// ----------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    // Get DOM elements
+    const carModal = document.getElementById('car-modal');
+    const deleteModal = document.getElementById('delete-modal');
+    const carForm = document.getElementById('car-form');
+
+    // Initialize data
+    cars = getCars();
+
+    // Render cars
+    renderCarList(cars);
+
+    // Setup event listeners
+    initializeEventListeners(carModal, deleteModal, carForm);
+
+    // Initialize calculator and time display
+    updateLoanCalculation();
+    displayLastUpdatedTime();
+});
+</script>
 </body>
 </html>
