@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Man Thong Auto Trading Stock List</title>
     <style>
-        /* 原有CSS不变，此处省略 */
+        /* 原有CSS完全不变，此处省略 */
         :root {
             --primary: #007bff;
             --secondary: #6c757d;
@@ -33,7 +33,7 @@
             padding-bottom: 60px; /* Space for mobile action bar */
         }
 
-        /* 以下保留你原有所有CSS样式，无需修改 */
+        /* 以下保留你所有原有CSS样式，无需修改 */
         .header {
             background-color: var(--primary);
             color: white;
@@ -744,7 +744,7 @@
     </style>
 </head>
 <body>
-    <!-- 原有HTML结构不变，此处省略 -->
+    <!-- 原有HTML结构完全不变，此处省略 -->
     <header class="header">
         <div class="header-content">
             <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
@@ -955,7 +955,7 @@
         ];
 
         // ----------------------------------------------------
-        // 2. Local Storage Data Management
+        // 2. Local Storage Data Management（核心：优先本地数据）
         // ----------------------------------------------------
         function getCars() {
             const storedCars = localStorage.getItem('manthongCars');
@@ -966,12 +966,12 @@
                 { model: "PERODUA MYVI 1.3 SE", year: 2013, price: "RM 25,600", monthly: "", plateNo: "W6139C", status: "Available", id: 45, efTag: true, manthongTag: false }
             ];
             
-            if (storedCars) return JSON.parse(storedCars);
-            // 这里不再自动保存默认数据，而是等GitHub导入失败后再用
-            return defaultCars;
+            // 优先返回本地存储的 data（编辑后的），没有再返回默认数据
+            return storedCars ? JSON.parse(storedCars) : defaultCars;
         }
 
         function saveCars(carArray) {
+            // 保存时明确覆盖本地存储，确保编辑内容被记录
             localStorage.setItem('manthongCars', JSON.stringify(carArray));
             displayLastUpdatedTime();
         }
@@ -1019,16 +1019,13 @@
         }
 
         // ----------------------------------------------------
-        // 4. Import from GitHub（核心：支持自动导入+手动导入）
+        // 4. Import from GitHub（仅手动触发，不自动覆盖本地数据）
         // ----------------------------------------------------
-        async function importFromGitHub(isAutoLoad = false) {
+        async function importFromGitHub() {
             const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
             
             try {
-                // 自动加载时不显示"导入中"提示，避免打扰用户
-                if (!isAutoLoad) {
-                    showNotification('Importing data from GitHub...', 'success');
-                }
+                showNotification('Importing data from GitHub...', 'success');
                 
                 const response = await fetch(githubJsonUrl);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1036,26 +1033,19 @@
                 const importedCars = await response.json();
                 
                 if (Array.isArray(importedCars)) {
-                    cars = importedCars;
-                    saveCars(cars); // 保存到本地存储，下次打开直接用
-                    renderCarList(cars);
-                    displayLastUpdatedTime();
-                    
-                    // 手动导入显示成功提示，自动导入不提示
-                    if (!isAutoLoad) {
-                        showNotification("Data imported successfully (will persist on next load)", "success");
+                    // 手动导入时才覆盖本地数据，并提示用户
+                    const confirmImport = confirm("Import GitHub data? This will overwrite your current local data (including edits).");
+                    if (confirmImport) {
+                        cars = importedCars;
+                        saveCars(cars); // 覆盖本地存储
+                        renderCarList(cars);
+                        showNotification("GitHub data imported successfully (local data overwritten)", "success");
                     }
                 } else {
                     throw new Error("Imported data is not a valid array");
                 }
             } catch (error) {
-                // 自动导入失败时，用默认数据；手动导入失败显示错误
-                if (isAutoLoad) {
-                    cars = getCars(); // 加载默认数据
-                    renderCarList(cars);
-                } else {
-                    showNotification("Failed to import: " + error.message, "error");
-                }
+                showNotification("Failed to import: " + error.message, "error");
             }
         }
 
@@ -1079,6 +1069,7 @@
             document.getElementById('modal-icon').textContent = '✏️';
             document.getElementById('delete-car-btn').style.display = 'block';
 
+            // 回显编辑前的正确数据（来自本地存储的 cars 数组）
             document.getElementById('car-id').value = car.id;
             document.getElementById('car-model').value = car.model;
             document.getElementById('car-year').value = car.year;
@@ -1099,7 +1090,7 @@
         }
 
         // ----------------------------------------------------
-        // 6. Car Data Management
+        // 6. Car Data Management（确保编辑后保存到本地）
         // ----------------------------------------------------
         function saveCarData() {
             const model = document.getElementById('car-model').value.trim();
@@ -1124,22 +1115,24 @@
                 plateNo,
                 status,
                 manthongTag,
-                efTag
+                efTag,
+                id: currentCarId || generateUniqueId() // 确保编辑时保留原ID
             };
 
             if (currentCarId) {
+                // 编辑：替换数组中对应ID的车辆数据
                 const index = cars.findIndex(c => c.id === currentCarId);
                 if (index !== -1) {
-                    carData.id = currentCarId;
                     cars[index] = carData;
-                    showNotification('Car updated successfully', 'success');
+                    showNotification('Car updated successfully (saved to local)', 'success');
                 }
             } else {
-                carData.id = generateUniqueId();
+                // 新增：添加到数组
                 cars.push(carData);
-                showNotification('Car added successfully', 'success');
+                showNotification('Car added successfully (saved to local)', 'success');
             }
 
+            // 关键：保存到本地存储，确保下次打开不丢失
             saveCars(cars);
             renderCarList(cars);
             closeAllModals();
@@ -1151,9 +1144,9 @@
             const index = cars.findIndex(c => c.id === currentCarId);
             if (index !== -1) {
                 cars.splice(index, 1);
-                saveCars(cars);
+                saveCars(cars); // 删除后也保存到本地
                 renderCarList(cars);
-                showNotification('Car deleted successfully', 'success');
+                showNotification('Car deleted successfully (local data updated)', 'success');
             }
             
             closeAllModals();
@@ -1333,7 +1326,7 @@
                 document.querySelector('.mobile-action-bar').appendChild(menu);
                 
                 document.getElementById('mobile-export-btn').addEventListener('click', exportCarData);
-                document.getElementById('mobile-import-btn').addEventListener('click', () => importFromGitHub(false));
+                document.getElementById('mobile-import-btn').addEventListener('click', importFromGitHub);
                 document.getElementById('mobile-reset-btn').addEventListener('click', resetToDefaultData);
             }
         }
@@ -1346,13 +1339,13 @@
 
             document.getElementById('save-data-btn').addEventListener('click', () => {
                 saveCars(cars);
-                showNotification('Data saved successfully', 'success');
+                showNotification('Local data saved successfully', 'success');
             });
             
             document.getElementById('reset-data-btn').addEventListener('click', resetToDefaultData);
 
             document.getElementById('export-data-btn').addEventListener('click', exportCarData);
-            document.getElementById('import-github-btn').addEventListener('click', () => importFromGitHub(false));
+            document.getElementById('import-github-btn').addEventListener('click', importFromGitHub);
 
             document.getElementById('save-car-btn').addEventListener('click', saveCarData);
 
@@ -1411,7 +1404,7 @@
             document.getElementById('mobile-add-btn').addEventListener('click', openAddCarModal);
             document.getElementById('mobile-save-btn').addEventListener('click', () => {
                 saveCars(cars);
-                showNotification('Data saved successfully', 'success');
+                showNotification('Local data saved successfully', 'success');
             });
             document.getElementById('mobile-more-btn').addEventListener('click', toggleMobileMenu);
             
@@ -1429,21 +1422,15 @@
         }
 
         // ----------------------------------------------------
-        // 13. Initialization on Page Load（核心修改：自动导入GitHub）
+        // 13. Initialization on Page Load（核心：只加载本地数据）
         // ----------------------------------------------------
-        document.addEventListener('DOMContentLoaded', async () => {
-            // 第一步：先检查本地存储是否有之前导入的GitHub数据
-            const storedCars = localStorage.getItem('manthongCars');
-            if (storedCars) {
-                // 有则直接用本地存储的GitHub数据
-                cars = JSON.parse(storedCars);
-                renderCarList(cars);
-            } else {
-                // 没有则自动导入GitHub数据（isAutoLoad=true表示自动加载）
-                await importFromGitHub(true);
-            }
+        document.addEventListener('DOMContentLoaded', () => {
+            // 第一步：加载本地存储的 data（包含编辑后的内容）
+            cars = getCars();
+            // 第二步：渲染本地数据，不自动导入GitHub
+            renderCarList(cars);
 
-            // 后续初始化逻辑不变
+            // 后续初始化不变
             initializeEventListeners();
             updateLoanCalculation();
             displayLastUpdatedTime();
