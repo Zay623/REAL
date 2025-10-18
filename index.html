@@ -1089,24 +1089,35 @@
         // ----------------------------------------------------
         // 4. Import from GitHub
         // ----------------------------------------------------
-        async function importFromGitHub() {
-            const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
-            
-            try {
-                showNotification('Importing data from GitHub...', 'success');
-                
-                const response = await fetch(githubJsonUrl);
-                if (!response.ok) throw new Error("Failed to load data");
-                
-                const importedCars = await response.json();
-                cars = importedCars;
-                saveCars(cars);
-                renderCarList(cars);
-                showNotification("Data imported from GitHub successfully", "success");
-            } catch (error) {
-                showNotification("Failed to import data: " + error.message, "error");
-            }
+async function importFromGitHub() {
+    const githubJsonUrl = "https://raw.githubusercontent.com/Zay623/REAL/refs/heads/main/car_data_20251018%20(1).json";
+    
+    try {
+        showNotification('Importing data from GitHub...', 'success');
+        
+        const response = await fetch(githubJsonUrl);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        
+        const importedCars = await response.json();
+        
+        // 关键：验证导入的数据格式是否为数组（确保是正确的车辆数据）
+        if (Array.isArray(importedCars)) {
+            // 1. 用导入的数据覆盖全局变量
+            cars = importedCars;
+            // 2. 保存到本地存储（覆盖原有默认数据）
+            localStorage.setItem('manthongCars', JSON.stringify(cars));
+            // 3. 重新渲染列表
+            renderCarList(cars);
+            // 4. 更新最后修改时间
+            displayLastUpdatedTime();
+            showNotification("Data imported successfully (will persist on next load)", "success");
+        } else {
+            throw new Error("Imported data is not a valid array");
         }
+    } catch (error) {
+        showNotification("Failed to import: " + error.message, "error");
+    }
+}
 
         // ----------------------------------------------------
         // 5. Modal Operations
