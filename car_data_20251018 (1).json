@@ -1,5 +1,4 @@
 [
-  // PROTON 品牌
   {
     "model": "PROTON X70 1.8 PREMIUM",
     "year": 2019,
@@ -825,8 +824,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // PERODUA 品牌
   {
     "model": "PERODUA VIVA 850 EX",
     "year": 2014,
@@ -1014,8 +1011,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // TOYOTA 品牌
   {
     "model": "TOYOTA VIOS 1.5 E",
     "year": 2019,
@@ -1093,8 +1088,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // NISSAN 品牌
   {
     "model": "NISSAN X-TRAIL 2.0L IMPUL",
     "year": 2018,
@@ -1173,7 +1166,6 @@
     "efTag": false
   },
 
-  // VOLKSWAGEN 品牌
   {
     "model": "VOLKSWAGEN PASSAT 1.8 TSI",
     "year": 2012,
@@ -1197,7 +1189,6 @@
     "efTag": false
   },
 
-  // HONDA 品牌
   {
     "model": "HONDA ACCORD 2.0",
     "year": 2006,
@@ -1429,8 +1420,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // HYUNDAI 品牌
   {
     "model": "HYUNDAI SONATA 2.0",
     "year": 2012,
@@ -1453,8 +1442,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // MERCEDES BENZ 品牌
   {
     "model": "MERCEDES BENZ C180 KOMPRESSOR",
     "year": 2012,
@@ -1466,8 +1453,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // NAZA 品牌
   {
     "model": "NAZA FORTE 2.0",
     "year": 2011,
@@ -1479,8 +1464,6 @@
     "manthongTag": true,
     "efTag": false
   },
-
-  // COMPANY CAR 品牌
   {
     "model": "PERODUA MYVI 1.3 EZ",
     "year": 2013,
