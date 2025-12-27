@@ -10,15 +10,29 @@
         /* ---------------------------------- */
         :root {
             --primary: #007bff;
+            --primary-light: #007bff20;
+            --primary-gradient: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
             --secondary: #6c757d;
             --success: #28a745;
+            --success-light: #28a74520;
             --warning: #ffc107;
+            --warning-light: #ffc10720;
             --danger: #dc3545;
+            --danger-light: #dc354520;
             --light: #f8f9fa;
             --dark: #343a40;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --box-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-morph: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
         }
 
         * {
@@ -30,74 +44,128 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
             color: #333;
-            padding-bottom: 60px; /* Space for mobile action bar */
+            padding-bottom: 70px; /* Space for mobile action bar */
+            scroll-behavior: smooth;
         }
 
         /* ---------------------------------- */
-        /* Header Styles */
+        /* Header Styles with Morph Animation */
         /* ---------------------------------- */
         .header {
-            background-color: var(--primary);
+            background: var(--primary-gradient);
             color: white;
-            padding: 15px 10px;
+            padding: 20px 15px;
             box-shadow: var(--box-shadow);
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            padding: 12px 15px;
+            box-shadow: var(--box-shadow-hover);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
             flex-wrap: wrap;
         }
 
         .logo {
-            height: 40px;
+            height: 48px;
             width: auto;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition-morph);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .logo:hover {
+            transform: scale(1.05) rotate(2deg);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
         }
 
         .header h1 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, #fff, #e0efff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: var(--transition);
         }
 
         /* ---------------------------------- */
-        /* Controls Section */
+        /* Controls Section with Smooth Effects */
         /* ---------------------------------- */
         .controls {
-            padding: 15px 10px;
+            padding: 20px 15px;
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             position: sticky;
-            top: 70px;
+            top: 88px;
             z-index: 99;
+            transition: var(--transition);
+            border-bottom: 1px solid #eee;
+        }
+
+        .controls.scrolled {
+            top: 72px;
         }
 
         .search-container {
             max-width: 600px;
-            margin: 0 auto 15px;
+            margin: 0 auto 20px;
+            position: relative;
         }
 
         #search-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
+            padding: 14px 20px 14px 45px;
+            border: 2px solid #e9ecef;
             border-radius: var(--border-radius);
-            font-size: 16px; /* Prevents zoom on iOS */
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: #fff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 18px;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        #search-input:focus + .search-icon {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.1);
         }
 
         .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -107,147 +175,257 @@
         /* ---------------------------------- */
         .main-content {
             max-width: 1200px;
-            margin: 20px auto;
+            margin: 30px auto;
             padding: 0 15px;
         }
 
         /* ---------------------------------- */
-        /* Car List and Categories */
+        /* Car List and Categories with Morph */
         /* ---------------------------------- */
         .brand-category-title {
-            background-color: #e9ecef;
+            background: linear-gradient(90deg, #e9ecef 0%, #f8f9fa 100%);
             color: var(--primary);
-            padding: 12px 15px;
-            margin: 25px 0 15px;
-            font-size: 1.5rem;
-            border-bottom: 3px solid var(--primary);
+            padding: 16px 20px;
+            margin: 30px 0 20px;
+            font-size: 1.6rem;
+            border-bottom: 4px solid var(--primary);
             border-radius: var(--border-radius) var(--border-radius) 0 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .brand-category-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: var(--transition);
+        }
+
+        .brand-category-title:hover::before {
+            left: 100%;
         }
         
         .dealership-separator {
             color: var(--success);
             text-align: center;
-            padding: 10px;
-            margin: 20px 0 15px;
-            font-size: 1.1rem;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-            background-color: #f8f9fa;
+            padding: 12px;
+            margin: 25px 0 20px;
+            font-size: 1.2rem;
+            border-top: 2px solid #ddd;
+            border-bottom: 2px solid #ddd;
+            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .dealership-separator::before,
+        .dealership-separator::after {
+            content: '★';
+            margin: 0 15px;
+            opacity: 0.7;
         }
 
         .category-title {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--secondary);
-            border-left: 5px solid var(--warning);
-            padding-left: 10px;
-            margin: 15px 0 10px;
+            border-left: 6px solid var(--warning);
+            padding-left: 15px;
+            margin: 20px 0 15px;
+            transition: var(--transition);
+        }
+
+        .category-title:hover {
+            border-left-color: var(--primary);
+            color: var(--primary);
+            transform: translateX(5px);
         }
 
         .car-list {
             list-style: none;
             padding: 0;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
         }
 
         @media (max-width: 768px) {
             .car-list {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
         }
 
         .car-item {
             background-color: white;
-            padding: 20px;
+            padding: 24px;
             border-radius: var(--border-radius);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
             position: relative;
             overflow: hidden;
+            transition: var(--transition-morph);
+            border: 1px solid #eee;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .car-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
             transition: var(--transition);
-            border: 1px solid #ccc;
+            transform-origin: left;
         }
 
         .car-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--box-shadow-hover);
+        }
+
+        .car-item:hover::before {
+            transform: scaleX(1);
         }
 
         .car-title {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--primary);
             margin-top: 0;
             border-bottom: 2px solid #f4f4f4;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-            padding-left: 50px;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            padding-left: 60px;
+            transition: var(--transition);
+        }
+
+        .car-item:hover .car-title {
+            color: #0056b3;
+            border-bottom-color: var(--primary-light);
         }
 
         .car-price {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: var(--danger);
             font-weight: bold;
-            margin: 10px 0 5px;
+            margin: 12px 0 8px;
+            transition: var(--transition);
+        }
+
+        .car-item:hover .car-price {
+            transform: scale(1.05);
         }
 
         .car-monthly {
             font-size: 1.1rem;
             color: var(--success);
-            margin: 5px 0 15px;
+            margin: 8px 0 18px;
         }
 
         .car-year, .car-plateno {
             color: var(--secondary);
-            margin: 3px 0;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .car-year::before {
+            content: '📅';
+            font-size: 16px;
+        }
+
+        .car-plateno::before {
+            content: '🚘';
+            font-size: 16px;
         }
 
         .car-status {
             font-weight: bold;
             color: var(--success);
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: var(--success-light);
+            display: inline-block;
+            margin-top: 8px;
+            transition: var(--transition);
+        }
+
+        .car-status[style*="Sold"] {
+            color: var(--danger);
+            background-color: var(--danger-light);
+        }
+
+        .car-status[style*="Reserved"] {
+            color: var(--warning);
+            background-color: var(--warning-light);
         }
 
         /* ---------------------------------- */
-        /* Tags */
+        /* Tags with Morph Animation */
         /* ---------------------------------- */
         .tag-top-left {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 3px 8px;
-            border-radius: 4px;
+            top: 15px;
+            left: 15px;
+            padding: 6px 12px;
+            border-radius: 6px;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             z-index: 10;
+            transition: var(--transition-morph);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .car-item:hover .tag-top-left {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         .manthong-tag {
-            background-color: var(--warning);
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
             color: #333;
         }
 
         .ef-tag {
-            background-color: #17a2b8;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
             color: white;
         }
 
         /* ---------------------------------- */
-        /* WhatsApp Button */
+        /* WhatsApp Button with Morph Effect */
         /* ---------------------------------- */
         .whatsapp-btn {
             display: block;
-            background-color: #25d366;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white;
             text-align: center;
-            padding: 12px;
+            padding: 14px;
             border-radius: var(--border-radius);
             text-decoration: none;
             font-weight: bold;
-            margin-top: 15px;
-            transition: var(--transition);
+            margin-top: auto;
+            transition: var(--transition-morph);
+            box-shadow: 0 4px 8px rgba(37, 211, 102, 0.2);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .whatsapp-btn:hover {
-            background-color: #128c7e;
+            background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(37, 211, 102, 0.3);
         }
 
         /* ---------------------------------- */
@@ -255,62 +433,80 @@
         /* ---------------------------------- */
         .footer {
             text-align: center;
-            padding: 15px;
-            background-color: var(--dark);
+            padding: 20px;
+            background: linear-gradient(135deg, #343a40 0%, #23272b 100%);
             color: #ccc;
-            margin-top: 40px;
+            margin-top: 50px;
             font-size: 0.9rem;
+            border-top: 4px solid var(--primary);
         }
 
         /* ---------------------------------- */
-        /* Calculator Pop-up */
+        /* Calculator with Smooth Animations */
         /* ---------------------------------- */
         .calculator-icon {
             position: fixed;
             bottom: 80px;
             right: 20px;
-            background-color: var(--warning);
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
             color: #333;
-            width: 60px;
-            height: 60px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             text-align: center;
-            line-height: 60px;
-            font-size: 24px;
+            line-height: 64px;
+            font-size: 26px;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            transition: var(--transition);
+            transition: var(--transition-morph);
+            border: none;
+            font-weight: bold;
+        }
+
+        .calculator-icon:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
 
         @media (max-width: 768px) {
             .calculator-icon {
-                bottom: 70px;
+                bottom: 80px;
                 right: 15px;
-                width: 50px;
-                height: 50px;
-                line-height: 50px;
-                font-size: 20px;
+                width: 56px;
+                height: 56px;
+                line-height: 56px;
+                font-size: 22px;
             }
         }
 
         .calculator-popup {
             position: fixed;
-            bottom: 150px;
+            bottom: 160px;
             right: 20px;
-            width: 320px;
+            width: 340px;
             max-width: 90vw;
             background-color: white;
             border-radius: var(--border-radius);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            padding: 24px;
             z-index: 999;
             display: none;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            transition: var(--transition);
+            border-top: 4px solid var(--warning);
+        }
+
+        .calculator-popup.active {
+            display: block;
+            transform: translateY(0) scale(1);
+            opacity: 1;
         }
 
         @media (max-width: 768px) {
             .calculator-popup {
-                bottom: 130px;
+                bottom: 140px;
                 right: 10px;
                 width: calc(100vw - 20px);
             }
@@ -320,50 +516,68 @@
             margin-top: 0;
             color: var(--primary);
             border-bottom: 2px solid #f4f4f4;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
         }
 
         .calc-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .calc-group label {
             display: block;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
             font-weight: bold;
+            color: var(--dark);
         }
 
         .calc-group input[type="number"], .calc-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .calc-group input[type="number"]:focus, 
+        .calc-group select:focus {
+            outline: none;
+            border-color: var(--warning);
+            box-shadow: 0 0 0 4px var(--warning-light);
         }
 
         #monthly-payment-result {
             text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #d4edda;
+            margin-top: 24px;
+            padding: 20px;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
             color: #155724;
             border-radius: var(--border-radius);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        #monthly-payment-result:hover {
+            transform: scale(1.02);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
         }
 
         #monthly-payment-result span {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             font-weight: normal;
-            margin-top: 5px;
+            margin-top: 8px;
             color: #155724;
+            opacity: 0.8;
         }
 
         /* ---------------------------------- */
-        /* Add/Edit Car Modal */
+        /* Add/Edit Car Modal with Morph */
         /* ---------------------------------- */
         .modal-overlay {
             position: fixed;
@@ -371,7 +585,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -380,6 +594,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
+            backdrop-filter: blur(4px);
         }
 
         .modal-overlay.active {
@@ -389,28 +604,29 @@
 
         .modal {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
-            transform: scale(0.9);
-            transition: var(--transition);
+            transform: scale(0.9) translateY(30px);
+            transition: var(--transition-morph);
+            border-top: 6px solid var(--primary);
         }
 
         .modal-overlay.active .modal {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
         .modal-header {
-            padding: 20px;
+            padding: 24px;
             border-bottom: 1px solid #e9ecef;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px 12px 0 0;
+            border-radius: 16px 16px 0 0;
             position: sticky;
             top: 0;
             z-index: 1;
@@ -421,18 +637,19 @@
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-size: 1.5rem;
         }
 
         .close-modal {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: var(--secondary);
             transition: var(--transition);
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -440,30 +657,32 @@
         }
 
         .close-modal:hover {
-            background-color: rgba(0, 0, 0, 0.1);
-            color: var(--dark);
+            background-color: var(--danger-light);
+            color: var(--danger);
+            transform: rotate(90deg);
         }
 
         .modal-body {
-            padding: 20px;
+            padding: 24px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--dark);
+            font-size: 1rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
             font-size: 16px;
             transition: var(--transition);
         }
@@ -471,12 +690,12 @@
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            box-shadow: 0 0 0 4px var(--primary-light);
         }
 
         .form-row {
             display: flex;
-            gap: 15px;
+            gap: 20px;
         }
 
         @media (max-width: 576px) {
@@ -492,30 +711,38 @@
 
         .checkbox-group {
             display: flex;
-            gap: 20px;
-            margin-top: 10px;
+            gap: 24px;
+            margin-top: 12px;
             flex-wrap: wrap;
         }
 
         .checkbox-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkbox-item:hover {
+            transform: translateX(5px);
         }
 
         .checkbox-item input {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            transition: var(--transition);
         }
 
         .modal-footer {
-            padding: 20px;
+            padding: 20px 24px;
             border-top: 1px solid #e9ecef;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 12px;
             background-color: #f8f9fa;
-            border-radius: 0 0 12px 12px;
+            border-radius: 0 0 16px 16px;
             flex-wrap: wrap;
         }
 
@@ -528,97 +755,74 @@
         /* Delete confirmation */
         .delete-confirm {
             text-align: center;
-            padding: 20px;
+            padding: 30px 24px;
         }
 
         .delete-confirm p {
-            margin-bottom: 20px;
-            font-size: 1.1rem;
+            margin-bottom: 24px;
+            font-size: 1.2rem;
+            color: var(--dark);
         }
 
         /* ---------------------------------- */
-        /* Buttons */
+        /* Buttons with Morph Animations */
         /* ---------------------------------- */
         .btn {
-            padding: 10px 16px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            transition: var(--transition);
+            transition: var(--transition-morph);
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            gap: 10px;
+            font-size: 15px;
             text-align: center;
             justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 576px) {
             .btn {
-                padding: 12px 16px;
-                font-size: 14px;
+                padding: 14px 18px;
+                font-size: 15px;
                 width: 100%;
             }
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background: var(--primary-gradient);
             color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
         }
 
         .btn-success {
-            background-color: var(--success);
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
             color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
         }
 
         .btn-danger {
-            background-color: var(--danger);
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
         }
 
         .btn-warning {
-            background-color: var(--warning);
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
             color: #333;
         }
 
-        .btn-warning:hover {
-            background-color: #e0a800;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
-        }
-
         .btn-secondary {
-            background-color: var(--secondary);
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
             color: white;
         }
 
-        .btn-secondary:hover {
-            background-color: #545b62;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-        }
-
         /* ---------------------------------- */
-        /* Mobile Action Bar */
+        /* Mobile Action Bar with Smooth Effects */
         /* ---------------------------------- */
         .mobile-action-bar {
             position: fixed;
@@ -626,10 +830,11 @@
             left: 0;
             right: 0;
             background: white;
-            padding: 10px 15px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 12px 15px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
             z-index: 100;
             display: none;
+            border-top: 1px solid #eee;
         }
 
         @media (max-width: 768px) {
@@ -650,25 +855,31 @@
             align-items: center;
             background: none;
             border: none;
-            font-size: 12px;
+            font-size: 13px;
             color: var(--secondary);
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: var(--border-radius);
             transition: var(--transition);
         }
 
         .mobile-action-btn.active {
             color: var(--primary);
-            background-color: rgba(0, 123, 255, 0.1);
+            background-color: var(--primary-light);
+            transform: translateY(-5px);
         }
 
         .mobile-action-btn i {
-            font-size: 20px;
-            margin-bottom: 5px;
+            font-size: 22px;
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+
+        .mobile-action-btn:hover i {
+            transform: scale(1.2);
         }
 
         /* ---------------------------------- */
-        /* Notification styles */
+        /* Enhanced Notification Styles */
         /* ---------------------------------- */
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
@@ -680,70 +891,80 @@
             to { transform: translateX(100%); opacity: 0; }
         }
 
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 20px;
+            padding: 18px 24px;
             border-radius: var(--border-radius);
             color: white;
             font-weight: 600;
             z-index: 3000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55), pulse 2s infinite ease-in-out;
             max-width: 90vw;
+            border-left: 6px solid white;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
         }
 
         @media (max-width: 768px) {
             .notification {
-                top: 10px;
-                right: 10px;
-                left: 10px;
+                top: 15px;
+                right: 15px;
+                left: 15px;
                 max-width: none;
             }
         }
 
-        .notification.success {
-            background-color: var(--success);
-        }
-
-        .notification.error {
-            background-color: var(--danger);
-        }
-
         /* ---------------------------------- */
-        /* Edit Button in Car Items */
+        /* Edit Button with Hover Morph */
         /* ---------------------------------- */
         .edit-car-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--secondary);
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 6px 12px;
+            border-radius: 6px;
+            padding: 8px 14px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 13px;
             z-index: 20;
-            transition: var(--transition);
+            transition: var(--transition-morph);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .edit-car-btn:hover {
-            background: #5a6268;
+            background: linear-gradient(135deg, #545b62 0%, #495057 100%);
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         /* ---------------------------------- */
-        /* Loading Spinner */
+        /* Loading Spinner with Smooth Animation */
         /* ---------------------------------- */
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            width: 24px;
+            height: 24px;
+            border: 4px solid rgba(255,255,255,.3);
             border-radius: 50%;
             border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1.2s ease-in-out infinite;
         }
 
         @keyframes spin {
@@ -751,23 +972,34 @@
         }
 
         /* ---------------------------------- */
-        /* Empty State */
+        /* Empty State with Better Visuals */
         /* ---------------------------------- */
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             color: var(--secondary);
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 20px 0;
         }
 
         .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
+            font-size: 64px;
+            margin-bottom: 20px;
             opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .empty-state:hover i {
+            transform: scale(1.1) rotate(5deg);
+            opacity: 0.7;
         }
 
         .empty-state h3 {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             color: var(--secondary);
+            font-size: 1.5rem;
         }
 
         /* ---------------------------------- */
@@ -792,11 +1024,49 @@
             white-space: nowrap;
             border: 0;
         }
+
+        /* ---------------------------------- */
+        /* Scrollbar Styling */
+        /* ---------------------------------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* ---------------------------------- */
+        /* Card Skeleton Loading */
+        /* ---------------------------------- */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
     <!-- Header Section -->
-    <header class="header">
+    <header class="header" id="main-header">
         <div class="header-content">
             <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
             <h1>Stock List</h1>
@@ -804,9 +1074,10 @@
     </header>
 
     <!-- Controls Section -->
-    <div class="controls">
+    <div class="controls" id="main-controls">
         <div class="search-container">
             <input type="text" id="search-input" placeholder="Search by model, year, or plate number...">
+            <span class="search-icon">🔍</span>
         </div>
         
         <!-- Desktop Action Buttons -->
@@ -859,9 +1130,9 @@
     </div>
 
     <!-- Calculator -->
-    <div class="calculator-icon" id="calc-toggle">
+    <button class="calculator-icon" id="calc-toggle">
         &#x270E; 
-    </div>
+    </button>
 
     <div class="calculator-popup" id="calculator-popup">
         <h4>Car Loan Calculator</h4>
@@ -1118,6 +1389,11 @@
             document.getElementById('car-form').reset();
             currentCarId = null;
             document.getElementById('car-modal').classList.add('active');
+            
+            // Add focus animation to first input
+            setTimeout(() => {
+                document.getElementById('car-model').focus();
+            }, 300);
         }
 
         function openEditCarModal(carId) {
@@ -1141,6 +1417,11 @@
 
             currentCarId = carId;
             document.getElementById('car-modal').classList.add('active');
+            
+            // Add focus animation to model input
+            setTimeout(() => {
+                document.getElementById('car-model').focus();
+            }, 300);
         }
 
         function closeAllModals() {
@@ -1214,7 +1495,7 @@
         }
 
         // ----------------------------------------------------
-        // 7. Notification System
+        // 7. Enhanced Notification System with Animation
         // ----------------------------------------------------
         function showNotification(message, type) {
             // Remove any existing notifications
@@ -1226,19 +1507,19 @@
             notification.textContent = message;
             document.body.appendChild(notification);
 
-            // Auto remove after 3 seconds
+            // Auto remove after 4 seconds with smooth animation
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease-in';
+                notification.style.animation = 'slideOut 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55)';
                 setTimeout(() => {
                     if (notification.parentNode) {
                         notification.parentNode.removeChild(notification);
                     }
-                }, 300);
-            }, 3000);
+                }, 400);
+            }, 4000);
         }
 
         // ----------------------------------------------------
-        // 8. Car List Rendering
+        // 8. Car List Rendering with Smooth Transitions
         // ----------------------------------------------------
         function renderCarItems(list, containerElement) {
             list.forEach(car => {
@@ -1249,21 +1530,37 @@
                 if (car.efTag) tagHtml += '<span class="ef-tag tag-top-left">EF</span>';
                 if (car.manthongTag && !car.efTag) tagHtml += '<span class="manthong-tag tag-top-left">MT</span>';
 
+                // Set status color
+                let statusStyle = '';
+                if (car.status === 'Sold') statusStyle = 'style="color: var(--danger);"';
+                if (car.status === 'Reserved') statusStyle = 'style="color: var(--warning);"';
+
                 const carItem = document.createElement('li');
                 carItem.className = 'car-item';
                 carItem.setAttribute('data-car-id', car.id);
+                // Add fade-in animation
+                carItem.style.opacity = '0';
+                carItem.style.transform = 'translateY(20px)';
+                carItem.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
                 carItem.innerHTML = `
                     ${tagHtml}
                     <button class="edit-car-btn">✏️ Edit</button>
                     <h3 class="car-title">${car.model}</h3>
-                    <p class="car-year">Year: ${car.year}</p>
-                    <p class="car-plateno">Plate No: <strong>${car.plateNo}</strong></p>
-                    <p class="car-price">Price: ${car.price}</p>
+                    <p class="car-year">${car.year}</p>
+                    <p class="car-plateno"><strong>${car.plateNo}</strong></p>
+                    <p class="car-price">${car.price}</p>
                     <p class="car-monthly">Monthly Estimate: <strong>${car.monthly || 'N/A'}</strong></p>
-                    <p><strong>Status:</strong> <span class="car-status">${car.status}</span></p>
+                    <p><strong>Status:</strong> <span class="car-status" ${statusStyle}>${car.status}</span></p>
                     <a href="${whatsappLink}" target="_blank" class="whatsapp-btn">📲 INQUIRE NOW</a>
                 `;
                 containerElement.appendChild(carItem);
+                
+                // Trigger animation after adding to DOM
+                setTimeout(() => {
+                    carItem.style.opacity = '1';
+                    carItem.style.transform = 'translateY(0)';
+                }, 50);
             });
         }
 
@@ -1287,54 +1584,104 @@
                 return;
             }
 
-            container.innerHTML = '';
+            // Add skeleton loading state
+            container.innerHTML = '<div class="empty-state"><div class="loading-spinner" style="margin: 0 auto;"></div><p>Loading cars...</p></div>';
+            
+            // Delay rendering for smooth transition
+            setTimeout(() => {
+                container.innerHTML = '';
 
-            // Group cars by brand
-            const groupedByBrand = carArray.reduce((acc, car) => {
-                let brand = car.model.split(' ')[0].toUpperCase();
-                if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
-                if (!acc[brand]) acc[brand] = [];
-                acc[brand].push(car);
-                return acc;
-            }, {});
+                // Group cars by brand
+                const groupedByBrand = carArray.reduce((acc, car) => {
+                    let brand = car.model.split(' ')[0].toUpperCase();
+                    if (brand === 'MERCEDES') brand = 'MERCEDES BENZ';
+                    if (!acc[brand]) acc[brand] = [];
+                    acc[brand].push(car);
+                    return acc;
+                }, {});
 
-            // Sort brands using custom order
-            const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
-                .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
+                // Sort brands using custom order
+                const sortedBrands = customBrandOrder.filter(brand => groupedByBrand[brand])
+                    .concat(Object.keys(groupedByBrand).filter(brand => !customBrandOrder.includes(brand)));
 
-            // Render each brand group
-            sortedBrands.forEach(brand => {
-                const brandCars = groupedByBrand[brand];
-                if (brandCars.length === 0) return;
+                // Render each brand group with staggered animation
+                let delay = 0;
+                sortedBrands.forEach((brand, index) => {
+                    const brandCars = groupedByBrand[brand];
+                    if (brandCars.length === 0) return;
 
-                container.innerHTML += `<h2 class="brand-category-title">🚗 ${brand}</h2>`;
+                    // Create brand title element with animation
+                    const brandTitle = document.createElement('h2');
+                    brandTitle.className = 'brand-category-title';
+                    brandTitle.textContent = `🚗 ${brand}`;
+                    brandTitle.style.opacity = '0';
+                    brandTitle.style.transform = 'translateX(-20px)';
+                    brandTitle.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                    container.appendChild(brandTitle);
+                    
+                    // Trigger animation
+                    setTimeout(() => {
+                        brandTitle.style.opacity = '1';
+                        brandTitle.style.transform = 'translateX(0)';
+                    }, 10);
+                    
+                    delay += 0.1;
 
-                // Separate by dealership
-                const manthongCars = brandCars.filter(car => car.manthongTag);
-                const efCars = brandCars.filter(car => car.efTag);
+                    // Separate by dealership
+                    const manthongCars = brandCars.filter(car => car.manthongTag);
+                    const efCars = brandCars.filter(car => car.efTag);
 
-                // Render Man Thong cars
-                if (manthongCars.length > 0) {
-                    container.innerHTML += `<h3 class="dealership-separator">⭐ Man Thong Auto Trading ⭐</h3>`;
-                    const mtList = document.createElement('ul');
-                    mtList.className = 'car-list';
-                    renderCarItems(manthongCars.sort((a, b) => b.year - a.year), mtList);
-                    container.appendChild(mtList);
-                }
+                    // Render Man Thong cars
+                    if (manthongCars.length > 0) {
+                        const mtSeparator = document.createElement('h3');
+                        mtSeparator.className = 'dealership-separator';
+                        mtSeparator.textContent = '⭐ Man Thong Auto Trading ⭐';
+                        mtSeparator.style.opacity = '0';
+                        mtSeparator.style.transform = 'scale(0.95)';
+                        mtSeparator.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                        container.appendChild(mtSeparator);
+                        
+                        setTimeout(() => {
+                            mtSeparator.style.opacity = '1';
+                            mtSeparator.style.transform = 'scale(1)';
+                        }, 10);
+                        
+                        delay += 0.1;
+                        
+                        const mtList = document.createElement('ul');
+                        mtList.className = 'car-list';
+                        renderCarItems(manthongCars.sort((a, b) => b.year - a.year), mtList);
+                        container.appendChild(mtList);
+                    }
 
-                // Render Ever Forward cars
-                if (efCars.length > 0) {
-                    container.innerHTML += `<h3 class="dealership-separator">🌟 Ever Forward Auto Trading 🌟</h3>`;
-                    const efList = document.createElement('ul');
-                    efList.className = 'car-list';
-                    renderCarItems(efCars.sort((a, b) => b.year - a.year), efList);
-                    container.appendChild(efList);
-                }
-            });
+                    // Render Ever Forward cars
+                    if (efCars.length > 0) {
+                        const efSeparator = document.createElement('h3');
+                        efSeparator.className = 'dealership-separator';
+                        efSeparator.textContent = '🌟 Ever Forward Auto Trading 🌟';
+                        efSeparator.style.opacity = '0';
+                        efSeparator.style.transform = 'scale(0.95)';
+                        efSeparator.style.transition = `opacity 0.5s ease ${delay}s, transform 0.5s ease ${delay}s`;
+                        container.appendChild(efSeparator);
+                        
+                        setTimeout(() => {
+                            efSeparator.style.opacity = '1';
+                            efSeparator.style.transform = 'scale(1)';
+                        }, 10);
+                        
+                        delay += 0.1;
+                        
+                        const efList = document.createElement('ul');
+                        efList.className = 'car-list';
+                        renderCarItems(efCars.sort((a, b) => b.year - a.year), efList);
+                        container.appendChild(efList);
+                    }
+                });
+            }, 300);
         }
 
         // ----------------------------------------------------
-        // 9. Loan Calculator
+        // 9. Enhanced Loan Calculator with Smooth Updates
         // ----------------------------------------------------
         function calculateMonthlyPayment(principal, years, rate) {
             const totalInterest = principal * rate * years;
@@ -1349,16 +1696,36 @@
             const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
             const resultElement = document.getElementById('monthly-payment-result');
 
+            // Add pulse animation during calculation
+            resultElement.style.animation = 'pulse 0.5s ease';
+            
             // Validate inputs
             if (otrPrice <= downPayment || loanYears <= 0 || interestRate <= 0) {
                 resultElement.innerHTML = `RM 0.00<span>Please ensure OTR > Down Payment and all values are positive</span>`;
                 return;
             }
 
-            // Calculate and display result
+            // Calculate and display result with smooth transition
             const principal = otrPrice - downPayment;
             const monthlyPayment = calculateMonthlyPayment(principal, loanYears, interestRate);
-            resultElement.innerHTML = `RM ${monthlyPayment.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
+            
+            // Animate number change
+            let currentValue = parseFloat(resultElement.textContent.replace('RM ', '').split('<')[0]) || 0;
+            const difference = monthlyPayment - currentValue;
+            const steps = 20;
+            let step = 0;
+            
+            const animateValue = () => {
+                step++;
+                const value = currentValue + (difference * step / steps);
+                resultElement.innerHTML = `RM ${value.toFixed(2)}<span>Estimated Monthly Payment (${loanYears} Years, ${(interestRate * 100).toFixed(1)}%)</span>`;
+                
+                if (step < steps) {
+                    requestAnimationFrame(animateValue);
+                }
+            };
+            
+            animateValue();
         }
 
         // ----------------------------------------------------
@@ -1375,17 +1742,35 @@
         }
 
         // ----------------------------------------------------
-        // 11. Mobile Menu Toggle
+        // 11. Mobile Menu Toggle with Animation
         // ----------------------------------------------------
         function toggleMobileMenu() {
             const moreMenu = document.getElementById('mobile-more-menu');
             if (moreMenu) {
-                moreMenu.classList.toggle('hidden');
+                // Toggle with animation
+                if (moreMenu.classList.contains('hidden')) {
+                    moreMenu.classList.remove('hidden');
+                    moreMenu.style.opacity = '0';
+                    moreMenu.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        moreMenu.style.opacity = '1';
+                        moreMenu.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    moreMenu.style.opacity = '0';
+                    moreMenu.style.transform = 'translateY(10px)';
+                    setTimeout(() => {
+                        moreMenu.classList.add('hidden');
+                    }, 200);
+                }
             } else {
                 // Create mobile more menu if it doesn't exist
                 const menu = document.createElement('div');
                 menu.id = 'mobile-more-menu';
                 menu.className = 'mobile-more-menu';
+                menu.style.opacity = '0';
+                menu.style.transform = 'translateY(10px)';
+                menu.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
                 menu.innerHTML = `
                     <button class="btn btn-warning mobile-menu-btn" id="mobile-export-btn">
                         <span>📤</span> Export Data
@@ -1399,12 +1784,19 @@
                 `;
                 document.querySelector('.mobile-action-bar').appendChild(menu);
                 
+                // Animate in
+                setTimeout(() => {
+                    menu.style.opacity = '1';
+                    menu.style.transform = 'translateY(0)';
+                }, 10);
+                
                 // Add event listeners to mobile menu buttons
                 document.getElementById('mobile-export-btn').addEventListener('click', exportCarData);
                 document.getElementById('mobile-import-btn').addEventListener('click', importFromGitHub);
                 document.getElementById('mobile-reset-btn').addEventListener('click', resetToDefaultData);
             }
         }
+
 
         // ----------------------------------------------------
         // 12. Event Listeners Initialization
