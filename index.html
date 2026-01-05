@@ -3,469 +3,983 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Man Thong Auto | Premium Stock</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Man Thong Auto Trading Stock List</title>
     <style>
+        /* ---------------------------------- */
+        /* 高级CSS变量 & 基础样式 (升级版) */
+        /* ---------------------------------- */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --accent: #f59e0b;
-            --bg-body: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --glass: rgba(255, 255, 255, 0.8);
-            --radius-lg: 20px;
-            --radius-md: 12px;
-            --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --primary: #007bff;
+            --primary-light: #007bff15;
+            --primary-gradient: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            --secondary: #6c757d;
+            --success: #28a745;
+            --success-light: #28a74515;
+            --warning: #ffc107;
+            --warning-light: #ffc10715;
+            --danger: #dc3545;
+            --danger-light: #dc354515;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border-radius: 16px;
+            --border-radius-sm: 10px;
+            --box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --box-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-morph: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 更丝滑的morph动画 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --glass-effect: backdrop-filter: blur(8px);
+            --card-hover-scale: 1.03; /* 卡片悬浮缩放 */
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            overflow-x: hidden;
-            padding-bottom: 80px;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            background: linear-gradient(180deg, #f8f9fa 0%, #eef2f5 100%);
+            color: #333;
+            padding-bottom: 70px;
+            scroll-behavior: smooth;
         }
 
-        /* --- 高級 Header --- */
+        /* ---------------------------------- */
+        /* 头部样式 (高级Morph动画) */
+        /* ---------------------------------- */
         .header {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            padding: 20px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 20px 15px;
+            box-shadow: var(--box-shadow);
             position: sticky;
             top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-area h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- 搜索與按鈕 --- */
-        .controls {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 300px;
-            position: relative;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 16px 20px 16px 50px;
-            border-radius: var(--radius-md);
-            border: 1px solid #e2e8f0;
-            background: white;
-            box-shadow: var(--shadow-sm);
+            z-index: 100;
             transition: var(--transition);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            transform: translateY(-2px);
+        .header.scrolled {
+            padding: 12px 15px;
+            box-shadow: var(--box-shadow-hover);
+            background: linear-gradient(135deg, #0066cc 0%, #004a99 100%);
         }
 
-        /* --- 車輛卡片網格 --- */
-        .car-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .car-card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            position: relative;
-            border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .car-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: var(--shadow-xl);
-        }
-
-        /* Morph 效果：內部裝飾 */
-        .car-card::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 100px; height: 100px;
-            background: var(--primary);
-            filter: blur(80px);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 0;
-        }
-
-        .car-card:hover::after {
-            opacity: 0.1;
-        }
-
-        .card-image-placeholder {
-            width: 100%;
-            height: 200px;
-            background: #f1f5f9;
+        .header-content {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #cbd5e1;
-            font-size: 3rem;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
         }
 
-        .card-content {
-            padding: 24px;
-            z-index: 1;
+        .logo {
+            height: 52px;
+            width: auto;
+            border-radius: var(--border-radius-sm);
+            transition: var(--transition-morph);
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
         }
 
-        .brand-tag {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            font-weight: 700;
+        .logo:hover {
+            transform: scale(1.08) rotate(3deg);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            background: linear-gradient(90deg, #fff, #e0efff, #b3d1ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        /* ---------------------------------- */
+        /* 控制区样式 (升级) */
+        /* ---------------------------------- */
+        .controls {
+            padding: 20px 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 92px;
+            z-index: 99;
+            transition: var(--transition);
+            border-bottom: 1px solid #f0f2f5;
+        }
+
+        .controls.scrolled {
+            top: 76px;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            border: 2px solid #f0f2f5;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            background: white;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 6px var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 20px;
+            pointer-events: none;
+            transition: var(--transition);
+        }
+
+        #search-input:focus + .search-icon {
             color: var(--primary);
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ---------------------------------- */
+        /* 主内容区 */
+        /* ---------------------------------- */
+        .main-content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        /* ---------------------------------- */
+        /* 品牌分类标题 (高级动效) */
+        /* ---------------------------------- */
+        .brand-category-title {
+            background: linear-gradient(90deg, #f5f7fa 0%, #e9ecef 100%);
+            color: var(--primary);
+            padding: 18px 24px;
+            margin: 35px 0 25px;
+            font-size: 1.7rem;
+            border-bottom: 5px solid var(--primary);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .brand-category-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: var(--transition-fast);
+            transition-duration: 1.2s;
+        }
+
+        .brand-category-title:hover::before {
+            left: 100%;
+        }
+        
+        .dealership-separator {
+            color: var(--success);
+            text-align: center;
+            padding: 14px;
+            margin: 30px 0 25px;
+            font-size: 1.3rem;
+            border-top: 2px solid #e0e6ed;
+            border-bottom: 2px solid #e0e6ed;
+            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+            position: relative;
+            font-weight: 600;
+        }
+
+        .dealership-separator::before,
+        .dealership-separator::after {
+            content: '★';
+            margin: 0 18px;
+            opacity: 0.8;
+        }
+
+        .category-title {
+            font-size: 1.4rem;
+            color: var(--secondary);
+            border-left: 7px solid var(--warning);
+            padding-left: 18px;
+            margin: 25px 0 20px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .category-title:hover {
+            border-left-color: var(--primary);
+            color: var(--primary);
+            transform: translateX(8px);
+        }
+
+        /* ---------------------------------- */
+        /* 核心：汽车卡片 (高级Morph动画 + 完整字段) */
+        /* ---------------------------------- */
+        .car-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .car-list {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        .car-item {
+            background: white;
+            padding: 28px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-morph);
+            border: 1px solid #f0f2f5;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            /* 玻璃态基础 */
+            backdrop-filter: blur(4px);
+        }
+
+        /* 卡片顶部渐变条 (更细更精致) */
+        .car-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-gradient);
+            transform: scaleX(0);
+            transition: var(--transition);
+            transform-origin: left;
+        }
+
+        /* 卡片悬浮Morph效果 */
+        .car-item:hover {
+            transform: translateY(-10px) scale(var(--card-hover-scale));
+            box-shadow: var(--box-shadow-hover);
+            border-color: var(--primary-light);
+        }
+
+        .car-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* 品牌+型号标题 (升级) */
+        .car-brand {
+            font-size: 0.95rem;
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 4px;
             display: block;
         }
 
-        .model-name {
-            font-size: 1.4rem;
+        .car-title {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-top: 0;
+            border-bottom: 2px solid #f8f9fa;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            transition: var(--transition);
             font-weight: 700;
-            margin-bottom: 4px;
         }
 
-        .spec-info {
-            color: var(--text-muted);
+        .car-item:hover .car-title {
+            color: #0056b3;
+            border-bottom-color: var(--primary-light);
+        }
+
+        /* 价格样式 (突出显示) */
+        .car-price-wrapper {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .car-price {
+            font-size: 1.5rem;
+            color: var(--danger);
+            font-weight: 800;
+            transition: var(--transition);
+        }
+
+        .car-proc-fee {
             font-size: 0.9rem;
-            margin-bottom: 16px;
+            color: var(--secondary);
+            background: var(--light);
+            padding: 4px 8px;
+            border-radius: 6px;
         }
 
-        .car-details-grid {
+        .car-item:hover .car-price {
+            transform: scale(1.08);
+        }
+
+        /* 完整字段样式 (规整布局) */
+        .car-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: var(--radius-md);
+            margin: 15px 0;
+            flex: 1;
         }
 
-        .detail-item {
-            font-size: 0.85rem;
-        }
-
-        .detail-item span {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-        }
-
-        .price-area {
+        .car-detail-item {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-top: auto;
+            flex-direction: column;
+            padding: 8px 0;
         }
 
-        .main-price {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .main-price small {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        /* --- 標籤樣式 --- */
-        .status-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            background: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .branch-tag {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: white;
-            background: var(--accent);
-        }
-
-        /* --- 交互按鈕 --- */
-        .btn {
-            padding: 12px 24px;
-            border-radius: var(--radius-md);
-            border: none;
+        .car-detail-label {
+            font-size: 0.85rem;
+            color: var(--secondary);
             font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition-morph);
+            margin-bottom: 4px;
+        }
+
+        .car-detail-value {
+            font-size: 1rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        /* 年份/车牌/颜色/配置 样式 */
+        .car-year, .car-plate, .car-colour, .car-spec {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-outline { background: transparent; border: 1.5px solid #e2e8f0; }
-        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .car-year::before { content: '📅'; font-size: 16px; }
+        .car-plate::before { content: '🚘'; font-size: 16px; }
+        .car-colour::before { content: '🎨'; font-size: 16px; }
+        .car-spec::before { content: '⚙️'; font-size: 16px; }
 
-        .action-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 12px 24px;
-            border-radius: 50px;
-            display: flex;
-            gap: 15px;
-            box-shadow: var(--shadow-xl);
-            z-index: 1001;
+        /* 状态标签 (升级) */
+        .car-status {
+            font-weight: bold;
+            color: var(--success);
+            padding: 6px 12px;
+            border-radius: 8px;
+            background-color: var(--success-light);
+            display: inline-block;
+            margin-top: 10px;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .action-bar button {
-            background: transparent;
-            border: none;
+        .car-status.ready {
+            color: var(--success);
+            background-color: var(--success-light);
+        }
+
+        .car-status.sold {
+            color: var(--danger);
+            background-color: var(--danger-light);
+        }
+
+        .car-status.reserved {
+            color: var(--warning);
+            background-color: var(--warning-light);
+        }
+
+        /* 分店标签 (高级Morph) */
+        .tag-top-left {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            z-index: 10;
+            transition: var(--transition-morph);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .car-item:hover .tag-top-left {
+            transform: scale(1.15) rotate(-3deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+        }
+
+        .manthong-tag {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #333;
+        }
+
+        .ef-tag {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
             color: white;
+        }
+
+        /* ---------------------------------- */
+        /* WhatsApp按钮 (高级Morph) */
+        /* ---------------------------------- */
+        .whatsapp-btn {
+            display: block;
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+            color: white;
+            text-align: center;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: auto;
+            transition: var(--transition-morph);
+            box-shadow: 0 6px 12px rgba(37, 211, 102, 0.25);
+            border: none;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .whatsapp-btn:hover {
+            background: linear-gradient(135deg, #128c7e 0%, #075e54 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.35);
+        }
+
+        /* ---------------------------------- */
+        /* 编辑按钮 (升级Morph) */
+        /* ---------------------------------- */
+        .edit-car-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 16px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 20;
+            transition: var(--transition-morph);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+        }
+
+        .edit-car-btn:hover {
+            background: linear-gradient(135deg, #545b62 0%, #495057 100%);
+            transform: scale(1.15) rotate(3deg);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* ---------------------------------- */
+        /* 其他样式保持 (已优化基础) */
+        /* ---------------------------------- */
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #343a40 0%, #23272b 100%);
+            color: #e0e0e0;
+            margin-top: 60px;
+            font-size: 1rem;
+            border-top: 5px solid var(--primary);
+        }
+
+        .calculator-icon {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #333;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 68px;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+            z-index: 1000;
+            transition: var(--transition-morph);
+            border: none;
+            font-weight: bold;
+        }
+
+        .calculator-icon:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        .calculator-popup {
+            position: fixed;
+            bottom: 170px;
+            right: 20px;
+            width: 360px;
+            max-width: 90vw;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            padding: 28px;
+            z-index: 999;
+            display: none;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            transition: var(--transition);
+            border-top: 5px solid var(--warning);
+        }
+
+        .calculator-popup.active {
+            display: block;
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .mobile-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -6px 15px rgba(0, 0, 0, 0.08);
+            z-index: 100;
+            display: none;
+            border-top: 1px solid #f0f2f5;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-action-bar {
+                display: flex;
+                justify-content: space-around;
+            }
+            .action-buttons {
+                display: none;
+            }
+        }
+
+        .mobile-action-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            opacity: 0.8;
-            transition: 0.3s;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: var(--secondary);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
         }
 
-        .action-bar button:hover { opacity: 1; transform: translateY(-3px); }
+        .mobile-action-btn.active {
+            color: var(--primary);
+            background-color: var(--primary-light);
+            transform: translateY(-8px);
+        }
 
-        /* --- Calculator Morph --- */
-        #calc-toggle {
-            position: fixed;
-            right: 30px;
-            bottom: 100px;
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            box-shadow: var(--shadow-xl);
+        .mobile-action-btn i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            transition: var(--transition);
+        }
+
+        .mobile-action-btn:hover i {
+            transform: scale(1.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 25px;
+            color: var(--secondary);
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin: 30px 0;
+        }
+
+        .empty-state i {
+            font-size: 72px;
+            margin-bottom: 25px;
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .empty-state:hover i {
+            transform: scale(1.15) rotate(8deg);
+            opacity: 0.8;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+            font-size: 1.7rem;
+        }
+
+        /* 按钮通用样式 (升级) */
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-morph);
             display: flex;
             align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            text-align: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 999;
-            font-size: 24px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
         }
 
-        @media (max-width: 600px) {
-            .car-grid { grid-template-columns: 1fr; }
+        .btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
+
+        .btn-primary { background: var(--primary-gradient); color: white; }
+        .btn-success { background: linear-gradient(135deg, #28a745 0%, #218838 100%); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%); color: #333; }
+        .btn-secondary { background: linear-gradient(135deg, #6c757d 0%, #545b62 100%); color: white; }
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <div class="logo-area">
-            <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 10px;"></div>
-            <h1>Man Thong Auto</h1>
-        </div>
-        <div class="user-actions">
-            <button class="btn btn-outline" onclick="openAddModal()">+ Add Stock</button>
+    <!-- 头部 -->
+    <header class="header" id="main-header">
+        <div class="header-content">
+            <img src="Z (4) - Copy.png" alt="Man Thong Auto Trading Logo" class="logo">
+            <h1>Stock List</h1>
         </div>
     </header>
 
-    <div class="controls">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search premium cars by model, brand or plate...">
+    <!-- 控制区 -->
+    <div class="controls" id="main-controls">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search by brand, model, year, plate number...">
+            <span class="search-icon">🔍</span>
+        </div>
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="add-car-btn">
+                <span>➕</span> Add Car
+            </button>
+            <button class="btn btn-success" id="save-data-btn">
+                <span>💾</span> Save Data
+            </button>
+            <button class="btn btn-warning" id="export-data-btn">
+                <span>📤</span> Export Data
+            </button>
+            <button class="btn btn-primary" id="import-github-btn">
+                <span>🔄</span> Import GitHub
+            </button>
+            <button class="btn btn-danger" id="reset-data-btn">
+                <span>🔄</span> Reset Data
+            </button>
         </div>
     </div>
 
-    <main class="car-grid" id="carGrid">
-        </main>
-
-    <div class="action-bar">
-        <button onclick="exportData()"><span>📤</span>Export</button>
-        <button onclick="importGitHub()"><span>🔄</span>Sync</button>
-        <button onclick="location.reload()"><span>🏠</span>Home</button>
+    <!-- 主内容区 (渲染完整字段卡片) -->
+    <main class="main-content" id="car-container">
+        <!-- 示例数据渲染区域 -->
+        <ul class="car-list" id="car-list">
+            <!-- 示例卡片 (基于新字段结构) -->
+            <li class="car-item">
+                <span class="tag-top-left manthong-tag">manthong</span>
+                <button class="edit-car-btn">✏️ Edit</button>
+                
+                <span class="car-brand">Proton</span>
+                <h2 class="car-title">X70 1.8 PREMIUM</h2>
+                
+                <div class="car-price-wrapper">
+                    <div class="car-price">RM 58,800</div>
+                    <div class="car-proc-fee">Proc Fee: RM 3,800</div>
+                </div>
+                
+                <div class="car-details">
+                    <div class="car-detail-item car-year">
+                        <span class="car-detail-label">Year</span>
+                        <span class="car-detail-value">2019</span>
+                    </div>
+                    <div class="car-detail-item car-spec">
+                        <span class="car-detail-label">Spec</span>
+                        <span class="car-detail-value">1.8 Premium</span>
+                    </div>
+                    <div class="car-detail-item car-colour">
+                        <span class="car-detail-label">Colour</span>
+                        <span class="car-detail-value">-</span>
+                    </div>
+                    <div class="car-detail-item car-plate">
+                        <span class="car-detail-label">Plate</span>
+                        <span class="car-detail-value">VDB7826</span>
+                    </div>
+                    <div class="car-detail-item">
+                        <span class="car-detail-label">Branch</span>
+                        <span class="car-detail-value">manthong</span>
+                    </div>
+                    <div class="car-detail-item">
+                        <span class="car-detail-label">Image</span>
+                        <span class="car-detail-value">No Image</span>
+                    </div>
+                </div>
+                
+                <div class="car-status ready">Ready</div>
+                <a href="https://wa.me/60123456789" class="whatsapp-btn" target="_blank">📞 Contact Us</a>
+            </li>
+        </ul>
+    </main>
+    
+    <!-- 移动端操作栏 -->
+    <div class="mobile-action-bar">
+        <button class="mobile-action-btn" id="mobile-add-btn">
+            <span>➕</span>
+            <span>Add</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-search-btn">
+            <span>🔍</span>
+            <span>Search</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-save-btn">
+            <span>💾</span>
+            <span>Save</span>
+        </button>
+        <button class="mobile-action-btn" id="mobile-more-btn">
+            <span>⋯</span>
+            <span>More</span>
+        </button>
     </div>
 
-    <div id="calc-toggle" onclick="toggleCalc()">🧮</div>
-
-    <div id="calcModal" style="display:none; position:fixed; bottom:170px; right:30px; width:300px; background:white; padding:25px; border-radius:20px; box-shadow:var(--shadow-xl); z-index:1000;">
-        <h3 style="margin-bottom:15px">Loan Estimator</h3>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px">Powered by 365 Bank (Special Rate)</p>
-        <label style="font-size:0.8rem">OTR Price (RM)</label>
-        <input type="number" id="calcPrice" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ddd; border-radius:8px">
-        <div id="calcResult" style="padding:15px; background:var(--bg-body); border-radius:12px; text-align:center">
-            <div style="font-size:0.7rem; color:var(--text-muted)">365 Bank Monthly (3Y / 10%)</div>
-            <div id="monthlyVal" style="font-size:1.5rem; font-weight:800; color:var(--primary)">RM 0</div>
+    <!-- 计算器 (保持原有功能) -->
+    <button class="calculator-icon" id="calc-toggle">
+        &#x270E; 
+    </button>
+    <div class="calculator-popup" id="calculator-popup">
+        <h4>Car Loan Calculator</h4>
+        <div class="calc-group">
+            <label for="otr-price">Car OTR (RM)</label>
+            <input type="number" id="otr-price" placeholder="e.g.: 60000" value="60000">
+        </div>
+        <div class="calc-group">
+            <label for="down-payment">Down Payment (RM)</label>
+            <input type="number" id="down-payment" placeholder="e.g.: 6000" value="6000">
+        </div>
+        <div class="calc-group">
+            <label for="loan-years">Loan Years</label>
+            <select id="loan-years">
+                <option value="3" selected>3 Years</option>
+                <option value="5">5 Years</option>
+                <option value="7">7 Years</option>
+                <option value="9">9 Years</option>
+            </select>
+        </div>
+        <div class="calc-group interest-rate-group" id="interest-rate-group">
+            <label for="interest-rate">Annual Interest Rate (p.a.)</label>
+            <select id="interest-rate">
+                <option value="0.10" selected>10.0%</option>
+                <option value="0.075">7.5%</option>
+                <option value="0.038">3.8%</option>
+            </select>
+        </div>
+        <div id="monthly-payment-result">
+            RM 0.00
+            <span>Estimated Monthly Payment</span>
         </div>
     </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2025 Man Thong Auto Trading. All Rights Reserved.</p>
+    </footer>
 
     <script>
-        // 升级后的数据结构
-        let carData = [
+        // 示例数据 (新字段结构)
+        const carData = [
             { 
-                brand: "Proton", 
-                model: "X70 1.8 PREMIUM", 
-                year: "2019", 
-                spec: "1.8 Premium", 
-                colour: "Snow White", 
-                plate: "VDB7826", 
-                price: 58800, 
-                proc_fee: 3800, 
-                branch: "manthong", 
-                status: "ready", 
-                image: "" 
+                "brand": "Proton", 
+                "model": "X70 1.8 PREMIUM", 
+                "year": "2019", 
+                "spec": "1.8 Premium", 
+                "colour": "-", 
+                "plate": "VDB7826", 
+                "price": "58800", 
+                "proc_fee": "3800", 
+                "branch": "manthong", 
+                "status": "ready", 
+                "image": "",
+                "id": 1
             },
             { 
-                brand: "Perodua", 
-                model: "Myvi 1.5 AV", 
-                year: "2021", 
-                spec: "Advanced Edition", 
-                colour: "Electric Blue", 
-                plate: "VGA7888", 
-                price: 45000, 
-                proc_fee: 2800, 
-                branch: "everforward", 
-                status: "booked", 
-                image: "" 
+                "brand": "Perodua", 
+                "model": "Myvi 1.5 AV", 
+                "year": "2022", 
+                "spec": "1.5 Advance", 
+                "colour": "White", 
+                "plate": "ABC1234", 
+                "price": "45800", 
+                "proc_fee": "2800", 
+                "branch": "ef", 
+                "status": "ready", 
+                "image": "",
+                "id": 2
             }
         ];
 
-        function renderCars(data) {
-            const grid = document.getElementById('carGrid');
-            grid.innerHTML = '';
+        // 渲染汽车卡片
+        function renderCarCards() {
+            const carListEl = document.getElementById('car-list');
+            carListEl.innerHTML = '';
 
-            data.forEach((car, index) => {
-                const total = car.price + (parseInt(car.proc_fee) || 0);
-                const card = document.createElement('div');
-                card.className = 'car-card';
-                card.innerHTML = `
-                    <div class="card-image-placeholder">🚗</div>
-                    <span class="branch-tag" style="background:${car.branch === 'manthong' ? '#2563eb' : '#8b5cf6'}">
-                        ${car.branch.toUpperCase()}
-                    </span>
-                    <span class="status-badge" style="color:${car.status === 'ready' ? '#10b981' : '#f59e0b'}">
-                        ● ${car.status.toUpperCase()}
-                    </span>
-                    <div class="card-content">
-                        <span class="brand-tag">${car.brand}</span>
-                        <h2 class="model-name">${car.model}</h2>
-                        <p class="spec-info">${car.spec} | ${car.colour}</p>
-                        
-                        <div class="car-details-grid">
-                            <div class="detail-item"><span>Year</span><strong>${car.year}</strong></div>
-                            <div class="detail-item"><span>Plate</span><strong>${car.plate}</strong></div>
-                            <div class="detail-item"><span>Processing</span><strong>RM ${car.proc_fee}</strong></div>
-                            <div class="detail-item"><span>Location</span><strong>Main Store</strong></div>
+            carData.forEach(car => {
+                const carItem = document.createElement('li');
+                carItem.className = 'car-item';
+
+                // 拼接卡片HTML (完整字段)
+                carItem.innerHTML = `
+                    <span class="tag-top-left ${car.branch === 'manthong' ? 'manthong-tag' : 'ef-tag'}">${car.branch}</span>
+                    <button class="edit-car-btn">✏️ Edit</button>
+                    
+                    <span class="car-brand">${car.brand}</span>
+                    <h2 class="car-title">${car.model}</h2>
+                    
+                    <div class="car-price-wrapper">
+                        <div class="car-price">RM ${Number(car.price).toLocaleString()}</div>
+                        <div class="car-proc-fee">Proc Fee: RM ${Number(car.proc_fee).toLocaleString()}</div>
+                    </div>
+                    
+                    <div class="car-details">
+                        <div class="car-detail-item car-year">
+                            <span class="car-detail-label">Year</span>
+                            <span class="car-detail-value">${car.year}</span>
                         </div>
-
-                        <div class="price-area">
-                            <div class="main-price">
-                                <small>RM</small> ${car.price.toLocaleString()}
-                            </div>
-                            <button class="btn btn-primary" onclick="contactWa('${car.model}')">Inquire</button>
+                        <div class="car-detail-item car-spec">
+                            <span class="car-detail-label">Spec</span>
+                            <span class="car-detail-value">${car.spec}</span>
+                        </div>
+                        <div class="car-detail-item car-colour">
+                            <span class="car-detail-label">Colour</span>
+                            <span class="car-detail-value">${car.colour}</span>
+                        </div>
+                        <div class="car-detail-item car-plate">
+                            <span class="car-detail-label">Plate</span>
+                            <span class="car-detail-value">${car.plate}</span>
+                        </div>
+                        <div class="car-detail-item">
+                            <span class="car-detail-label">Branch</span>
+                            <span class="car-detail-value">${car.branch}</span>
+                        </div>
+                        <div class="car-detail-item">
+                            <span class="car-detail-label">Image</span>
+                            <span class="car-detail-value">${car.image ? 'Available' : 'No Image'}</span>
                         </div>
                     </div>
+                    
+                    <div class="car-status ${car.status}">${car.status.charAt(0).toUpperCase() + car.status.slice(1)}</div>
+                    <a href="https://wa.me/60123456789" class="whatsapp-btn" target="_blank">📞 Contact Us</a>
                 `;
-                grid.appendChild(card);
+
+                carListEl.appendChild(carItem);
             });
         }
 
-        // 365银行借贷逻辑集成 (基于你之前的信息: 最多20000, 3年, 10%利率)
-        function calculate365Loan(amount) {
-            const loanLimit = 20000;
-            const interestRate = 0.10; // 10%
-            const years = 3;
-            
-            // 假设用户借最高限额或车价总额中的较小者
-            const principal = Math.min(amount, loanLimit);
-            const totalInterest = principal * interestRate * years;
-            const monthly = (principal + totalInterest) / (years * 12);
-            return monthly.toFixed(2);
-        }
+        // 页面加载后渲染
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCarCards();
 
-        function toggleCalc() {
-            const modal = document.getElementById('calcModal');
-            modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
-        }
+            // 头部滚动效果
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('main-header');
+                const controls = document.getElementById('main-controls');
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                    controls.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                    controls.classList.remove('scrolled');
+                }
+            });
 
-        document.getElementById('calcPrice').addEventListener('input', (e) => {
-            const val = e.target.value;
-            if(val > 0) {
-                const m = calculate365Loan(val);
-                document.getElementById('monthlyVal').innerText = `RM ${m}`;
+            // 计算器切换
+            const calcToggle = document.getElementById('calc-toggle');
+            const calcPopup = document.getElementById('calculator-popup');
+            calcToggle.addEventListener('click', () => {
+                calcPopup.classList.toggle('active');
+            });
+
+            // 计算器逻辑 (简化版)
+            const otrInput = document.getElementById('otr-price');
+            const downInput = document.getElementById('down-payment');
+            const yearsInput = document.getElementById('loan-years');
+            const rateInput = document.getElementById('interest-rate');
+            const resultEl = document.getElementById('monthly-payment-result');
+
+            function calculateLoan() {
+                const otr = Number(otrInput.value) || 0;
+                const down = Number(downInput.value) || 0;
+                const years = Number(yearsInput.value) || 3;
+                const rate = Number(rateInput.value) || 0.1;
+                
+                const principal = otr - down;
+                const months = years * 12;
+                const monthlyRate = rate / 12;
+                const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+                
+                resultEl.innerHTML = `
+                    RM ${monthlyPayment.toFixed(2)}
+                    <span>Estimated Monthly Payment (${years} years @ ${(rate*100).toFixed(1)}%)</span>
+                `;
             }
-        });
 
-        function contactWa(model) {
-            window.open(`https://wa.me/60105000111?text=Interested in ${model}`);
-        }
+            [otrInput, downInput, yearsInput, rateInput].forEach(input => {
+                input.addEventListener('input', calculateLoan);
+            });
 
-        // 初始化
-        renderCars(carData);
-
-        // 搜索逻辑
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = carData.filter(c => 
-                c.model.toLowerCase().includes(term) || 
-                c.brand.toLowerCase().includes(term) || 
-                c.plate.toLowerCase().includes(term)
-            );
-            renderCars(filtered);
+            // 初始计算
+            calculateLoan();
         });
     </script>
 </body>
